@@ -5,6 +5,7 @@ const ctx = canvas.getContext('2d');
 // Game State
 let gameStarted = false;
 let gameRunning = false;
+let gamePaused = false;
 let score = 0;
 let points = 0;
 let wave = 1;

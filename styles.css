@@ -271,7 +271,7 @@ body {
     color: #aaa;
 }
 
-#gameOver, #victory {
+#gameOver, #victory, #pauseScreen {
     position: absolute;
     top: 0;
     left: 0;
@@ -285,6 +285,19 @@ body {
     color: #fff;
     text-align: center;
     z-index: 50;
+}
+
+#pauseScreen h1 {
+    color: #4af;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px #4af;
+}
+
+#pauseScreen p {
+    font-size: 10px;
+    color: #888;
+    margin-bottom: 30px;
 }
 
 #gameOver h1 {

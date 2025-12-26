@@ -66,8 +66,14 @@ function formatTime(seconds) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
+function togglePause() {
+    if (!gameStarted || !gameRunning) return;
+    gamePaused = !gamePaused;
+    document.getElementById('pauseScreen').style.display = gamePaused ? 'flex' : 'none';
+}
+
 function update() {
-    if (!gameRunning) return;
+    if (!gameRunning || gamePaused) return;
 
     // Game timer
     gameTime += 1/60;
@@ -127,9 +133,11 @@ function restartGame() {
     currentSkill = null; updateSkillDisplay();
     score = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     gameRunning = true;
+    gamePaused = false;
     document.getElementById('gameOver').style.display = 'none';
     document.getElementById('victory').style.display = 'none';
     document.getElementById('bossHealth').style.display = 'none';
+    document.getElementById('pauseScreen').style.display = 'none';
     for (let i = 0; i < 8; i++) spawnOrb();
     updateUI();
 }
@@ -137,7 +145,8 @@ function restartGame() {
 // Event Listeners
 document.addEventListener('keydown', e => {
     keys[e.key] = true;
-    if (!gameStarted || !gameRunning) return;
+    if (e.key === 'Escape') { togglePause(); return; }
+    if (!gameStarted || !gameRunning || gamePaused) return;
     if (e.key >= '1' && e.key <= '9') { const index = parseInt(e.key) - 1; if (index < spriteTypes.length) summonSprite(index); }
     else if (e.key === '0') { if (spriteTypes.length >= 10) summonSprite(9); }
     if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); useSkill(); }

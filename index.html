@@ -77,6 +77,12 @@
                 <p><span data-i18n="time">Time</span>: <span id="victoryTime">0:00</span></p>
                 <button class="restart-btn" onclick="restartGame()" data-i18n="playAgain">PLAY AGAIN</button>
             </div>
+
+            <div id="pauseScreen">
+                <h1 data-i18n="paused">PAUSED</h1>
+                <p data-i18n="pauseHint">Press ESC to resume</p>
+                <button class="restart-btn" onclick="togglePause()" data-i18n="resume">RESUME</button>
+            </div>
         </div>
 
         <div id="languagePanel">

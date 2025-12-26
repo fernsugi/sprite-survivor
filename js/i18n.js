@@ -25,7 +25,7 @@ const translations = {
         victoryMsg: "You defeated the final boss!",
         playAgain: "PLAY AGAIN",
         language: "LANGUAGE",
-        controlsHint: "WASD to move | 1-9, 0 to summon | SPACE for skill",
+        controlsHint: "WASD to move | 1-9, 0 to summon | SPACE for skill | ESC to pause",
         skillDash: "DASH",
         skillHeal: "FULL HEAL",
         skillNuke: "SCREEN BLAST",
@@ -54,7 +54,10 @@ const translations = {
         boss1: "Demon Lord",
         boss2: "Shadow King",
         boss3: "Void Emperor",
-        boss4: "Death Titan"
+        boss4: "Death Titan",
+        paused: "PAUSED",
+        pauseHint: "Press ESC to resume",
+        resume: "RESUME"
     },
     ja: {
         title: "スプライトサバイバー",
@@ -81,7 +84,7 @@ const translations = {
         victoryMsg: "最終ボスを倒した！",
         playAgain: "もう一度",
         language: "言語",
-        controlsHint: "WASD 移動 | 1-9, 0 召喚 | スペース スキル",
+        controlsHint: "WASD 移動 | 1-9, 0 召喚 | スペース スキル | ESC 一時停止",
         skillDash: "ダッシュ",
         skillHeal: "全回復",
         skillNuke: "全画面攻撃",
@@ -110,7 +113,10 @@ const translations = {
         boss1: "魔王",
         boss2: "影の王",
         boss3: "虚空帝",
-        boss4: "死の巨人"
+        boss4: "死の巨人",
+        paused: "一時停止",
+        pauseHint: "ESCで再開",
+        resume: "再開"
     }
 };
 
