@@ -8,6 +8,31 @@
 </head>
 <body>
     <div id="gameWrapper">
+        <div id="leftPanel">
+            <div id="ui">
+                <div data-i18n="hp">HP</div>
+                <div class="health-bar">
+                    <div class="health-fill" id="healthFill"></div>
+                </div>
+                <div style="margin-top: 10px;"><span data-i18n="points">POINTS</span>: <span id="pointsDisplay">0</span></div>
+                <div class="points-bar">
+                    <div class="points-fill" id="pointsFill"></div>
+                </div>
+                <div style="margin-top: 10px;"><span data-i18n="sprites">SPRITES</span>: <span id="spriteCount">0</span></div>
+            </div>
+
+            <div id="spritePanel">
+                <h3 data-i18n="summonSprites">SUMMON SPRITES</h3>
+                <div id="spriteButtons"></div>
+            </div>
+
+            <div id="skillDisplay">
+                <div data-i18n="skill">SKILL</div>
+                <div id="skillName">-</div>
+                <div id="skillHint" data-i18n="pressSpace">[SPACE]</div>
+            </div>
+        </div>
+
         <div id="gameContainer">
             <canvas id="gameCanvas" width="1000" height="750"></canvas>
 
@@ -21,29 +46,6 @@
                     <span>SPACE</span> <span data-i18n="instructSkill">- Use skill (when available)</span><br><br>
                     <span data-i18n="instructTip">Collect orbs, summon sprites, survive!</span>
                 </div>
-            </div>
-
-            <div id="ui">
-                <div data-i18n="hp">HP</div>
-                <div class="health-bar">
-                    <div class="health-fill" id="healthFill"></div>
-                </div>
-                <div style="margin-top: 10px;"><span data-i18n="points">POINTS</span>: <span id="pointsDisplay">0</span></div>
-                <div class="points-bar">
-                    <div class="points-fill" id="pointsFill"></div>
-                </div>
-                <div style="margin-top: 10px; font-size: 8px;"><span data-i18n="sprites">SPRITES</span>: <span id="spriteCount">0</span></div>
-
-                <div id="skillDisplay">
-                    <div data-i18n="skill">SKILL</div>
-                    <div id="skillName">-</div>
-                    <div id="skillHint" data-i18n="pressSpace">[SPACE]</div>
-                </div>
-            </div>
-
-            <div id="spritePanel">
-                <div data-i18n="summonSprites">SUMMON SPRITES</div>
-                <div id="spriteButtons"></div>
             </div>
 
             <div id="waveInfo">
