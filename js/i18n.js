@@ -1,6 +1,9 @@
 // Language System
 const translations = {
     en: {
+        spriteFontSize: "7px",
+        costFontSize: "8px",
+        descFontSize: "7px",
         title: "SPRITE SURVIVOR",
         subtitle: "Summon spirits, survive the horde",
         startGame: "START GAME",
@@ -25,7 +28,7 @@ const translations = {
         victoryMsg: "You defeated the final boss!",
         playAgain: "PLAY AGAIN",
         language: "LANGUAGE",
-        controlsHint: "WASD to move | 1-9, 0 to summon | SPACE for skill | ESC to pause",
+        controlsHint: "WASD/Arrows move | 1-0 or ZXCVBNM,./ summon | SPACE skill | ESC pause",
         skillDash: "DASH",
         skillHeal: "FULL HEAL",
         skillNuke: "SCREEN BLAST",
@@ -57,9 +60,13 @@ const translations = {
         boss4: "Death Titan",
         paused: "PAUSED",
         pauseHint: "Press ESC to resume",
-        resume: "RESUME"
+        resume: "RESUME",
+        instructPause: "- Pause"
     },
     ja: {
+        spriteFontSize: "9px",
+        costFontSize: "7px",
+        descFontSize: "9px",
         title: "スプライトサバイバー",
         subtitle: "精霊を召喚し、群れを生き延びろ",
         startGame: "ゲームスタート",
@@ -84,7 +91,7 @@ const translations = {
         victoryMsg: "最終ボスを倒した！",
         playAgain: "もう一度",
         language: "言語",
-        controlsHint: "WASD 移動 | 1-9, 0 召喚 | スペース スキル | ESC 一時停止",
+        controlsHint: "WASD/矢印 移動 | 1-0 or ZXCVBNM,./ 召喚 | スペース スキル | ESC 一時停止",
         skillDash: "ダッシュ",
         skillHeal: "全回復",
         skillNuke: "全画面攻撃",
@@ -116,7 +123,8 @@ const translations = {
         boss4: "死の巨人",
         paused: "一時停止",
         pauseHint: "ESCで再開",
-        resume: "再開"
+        resume: "再開",
+        instructPause: "- 一時停止"
     }
 };
 

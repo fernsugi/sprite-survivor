@@ -29,6 +29,9 @@ body {
     padding: 10px;
     color: #fff;
     font-size: 8px;
+    width: 100px;
+    height: 758px;
+    flex-shrink: 0;
 }
 
 #languagePanel h3 {
@@ -78,6 +81,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 200px;
+    height: 758px;
+    flex-shrink: 0;
 }
 
 #ui {
@@ -86,6 +92,7 @@ body {
     padding: 10px;
     color: #fff;
     font-size: 10px;
+    flex-shrink: 0;
 }
 
 #ui div {
@@ -126,6 +133,7 @@ body {
     padding: 10px;
     color: #fff;
     font-size: 10px;
+    flex-shrink: 0;
 }
 
 #skillDisplay.has-skill {
@@ -140,41 +148,41 @@ body {
 
 #skillName {
     color: #5ff;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 #skillHint {
     color: #888;
-    font-size: 6px;
+    font-size: 8px;
     margin-top: 4px;
 }
 
 #spritePanel {
     background: #1a1a2e;
     border: 2px solid #2a2a3a;
-    padding: 10px;
+    padding: 12px;
     color: #fff;
-    font-size: 8px;
+    font-size: 10px;
     flex: 1;
     overflow-y: auto;
 }
 
 #spritePanel h3 {
     margin-bottom: 10px;
-    font-size: 8px;
+    font-size: 10px;
     color: #aaa;
 }
 
 #skillDisplay > div:first-child {
     color: #aaa;
-    font-size: 8px;
+    font-size: 10px;
     margin-bottom: 8px;
 }
 
 #spriteButtons {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .sprite-btn {
@@ -182,11 +190,30 @@ body {
     border: 2px solid #666;
     color: #fff;
     font-family: 'Press Start 2P', cursive;
-    font-size: 6px;
+    font-size: 8px;
     padding: 6px 8px;
     cursor: pointer;
     text-align: left;
     transition: all 0.1s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.sprite-btn .cost {
+    color: #ff0;
+}
+
+.sprite-btn .desc {
+    color: #aaa;
+    font-size: 6px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.2;
 }
 
 .sprite-btn:hover:not(:disabled) {

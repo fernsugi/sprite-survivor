@@ -143,12 +143,17 @@ function restartGame() {
 }
 
 // Event Listeners
+const altSummonKeys = { 'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, ',': 7, '.': 8, '/': 9 };
 document.addEventListener('keydown', e => {
     keys[e.key] = true;
     if (e.key === 'Escape') { togglePause(); return; }
     if (!gameStarted || !gameRunning || gamePaused) return;
     if (e.key >= '1' && e.key <= '9') { const index = parseInt(e.key) - 1; if (index < spriteTypes.length) summonSprite(index); }
     else if (e.key === '0') { if (spriteTypes.length >= 10) summonSprite(9); }
+    else if (altSummonKeys.hasOwnProperty(e.key.toLowerCase())) {
+        const index = altSummonKeys[e.key.toLowerCase()];
+        if (index < spriteTypes.length) summonSprite(index);
+    }
     if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); useSkill(); }
 });
 document.addEventListener('keyup', e => { keys[e.key] = false; });

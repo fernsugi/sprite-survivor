@@ -3,12 +3,18 @@
 function initSpriteButtons() {
     const container = document.getElementById('spriteButtons');
     container.innerHTML = '';
+    const altKeys = ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/'];
+    const spriteFontSize = t('spriteFontSize');
+    const costFontSize = t('costFontSize');
+    const descFontSize = t('descFontSize');
     spriteTypes.forEach((type, index) => {
         const btn = document.createElement('button');
         btn.className = 'sprite-btn';
         btn.id = `sprite-btn-${index}`;
-        const shortcutKey = index === 9 ? '0' : (index + 1).toString();
-        btn.innerHTML = `[${shortcutKey}] ${t(type.nameKey)} (${type.cost}pts)<br><span style="color:#aaa">${t(type.descKey)}</span>`;
+        btn.style.fontSize = spriteFontSize;
+        const numKey = index === 9 ? '0' : (index + 1).toString();
+        const altKey = altKeys[index];
+        btn.innerHTML = `[${numKey}/${altKey}] ${t(type.nameKey)} <span class="cost" style="font-size:${costFontSize}">${type.cost}pts</span><br><span class="desc" style="font-size:${descFontSize}">${t(type.descKey)}</span>`;
         btn.onclick = () => summonSprite(index);
         container.appendChild(btn);
     });
