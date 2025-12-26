@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprite Survivor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden;
+        }
+        
+        #gameWrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        #languagePanel {
+            background: #1a1a2e;
+            border: 2px solid #2a2a3a;
+            padding: 10px;
+            color: #fff;
+            font-size: 8px;
+        }
+        
+        #languagePanel h3 {
+            margin-bottom: 10px;
+            font-size: 8px;
+            color: #aaa;
+        }
+        
+        .lang-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(180deg, #333, #222);
+            border: 2px solid #444;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            padding: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        
+        .lang-btn:hover {
+            background: linear-gradient(180deg, #444, #333);
+            border-color: #666;
+        }
+        
+        .lang-btn.active {
+            border-color: #5f5;
+            background: linear-gradient(180deg, #353, #232);
+        }
+        
+        #gameContainer {
+            position: relative;
+            border: 4px solid #2a2a3a;
+            box-shadow: 0 0 40px rgba(100, 200, 255, 0.2), inset 0 0 60px rgba(0, 0, 0, 0.5);
+            image-rendering: pixelated;
+        }
+        
+        #gameCanvas {
+            display: block;
+            background: #1a1a2e;
+            image-rendering: pixelated;
+        }
+        
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            font-size: 10px;
+            text-shadow: 2px 2px 0 #000;
+            pointer-events: none;
+        }
+        
+        #ui div {
+            margin-bottom: 8px;
+        }
+        
+        .health-bar {
+            width: 150px;
+            height: 14px;
+            background: #333;
+            border: 2px solid #555;
+            position: relative;
+        }
+        
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(180deg, #5f5, #2a2);
+            transition: width 0.2s;
+        }
+        
+        .points-bar {
+            width: 150px;
+            height: 10px;
+            background: #333;
+            border: 2px solid #555;
+            margin-top: 2px;
+        }
+        
+        .points-fill {
+            height: 100%;
+            background: linear-gradient(180deg, #ff0, #aa0);
+            transition: width 0.2s;
+        }
+        
+        #skillDisplay {
+            margin-top: 15px;
+            padding: 8px;
+            background: #0008;
+            border: 2px solid #555;
+            display: none;
+        }
+        
+        #skillDisplay.has-skill {
+            display: block;
+            border-color: #5ff;
+            animation: skillPulse 1s infinite;
+        }
+        
+        @keyframes skillPulse {
+            0%, 100% { box-shadow: 0 0 5px #5ff; }
+            50% { box-shadow: 0 0 15px #5ff; }
+        }
+        
+        #skillName {
+            color: #5ff;
+            font-size: 8px;
+        }
+        
+        #skillHint {
+            color: #888;
+            font-size: 6px;
+            margin-top: 4px;
+        }
+        
+        #spritePanel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            font-size: 8px;
+            text-shadow: 2px 2px 0 #000;
+            text-align: right;
+        }
+        
+        #spriteButtons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+            pointer-events: auto;
+        }
+        
+        .sprite-btn {
+            background: linear-gradient(180deg, #444, #222);
+            border: 2px solid #666;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 6px;
+            padding: 6px 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.1s;
+        }
+        
+        .sprite-btn:hover:not(:disabled) {
+            background: linear-gradient(180deg, #555, #333);
+            border-color: #888;
+        }
+        
+        .sprite-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .sprite-btn.affordable {
+            border-color: #5f5;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 5px #5f5; }
+            50% { box-shadow: 0 0 15px #5f5; }
+        }
+        
+        #waveInfo {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 10px;
+            text-shadow: 2px 2px 0 #000;
+            text-align: center;
+        }
+        
+        #startScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0a0a1a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            z-index: 100;
+        }
+        
+        #startScreen h1 {
+            font-size: 36px;
+            color: #4af;
+            text-shadow: 0 0 20px #4af, 0 4px 0 #248;
+            margin-bottom: 10px;
+        }
+        
+        #startScreen .subtitle {
+            font-size: 10px;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        
+        .start-btn {
+            background: linear-gradient(180deg, #4a4, #282);
+            border: 4px solid #5c5;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            padding: 20px 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 30px;
+            animation: startPulse 2s infinite;
+        }
+        
+        @keyframes startPulse {
+            0%, 100% { box-shadow: 0 0 10px #4a4; transform: scale(1); }
+            50% { box-shadow: 0 0 30px #4a4; transform: scale(1.02); }
+        }
+        
+        .start-btn:hover {
+            background: linear-gradient(180deg, #5b5, #393);
+            border-color: #7d7;
+            transform: scale(1.05);
+        }
+        
+        #startScreen .instructions {
+            font-size: 8px;
+            color: #666;
+            line-height: 2;
+            max-width: 600px;
+        }
+        
+        #startScreen .instructions span {
+            color: #aaa;
+        }
+        
+        #gameOver, #victory {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            z-index: 50;
+        }
+        
+        #gameOver h1 {
+            color: #f44;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #f44;
+        }
+        
+        #victory h1 {
+            color: #4f4;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #4f4;
+        }
+        
+        #gameOver p, #victory p {
+            font-size: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .restart-btn {
+            background: linear-gradient(180deg, #555, #333);
+            border: 3px solid #777;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .restart-btn:hover {
+            background: linear-gradient(180deg, #666, #444);
+            border-color: #999;
+            transform: scale(1.05);
+        }
+        
+        #controls {
+            margin-top: 20px;
+            color: #666;
+            font-size: 8px;
+            text-align: center;
+        }
+        
+        #bossHealth {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            display: none;
+        }
+        
+        #bossHealth .boss-name {
+            color: #f44;
+            font-size: 10px;
+            text-align: center;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 0 #000;
+        }
+        
+        #bossHealth .health-bar {
+            width: 100%;
+            height: 18px;
+            border-color: #f44;
+        }
+        
+        #bossHealth .health-fill {
+            background: linear-gradient(180deg, #f44, #a00);
+        }
+    </style>
+</head>
+<body>
+    <div id="gameWrapper">
+        <div id="gameContainer">
+            <canvas id="gameCanvas" width="1000" height="750"></canvas>
+            
+            <div id="startScreen">
+                <h1 data-i18n="title">SPRITE SURVIVOR</h1>
+                <div class="subtitle" data-i18n="subtitle">Summon spirits, survive the horde</div>
+                <button class="start-btn" onclick="startGame()" data-i18n="startGame">START GAME</button>
+                <div class="instructions">
+                    <span>WASD</span> <span data-i18n="instructMove">- Move</span><br>
+                    <span>1-9, 0</span> <span data-i18n="instructSummon">- Summon sprites</span><br>
+                    <span>SPACE</span> <span data-i18n="instructSkill">- Use skill (when available)</span><br><br>
+                    <span data-i18n="instructTip">Collect orbs, summon sprites, survive!</span>
+                </div>
+            </div>
+            
+            <div id="ui">
+                <div data-i18n="hp">HP</div>
+                <div class="health-bar">
+                    <div class="health-fill" id="healthFill"></div>
+                </div>
+                <div style="margin-top: 10px;"><span data-i18n="points">POINTS</span>: <span id="pointsDisplay">0</span></div>
+                <div class="points-bar">
+                    <div class="points-fill" id="pointsFill"></div>
+                </div>
+                <div style="margin-top: 10px; font-size: 8px;"><span data-i18n="sprites">SPRITES</span>: <span id="spriteCount">0</span></div>
+                
+                <div id="skillDisplay">
+                    <div data-i18n="skill">SKILL</div>
+                    <div id="skillName">-</div>
+                    <div id="skillHint" data-i18n="pressSpace">[SPACE]</div>
+                </div>
+            </div>
+            
+            <div id="spritePanel">
+                <div data-i18n="summonSprites">SUMMON SPRITES</div>
+                <div id="spriteButtons"></div>
+            </div>
+            
+            <div id="waveInfo">
+                <div><span data-i18n="wave">WAVE</span> <span id="waveNumber">1</span></div>
+                <div id="waveTimer" style="font-size: 8px; margin-top: 4px;"></div>
+            </div>
+            
+            <div id="bossHealth">
+                <div class="boss-name" id="bossName">BOSS</div>
+                <div class="health-bar">
+                    <div class="health-fill" id="bossHealthFill"></div>
+                </div>
+            </div>
+            
+            <div id="gameOver">
+                <h1 data-i18n="gameOver">GAME OVER</h1>
+                <p><span data-i18n="finalScore">Final Score</span>: <span id="finalScore">0</span></p>
+                <p><span data-i18n="waveReached">Wave Reached</span>: <span id="finalWave">1</span></p>
+                <button class="restart-btn" onclick="restartGame()" data-i18n="restart">RESTART</button>
+            </div>
+            
+            <div id="victory">
+                <h1 data-i18n="victory">VICTORY!</h1>
+                <p data-i18n="victoryMsg">You defeated the final boss!</p>
+                <p><span data-i18n="finalScore">Final Score</span>: <span id="victoryScore">0</span></p>
+                <button class="restart-btn" onclick="restartGame()" data-i18n="playAgain">PLAY AGAIN</button>
+            </div>
+        </div>
+        
+        <div id="languagePanel">
+            <h3 data-i18n="language">LANGUAGE</h3>
+            <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+            <button class="lang-btn" onclick="setLanguage('ja')">日本語</button>
+        </div>
+    </div>
+    
+    <div id="controls">
+        <span data-i18n="controlsHint">WASD to move | 1-9, 0 to summon | SPACE for skill</span>
+    </div>
+
+    <script>
+        // ============== LANGUAGE SYSTEM ==============
+        const translations = {
+            en: {
+                title: "SPRITE SURVIVOR",
+                subtitle: "Summon spirits, survive the horde",
+                startGame: "START GAME",
+                instructMove: "- Move",
+                instructSummon: "- Summon sprites",
+                instructSkill: "- Use skill (when available)",
+                instructTip: "Collect orbs, summon sprites, survive!",
+                hp: "HP",
+                points: "POINTS",
+                sprites: "SPRITES",
+                skill: "SKILL",
+                pressSpace: "[SPACE]",
+                summonSprites: "SUMMON SPRITES",
+                wave: "WAVE",
+                nextWave: "Next wave",
+                bossBattle: "BOSS BATTLE!",
+                gameOver: "GAME OVER",
+                finalScore: "Final Score",
+                waveReached: "Wave Reached",
+                restart: "RESTART",
+                victory: "VICTORY!",
+                victoryMsg: "You defeated the final boss!",
+                playAgain: "PLAY AGAIN",
+                language: "LANGUAGE",
+                controlsHint: "WASD to move | 1-9, 0 to summon | SPACE for skill",
+                skillDash: "DASH",
+                skillHeal: "FULL HEAL",
+                skillNuke: "SCREEN BLAST",
+                archer: "Archer",
+                knight: "Knight",
+                mage: "Mage",
+                cleric: "Cleric",
+                ninja: "Ninja",
+                wizard: "Wizard",
+                berserker: "Berserker",
+                frost: "Frost",
+                vampire: "Vampire",
+                bomber: "Bomber",
+                descArcher: "Shoots arrows",
+                descKnight: "Sword slash",
+                descMage: "AOE magic",
+                descCleric: "Heals you",
+                descNinja: "Fast attacks",
+                descWizard: "Lightning",
+                descBerserker: "Spin attack",
+                descFrost: "Slows enemies",
+                descVampire: "Lifesteal hits",
+                descBomber: "Explosive shots",
+                boss1: "Demon Lord",
+                boss2: "Shadow King",
+                boss3: "Void Emperor",
+                boss4: "Death Titan"
+            },
+            ja: {
+                title: "スプライトサバイバー",
+                subtitle: "精霊を召喚し、群れを生き延びろ",
+                startGame: "ゲームスタート",
+                instructMove: "- 移動",
+                instructSummon: "- スプライト召喚",
+                instructSkill: "- スキル発動（所持時）",
+                instructTip: "オーブを集め、スプライトを召喚し、生き残れ！",
+                hp: "HP",
+                points: "ポイント",
+                sprites: "スプライト",
+                skill: "スキル",
+                pressSpace: "[スペース]",
+                summonSprites: "スプライト召喚",
+                wave: "ウェーブ",
+                nextWave: "次のウェーブ",
+                bossBattle: "ボス戦！",
+                gameOver: "ゲームオーバー",
+                finalScore: "最終スコア",
+                waveReached: "到達ウェーブ",
+                restart: "リスタート",
+                victory: "勝利！",
+                victoryMsg: "最終ボスを倒した！",
+                playAgain: "もう一度",
+                language: "言語",
+                controlsHint: "WASD 移動 | 1-9, 0 召喚 | スペース スキル",
+                skillDash: "ダッシュ",
+                skillHeal: "全回復",
+                skillNuke: "全画面攻撃",
+                archer: "アーチャー",
+                knight: "ナイト",
+                mage: "メイジ",
+                cleric: "クレリック",
+                ninja: "ニンジャ",
+                wizard: "ウィザード",
+                berserker: "バーサーカー",
+                frost: "フロスト",
+                vampire: "ヴァンパイア",
+                bomber: "ボマー",
+                descArcher: "矢を放つ",
+                descKnight: "剣で斬る",
+                descMage: "範囲魔法",
+                descCleric: "回復",
+                descNinja: "高速攻撃",
+                descWizard: "雷撃",
+                descBerserker: "回転攻撃",
+                descFrost: "敵を減速",
+                descVampire: "HP吸収",
+                descBomber: "爆発弾",
+                boss1: "魔王",
+                boss2: "影の王",
+                boss3: "虚空帝",
+                boss4: "死の巨人"
+            }
+        };
+        
+        let currentLang = 'en';
+        
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(lang === 'en' ? 'English' : '日本語')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            
+            initSpriteButtons();
+            updateSkillDisplay();
+            updateUI();
+        }
+        
+        function t(key) {
+            return translations[currentLang][key] || translations['en'][key] || key;
+        }
+        
+        // ============== GAME SETUP ==============
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let gameStarted = false;
+        let gameRunning = false;
+        let score = 0;
+        let points = 0;
+        let wave = 1;
+        let waveTimer = 0;
+        let bossActive = false;
+        let boss = null;
+        const WAVE_DURATION = 30;
+        const BOSS_WAVE_INTERVAL = 5;
+        const POINTS_FOR_SPRITE = 10;
+        
+        const keys = {};
+        
+        const player = {
+            x: 500,
+            y: 375,
+            width: 20,
+            height: 20,
+            speed: 3.5,
+            maxHp: 100,
+            hp: 100,
+            invincibleTime: 0,
+            color: '#4af'
+        };
+        
+        let currentSkill = null;
+        const skillTypes = [
+            { name: 'skillDash', color: '#5ff', rarity: 0.5 },
+            { name: 'skillHeal', color: '#5f5', rarity: 0.1 },
+            { name: 'skillNuke', color: '#f55', rarity: 0.4 }
+        ];
+        
+        let enemies = [];
+        let projectiles = [];
+        let sprites = [];
+        let orbs = [];
+        let skillOrbs = [];
+        let effects = [];
+        let spriteProjectiles = [];
+        
+        const spriteTypes = [
+            { nameKey: 'archer', cost: 10, color: '#5f5', descKey: 'descArcher', type: 'shooter', damage: 8, range: 200, cooldown: 60 },
+            { nameKey: 'knight', cost: 15, color: '#f55', descKey: 'descKnight', type: 'melee', damage: 15, range: 40, cooldown: 45 },
+            { nameKey: 'mage', cost: 20, color: '#a5f', descKey: 'descMage', type: 'aoe', damage: 12, range: 80, cooldown: 90 },
+            { nameKey: 'cleric', cost: 25, color: '#ff5', descKey: 'descCleric', type: 'healer', healAmount: 5, cooldown: 120 },
+            { nameKey: 'ninja', cost: 15, color: '#555', descKey: 'descNinja', type: 'shooter', damage: 5, range: 150, cooldown: 20 },
+            { nameKey: 'wizard', cost: 30, color: '#5ff', descKey: 'descWizard', type: 'chain', damage: 10, range: 120, cooldown: 80 },
+            { nameKey: 'berserker', cost: 20, color: '#f80', descKey: 'descBerserker', type: 'spin', damage: 20, range: 50, cooldown: 100 },
+            { nameKey: 'frost', cost: 25, color: '#8ef', descKey: 'descFrost', type: 'slow', damage: 5, range: 100, cooldown: 70 },
+            { nameKey: 'vampire', cost: 30, color: '#d4a', descKey: 'descVampire', type: 'vampire', damage: 12, range: 60, cooldown: 50 },
+            { nameKey: 'bomber', cost: 35, color: '#fa0', descKey: 'descBomber', type: 'explode', damage: 25, range: 180, cooldown: 120 }
+        ];
+        
+        const enemyTypes = [
+            { name: 'Chaser', color: '#f44', speed: 1.5, hp: 20, damage: 10, type: 'melee', size: 14 },
+            { name: 'Shooter', color: '#f84', speed: 1, hp: 15, damage: 8, type: 'ranged', size: 16, shootCooldown: 90 },
+            { name: 'Tank', color: '#844', speed: 0.7, hp: 60, damage: 15, type: 'melee', size: 24 },
+            { name: 'Speedy', color: '#f4f', speed: 3, hp: 10, damage: 5, type: 'melee', size: 12 },
+            { name: 'Bomber', color: '#ff4', speed: 1.2, hp: 25, damage: 20, type: 'explode', size: 16 },
+            { name: 'Sniper', color: '#4ff', speed: 0.5, hp: 12, damage: 15, type: 'sniper', size: 14, shootCooldown: 150 }
+        ];
+        
+        function initSpriteButtons() {
+            const container = document.getElementById('spriteButtons');
+            container.innerHTML = '';
+            spriteTypes.forEach((type, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'sprite-btn';
+                btn.id = `sprite-btn-${index}`;
+                const shortcutKey = index === 9 ? '0' : (index + 1).toString();
+                btn.innerHTML = `[${shortcutKey}] ${t(type.nameKey)} (${type.cost}pts)<br><span style="color:#aaa">${t(type.descKey)}</span>`;
+                btn.onclick = () => summonSprite(index);
+                container.appendChild(btn);
+            });
+        }
+        
+        function updateSpriteButtons() {
+            spriteTypes.forEach((type, index) => {
+                const btn = document.getElementById(`sprite-btn-${index}`);
+                if (btn) {
+                    btn.disabled = points < type.cost;
+                    btn.classList.toggle('affordable', points >= type.cost);
+                }
+            });
+        }
+        
+        function upgradeSpriteStats(sprite) {
+            const type = spriteTypes[sprite.typeIndex];
+            sprite.damage = Math.floor((type.damage || 0) * (1 + sprite.level * 0.5));
+            sprite.healAmount = Math.floor((type.healAmount || 0) * (1 + sprite.level * 0.3));
+            sprite.range = (type.range || 50) * (1 + sprite.level * 0.2);
+            sprite.size = 12 + sprite.level * 3;
+            sprite.cooldown = Math.max(10, type.cooldown - sprite.level * 5);
+        }
+        
+        function createMergeEffect(sprite) {
+            for (let j = 0; j < 10; j++) {
+                effects.push({
+                    x: sprite.x, y: sprite.y,
+                    vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4,
+                    life: 30, color: sprite.color, type: 'particle'
+                });
+            }
+        }
+        
+        function checkAllMerges() {
+            let mergeOccurred = true;
+            while (mergeOccurred) {
+                mergeOccurred = false;
+                for (let i = 0; i < sprites.length; i++) {
+                    for (let j = i + 1; j < sprites.length; j++) {
+                        const s1 = sprites[i], s2 = sprites[j];
+                        if (s1.typeIndex === s2.typeIndex && s1.level === s2.level) {
+                            s1.level++;
+                            upgradeSpriteStats(s1);
+                            s1.x = (s1.x + s2.x) / 2;
+                            s1.y = (s1.y + s2.y) / 2;
+                            createMergeEffect(s1);
+                            createMergeEffect(s2);
+                            sprites.splice(j, 1);
+                            mergeOccurred = true;
+                            break;
+                        }
+                    }
+                    if (mergeOccurred) break;
+                }
+            }
+        }
+        
+        function summonSprite(typeIndex) {
+            const type = spriteTypes[typeIndex];
+            if (points < type.cost) return;
+            points -= type.cost;
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 50 + Math.random() * 30;
+            const newSprite = {
+                x: player.x + Math.cos(angle) * dist,
+                y: player.y + Math.sin(angle) * dist,
+                typeIndex, type: type.type, color: type.color, nameKey: type.nameKey,
+                damage: type.damage || 0, healAmount: type.healAmount || 0,
+                range: type.range || 50, cooldown: type.cooldown, currentCooldown: 0,
+                level: 1, size: 12, angle: 0, orbitAngle: angle,
+                orbitSpeed: 0.02 + Math.random() * 0.01
+            };
+            sprites.push(newSprite);
+            checkAllMerges();
+            updateUI();
+        }
+        
+        function spawnSkillOrb() {
+            const margin = 80;
+            const totalRarity = skillTypes.reduce((sum, s) => sum + s.rarity, 0);
+            let rand = Math.random() * totalRarity;
+            let selectedSkill = skillTypes[0];
+            for (const skill of skillTypes) {
+                rand -= skill.rarity;
+                if (rand <= 0) { selectedSkill = skill; break; }
+            }
+            skillOrbs.push({
+                x: margin + Math.random() * (canvas.width - margin * 2),
+                y: margin + Math.random() * (canvas.height - margin * 2),
+                size: 12, pulse: Math.random() * Math.PI * 2, skill: selectedSkill
+            });
+        }
+        
+        function useSkill() {
+            if (!currentSkill) return;
+            switch (currentSkill.name) {
+                case 'skillDash':
+                    let dx = 0, dy = 0;
+                    if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
+                    if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
+                    if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
+                    if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+                    if (dx === 0 && dy === 0) dx = 1;
+                    const len = Math.sqrt(dx * dx + dy * dy);
+                    dx /= len; dy /= len;
+                    const dashDist = 150;
+                    player.x += dx * dashDist;
+                    player.y += dy * dashDist;
+                    player.x = Math.max(player.width/2, Math.min(canvas.width - player.width/2, player.x));
+                    player.y = Math.max(player.height/2, Math.min(canvas.height - player.height/2, player.y));
+                    player.invincibleTime = 30;
+                    for (let i = 0; i < 15; i++) {
+                        effects.push({ x: player.x - dx * i * 10, y: player.y - dy * i * 10, vx: 0, vy: 0, life: 20 - i, color: '#5ff', type: 'particle' });
+                    }
+                    break;
+                case 'skillHeal':
+                    player.hp = player.maxHp;
+                    for (let i = 0; i < 20; i++) {
+                        effects.push({ x: player.x, y: player.y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4 - 2, life: 40, color: '#5f5', type: 'particle' });
+                    }
+                    effects.push({ x: player.x, y: player.y, life: 30, type: 'heal' });
+                    break;
+                case 'skillNuke':
+                    const nukeDamage = 30 + wave * 5;
+                    enemies.forEach(enemy => {
+                        enemy.hp -= nukeDamage;
+                        effects.push({ x: enemy.x, y: enemy.y, life: 15, type: 'hit', color: '#f55' });
+                    });
+                    if (boss) boss.hp -= nukeDamage * 0.5;
+                    effects.push({ x: canvas.width / 2, y: canvas.height / 2, life: 20, type: 'screenFlash', color: '#f55' });
+                    for (let i = 0; i < 30; i++) {
+                        effects.push({ x: canvas.width / 2, y: canvas.height / 2, vx: (Math.random() - 0.5) * 20, vy: (Math.random() - 0.5) * 20, life: 40, color: Math.random() > 0.5 ? '#f55' : '#fa0', type: 'particle' });
+                    }
+                    break;
+            }
+            currentSkill = null;
+            updateSkillDisplay();
+        }
+        
+        function updateSkillDisplay() {
+            const display = document.getElementById('skillDisplay');
+            const nameEl = document.getElementById('skillName');
+            if (currentSkill) {
+                display.classList.add('has-skill');
+                nameEl.textContent = t(currentSkill.name);
+                nameEl.style.color = currentSkill.color;
+            } else {
+                display.classList.remove('has-skill');
+                nameEl.textContent = '-';
+            }
+        }
+        
+        function spawnOrb() {
+            const margin = 50;
+            orbs.push({
+                x: margin + Math.random() * (canvas.width - margin * 2),
+                y: margin + Math.random() * (canvas.height - margin * 2),
+                size: 10, pulse: Math.random() * Math.PI * 2
+            });
+        }
+        
+        function spawnEnemy() {
+            if (bossActive) return;
+            const availableTypes = enemyTypes.slice(0, Math.min(wave + 1, enemyTypes.length));
+            const typeData = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+            let x, y;
+            const side = Math.floor(Math.random() * 4);
+            switch (side) {
+                case 0: x = -20; y = Math.random() * canvas.height; break;
+                case 1: x = canvas.width + 20; y = Math.random() * canvas.height; break;
+                case 2: x = Math.random() * canvas.width; y = -20; break;
+                case 3: x = Math.random() * canvas.width; y = canvas.height + 20; break;
+            }
+            const waveMultiplier = 1 + (wave - 1) * 0.15;
+            enemies.push({
+                x, y, ...typeData,
+                hp: typeData.hp * waveMultiplier, maxHp: typeData.hp * waveMultiplier,
+                damage: typeData.damage * waveMultiplier, currentShootCooldown: 0, slowed: 0
+            });
+        }
+        
+        function spawnBoss() {
+            bossActive = true;
+            const bossNum = Math.floor(wave / BOSS_WAVE_INTERVAL);
+            const bossMultiplier = 1 + bossNum * 0.5;
+            const bossNames = ['boss1', 'boss2', 'boss3', 'boss4'];
+            boss = {
+                x: canvas.width / 2, y: -50, targetY: 120,
+                size: 50 + bossNum * 5, hp: 500 * bossMultiplier, maxHp: 500 * bossMultiplier,
+                damage: 25 * bossMultiplier, phase: 0, attackTimer: 0, attackPattern: 0,
+                moveTimer: 0, targetX: canvas.width / 2,
+                nameKey: bossNames[Math.min(bossNum - 1, 3)] || 'boss1',
+                color: ['#f44', '#a4f', '#444', '#f84'][Math.min(bossNum - 1, 3)] || '#fff'
+            };
+            document.getElementById('bossHealth').style.display = 'block';
+            document.getElementById('bossName').textContent = t(boss.nameKey);
+        }
+        
+        function bossAttack() {
+            if (!boss) return;
+            boss.attackTimer++;
+            if (boss.attackTimer >= 60) {
+                boss.attackTimer = 0;
+                boss.attackPattern = (boss.attackPattern + 1) % 5;
+                switch (boss.attackPattern) {
+                    case 0:
+                        for (let i = 0; i < 12; i++) {
+                            const angle = (Math.PI * 2 / 12) * i;
+                            projectiles.push({ x: boss.x, y: boss.y, vx: Math.cos(angle) * 4, vy: Math.sin(angle) * 4, damage: boss.damage * 0.5, size: 10, color: boss.color, fromBoss: true });
+                        }
+                        break;
+                    case 1:
+                        for (let i = -2; i <= 2; i++) {
+                            const dx = player.x - boss.x, dy = player.y - boss.y;
+                            const baseAngle = Math.atan2(dy, dx), angle = baseAngle + i * 0.2;
+                            projectiles.push({ x: boss.x, y: boss.y, vx: Math.cos(angle) * 5, vy: Math.sin(angle) * 5, damage: boss.damage * 0.4, size: 8, color: '#ff0', fromBoss: true });
+                        }
+                        break;
+                    case 2:
+                        for (let i = 0; i < 3; i++) {
+                            const angle = Math.random() * Math.PI * 2;
+                            enemies.push({ x: boss.x + Math.cos(angle) * 30, y: boss.y + Math.sin(angle) * 30, ...enemyTypes[0], hp: enemyTypes[0].hp * 0.5, maxHp: enemyTypes[0].hp * 0.5 });
+                        }
+                        break;
+                    case 3:
+                        effects.push({ x: boss.x, y: boss.y, targetX: player.x, targetY: player.y, life: 30, type: 'laser_warning', color: '#f008' });
+                        setTimeout(() => {
+                            if (!boss) return;
+                            const dx = player.x - boss.x, dy = player.y - boss.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            for (let i = 0; i < 20; i++) {
+                                projectiles.push({ x: boss.x + (dx / dist) * i * 30, y: boss.y + (dy / dist) * i * 30, vx: dx / dist * 8, vy: dy / dist * 8, damage: boss.damage * 0.3, size: 12, color: '#f44', fromBoss: true, life: 20 });
+                            }
+                        }, 500);
+                        break;
+                    case 4:
+                        for (let i = 0; i < 8; i++) {
+                            setTimeout(() => {
+                                if (!boss) return;
+                                const angle = boss.phase + i * 0.5;
+                                projectiles.push({ x: boss.x, y: boss.y, vx: Math.cos(angle) * 3, vy: Math.sin(angle) * 3, damage: boss.damage * 0.3, size: 8, color: '#f0f', fromBoss: true });
+                            }, i * 100);
+                        }
+                        break;
+                }
+            }
+            boss.moveTimer++;
+            if (boss.moveTimer >= 120) { boss.moveTimer = 0; boss.targetX = 100 + Math.random() * (canvas.width - 200); }
+            boss.x += (boss.targetX - boss.x) * 0.02;
+            if (boss.y < boss.targetY) boss.y += 2;
+            boss.phase += 0.05;
+        }
+        
+        function update() {
+            if (!gameRunning) return;
+            
+            waveTimer += 1/60;
+            if (waveTimer >= WAVE_DURATION && !bossActive) {
+                waveTimer = 0; wave++;
+                if (wave % BOSS_WAVE_INTERVAL === 0) spawnBoss();
+            }
+            
+            let dx = 0, dy = 0;
+            if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
+            if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
+            if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
+            if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+            if (dx !== 0 || dy !== 0) {
+                const len = Math.sqrt(dx * dx + dy * dy);
+                dx /= len; dy /= len;
+                player.x += dx * player.speed; player.y += dy * player.speed;
+            }
+            player.x = Math.max(player.width/2, Math.min(canvas.width - player.width/2, player.x));
+            player.y = Math.max(player.height/2, Math.min(canvas.height - player.height/2, player.y));
+            if (player.invincibleTime > 0) player.invincibleTime--;
+            
+            if (Math.random() < 0.02 && orbs.length < 20) spawnOrb();
+            if (Math.random() < 0.003 && skillOrbs.length < 2) spawnSkillOrb();
+            const spawnRate = 0.02 + wave * 0.005;
+            if (Math.random() < spawnRate && enemies.length < 25 + wave * 3 && !bossActive) spawnEnemy();
+            
+            orbs.forEach(orb => orb.pulse += 0.1);
+            skillOrbs.forEach(orb => orb.pulse += 0.08);
+            
+            for (let i = orbs.length - 1; i >= 0; i--) {
+                const orb = orbs[i];
+                const dx = player.x - orb.x, dy = player.y - orb.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < player.width/2 + orb.size) {
+                    orbs.splice(i, 1); points++; score += 10;
+                    for (let j = 0; j < 5; j++) effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 20, color: '#fff', type: 'particle' });
+                }
+            }
+            
+            for (let i = skillOrbs.length - 1; i >= 0; i--) {
+                const orb = skillOrbs[i];
+                const dx = player.x - orb.x, dy = player.y - orb.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < player.width/2 + orb.size) {
+                    skillOrbs.splice(i, 1);
+                    currentSkill = orb.skill;
+                    updateSkillDisplay();
+                    for (let j = 0; j < 10; j++) effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 5, vy: (Math.random() - 0.5) * 5, life: 30, color: orb.skill.color, type: 'particle' });
+                }
+            }
+            
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const enemy = enemies[i];
+                if (enemy.slowed > 0) enemy.slowed--;
+                const speedMult = enemy.slowed > 0 ? 0.3 : 1;
+                const dx = player.x - enemy.x, dy = player.y - enemy.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (enemy.type === 'ranged' || enemy.type === 'sniper') {
+                    const preferredDist = enemy.type === 'sniper' ? 200 : 120;
+                    if (dist > preferredDist) { enemy.x += (dx / dist) * enemy.speed * speedMult; enemy.y += (dy / dist) * enemy.speed * speedMult; }
+                    else if (dist < preferredDist - 30) { enemy.x -= (dx / dist) * enemy.speed * speedMult * 0.5; enemy.y -= (dy / dist) * enemy.speed * speedMult * 0.5; }
+                    if (enemy.currentShootCooldown <= 0) {
+                        enemy.currentShootCooldown = enemy.shootCooldown;
+                        const speed = enemy.type === 'sniper' ? 6 : 4;
+                        projectiles.push({ x: enemy.x, y: enemy.y, vx: (dx / dist) * speed, vy: (dy / dist) * speed, damage: enemy.damage, size: 6, color: enemy.color });
+                    }
+                    enemy.currentShootCooldown--;
+                } else { enemy.x += (dx / dist) * enemy.speed * speedMult; enemy.y += (dy / dist) * enemy.speed * speedMult; }
+                
+                if (dist < player.width/2 + enemy.size/2 && player.invincibleTime <= 0) {
+                    if (enemy.type === 'explode') {
+                        player.hp -= enemy.damage; player.invincibleTime = 60;
+                        for (let j = 0; j < 20; j++) effects.push({ x: enemy.x, y: enemy.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: '#ff0', type: 'particle' });
+                        enemies.splice(i, 1);
+                    } else { player.hp -= enemy.damage; player.invincibleTime = 30; player.x += (dx / dist) * -20; player.y += (dy / dist) * -20; }
+                    effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
+                }
+                if (enemy.hp <= 0) {
+                    enemies.splice(i, 1); score += 20;
+                    for (let j = 0; j < 8; j++) effects.push({ x: enemy.x, y: enemy.y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, life: 25, color: enemy.color, type: 'particle' });
+                }
+            }
+            
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                const proj = projectiles[i];
+                proj.x += proj.vx; proj.y += proj.vy;
+                if (proj.life !== undefined) { proj.life--; if (proj.life <= 0) { projectiles.splice(i, 1); continue; } }
+                if (proj.x < -50 || proj.x > canvas.width + 50 || proj.y < -50 || proj.y > canvas.height + 50) { projectiles.splice(i, 1); continue; }
+                const dx = player.x - proj.x, dy = player.y - proj.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < player.width/2 + proj.size && player.invincibleTime <= 0) {
+                    player.hp -= proj.damage; player.invincibleTime = 30; projectiles.splice(i, 1);
+                    effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
+                }
+            }
+            
+            sprites.forEach(sprite => {
+                sprite.orbitAngle += sprite.orbitSpeed;
+                const orbitDist = 50 + sprites.indexOf(sprite) * 12;
+                const targetX = player.x + Math.cos(sprite.orbitAngle) * orbitDist;
+                const targetY = player.y + Math.sin(sprite.orbitAngle) * orbitDist;
+                sprite.x += (targetX - sprite.x) * 0.1; sprite.y += (targetY - sprite.y) * 0.1;
+                sprite.angle += 0.05;
+                if (sprite.currentCooldown > 0) { sprite.currentCooldown--; return; }
+                
+                let nearestEnemy = null, nearestDist = Infinity;
+                const targets = [...enemies]; if (boss) targets.push(boss);
+                targets.forEach(enemy => { const dx = enemy.x - sprite.x, dy = enemy.y - sprite.y; const dist = Math.sqrt(dx * dx + dy * dy); if (dist < nearestDist) { nearestDist = dist; nearestEnemy = enemy; } });
+                
+                switch (sprite.type) {
+                    case 'shooter':
+                        if (nearestEnemy && nearestDist < sprite.range) {
+                            sprite.currentCooldown = sprite.cooldown;
+                            const dx = nearestEnemy.x - sprite.x, dy = nearestEnemy.y - sprite.y, dist = Math.sqrt(dx * dx + dy * dy);
+                            spriteProjectiles.push({ x: sprite.x, y: sprite.y, vx: (dx / dist) * 6, vy: (dy / dist) * 6, damage: sprite.damage, size: 5 + sprite.level, color: sprite.color });
+                        }
+                        break;
+                    case 'melee':
+                        if (nearestEnemy && nearestDist < sprite.range) {
+                            sprite.currentCooldown = sprite.cooldown; nearestEnemy.hp -= sprite.damage;
+                            effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: sprite.color, angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
+                        }
+                        break;
+                    case 'aoe':
+                        if (nearestEnemy && nearestDist < sprite.range * 1.5) {
+                            sprite.currentCooldown = sprite.cooldown;
+                            targets.forEach(enemy => { const dx = enemy.x - nearestEnemy.x, dy = enemy.y - nearestEnemy.y; if (Math.sqrt(dx * dx + dy * dy) < sprite.range) enemy.hp -= sprite.damage; });
+                            effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 20, type: 'aoe', color: sprite.color, radius: sprite.range });
+                        }
+                        break;
+                    case 'healer':
+                        if (player.hp < player.maxHp) { sprite.currentCooldown = sprite.cooldown; player.hp = Math.min(player.maxHp, player.hp + sprite.healAmount); effects.push({ x: player.x, y: player.y, life: 30, type: 'heal' }); }
+                        break;
+                    case 'chain':
+                        if (nearestEnemy && nearestDist < sprite.range) {
+                            sprite.currentCooldown = sprite.cooldown;
+                            let chainTargets = [nearestEnemy], lastTarget = nearestEnemy;
+                            for (let c = 0; c < 3 + sprite.level; c++) {
+                                let nextTarget = null, nextDist = Infinity;
+                                targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 80 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
+                                if (nextTarget) { chainTargets.push(nextTarget); lastTarget = nextTarget; }
+                            }
+                            chainTargets.forEach((target, idx) => { target.hp -= sprite.damage * (1 - idx * 0.15); if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color }); });
+                            effects.push({ x: sprite.x, y: sprite.y, x2: nearestEnemy.x, y2: nearestEnemy.y, life: 10, type: 'lightning', color: sprite.color });
+                        }
+                        break;
+                    case 'spin':
+                        if (nearestDist < sprite.range * 1.5) {
+                            sprite.currentCooldown = sprite.cooldown;
+                            targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) enemy.hp -= sprite.damage; });
+                            effects.push({ x: sprite.x, y: sprite.y, life: 20, type: 'spin', color: sprite.color, radius: sprite.range });
+                        }
+                        break;
+                    case 'slow':
+                        if (nearestEnemy && nearestDist < sprite.range) {
+                            sprite.currentCooldown = sprite.cooldown;
+                            targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) { enemy.hp -= sprite.damage; if (enemy.slowed !== undefined) enemy.slowed = 180; } });
+                            effects.push({ x: sprite.x, y: sprite.y, life: 20, type: 'aoe', color: '#8ef8', radius: sprite.range });
+                        }
+                        break;
+                    case 'vampire':
+                        if (nearestEnemy && nearestDist < sprite.range) {
+                            sprite.currentCooldown = sprite.cooldown; nearestEnemy.hp -= sprite.damage;
+                            player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.3));
+                            for (let j = 0; j < 5; j++) effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, vx: (player.x - nearestEnemy.x) * 0.05 + (Math.random() - 0.5) * 2, vy: (player.y - nearestEnemy.y) * 0.05 + (Math.random() - 0.5) * 2, life: 25, color: '#d4a', type: 'particle' });
+                            effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: '#d4a', angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
+                        }
+                        break;
+                    case 'explode':
+                        if (nearestEnemy && nearestDist < sprite.range) {
+                            sprite.currentCooldown = sprite.cooldown;
+                            const dx = nearestEnemy.x - sprite.x, dy = nearestEnemy.y - sprite.y, dist = Math.sqrt(dx * dx + dy * dy);
+                            spriteProjectiles.push({ x: sprite.x, y: sprite.y, vx: (dx / dist) * 5, vy: (dy / dist) * 5, damage: sprite.damage, size: 8 + sprite.level, color: sprite.color, explosive: true, explosionRadius: 60 + sprite.level * 10 });
+                        }
+                        break;
+                }
+            });
+            
+            for (let i = spriteProjectiles.length - 1; i >= 0; i--) {
+                const proj = spriteProjectiles[i];
+                proj.x += proj.vx; proj.y += proj.vy;
+                if (proj.x < -50 || proj.x > canvas.width + 50 || proj.y < -50 || proj.y > canvas.height + 50) { spriteProjectiles.splice(i, 1); continue; }
+                const targets = [...enemies]; if (boss) targets.push(boss);
+                for (let j = targets.length - 1; j >= 0; j--) {
+                    const enemy = targets[j];
+                    const dx = enemy.x - proj.x, dy = enemy.y - proj.y, dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < (enemy.size || boss?.size || 14)/2 + proj.size) {
+                        if (proj.explosive) {
+                            targets.forEach(e => { const edist = Math.sqrt((e.x - proj.x) ** 2 + (e.y - proj.y) ** 2); if (edist < proj.explosionRadius) e.hp -= proj.damage * (1 - edist / proj.explosionRadius * 0.5); });
+                            effects.push({ x: proj.x, y: proj.y, life: 25, type: 'aoe', color: '#fa0', radius: proj.explosionRadius });
+                            for (let k = 0; k < 15; k++) effects.push({ x: proj.x, y: proj.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: Math.random() > 0.5 ? '#fa0' : '#ff0', type: 'particle' });
+                        } else { enemy.hp -= proj.damage; effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: proj.color }); }
+                        spriteProjectiles.splice(i, 1); break;
+                    }
+                }
+            }
+            
+            for (let i = effects.length - 1; i >= 0; i--) {
+                const effect = effects[i]; effect.life--;
+                if (effect.vx !== undefined) { effect.x += effect.vx; effect.y += effect.vy; effect.vy += 0.1; }
+                if (effect.life <= 0) effects.splice(i, 1);
+            }
+            
+            if (boss) {
+                bossAttack();
+                if (boss.hp <= 0) {
+                    score += 1000;
+                    for (let i = 0; i < 50; i++) effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 60, color: boss.color, type: 'particle' });
+                    if (wave >= 20) { gameRunning = false; document.getElementById('victory').style.display = 'flex'; document.getElementById('victoryScore').textContent = score; }
+                    else { boss = null; bossActive = false; wave++; waveTimer = 0; document.getElementById('bossHealth').style.display = 'none'; }
+                }
+            }
+            
+            if (player.hp <= 0) { gameRunning = false; document.getElementById('gameOver').style.display = 'flex'; document.getElementById('finalScore').textContent = score; document.getElementById('finalWave').textContent = wave; }
+            updateUI();
+        }
+        
+        function drawPixelChar(x, y, size, color, outline = '#000') {
+            const s = size / 4;
+            ctx.fillStyle = outline; ctx.fillRect(Math.floor(x - size/2 - 1), Math.floor(y - size/2 - 1), size + 2, size + 2);
+            ctx.fillStyle = color; ctx.fillRect(Math.floor(x - size/2), Math.floor(y - size/2), size, size);
+            ctx.fillStyle = '#fff'; ctx.fillRect(Math.floor(x - s), Math.floor(y - s), s, s); ctx.fillRect(Math.floor(x + s/2), Math.floor(y - s), s, s);
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a1a2e'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#1e1e36';
+            for (let x = 0; x < canvas.width; x += 40) for (let y = 0; y < canvas.height; y += 40) if ((x + y) % 80 === 0) ctx.fillRect(x, y, 40, 40);
+            
+            orbs.forEach(orb => {
+                const pulse = Math.sin(orb.pulse) * 2;
+                ctx.fillStyle = '#fff8'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse + 4, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse, 0, Math.PI * 2); ctx.fill();
+            });
+            
+            skillOrbs.forEach(orb => {
+                const pulse = Math.sin(orb.pulse) * 3;
+                ctx.fillStyle = orb.skill.color + '44'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse + 10, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = orb.skill.color + '88'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse + 5, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = orb.skill.color; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(orb.x, orb.y, 4, 0, Math.PI * 2); ctx.fill();
+            });
+            
+            enemies.forEach(enemy => {
+                if (enemy.slowed > 0) { ctx.fillStyle = '#8ef4'; ctx.beginPath(); ctx.arc(enemy.x, enemy.y, enemy.size + 5, 0, Math.PI * 2); ctx.fill(); }
+                drawPixelChar(enemy.x, enemy.y, enemy.size, enemy.color);
+                if (enemy.hp < enemy.maxHp) { const barWidth = enemy.size * 1.5; ctx.fillStyle = '#000'; ctx.fillRect(enemy.x - barWidth/2, enemy.y - enemy.size - 6, barWidth, 4); ctx.fillStyle = '#f44'; ctx.fillRect(enemy.x - barWidth/2, enemy.y - enemy.size - 6, barWidth * (enemy.hp / enemy.maxHp), 4); }
+            });
+            
+            if (boss) {
+                ctx.fillStyle = boss.color + '44'; ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20 + Math.sin(boss.phase) * 5, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/2 - 2, boss.y - boss.size/2 - 2, boss.size + 4, boss.size + 4);
+                ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2, boss.size, boss.size);
+                const eyeSize = boss.size / 6;
+                ctx.fillStyle = '#fff'; ctx.fillRect(boss.x - boss.size/4, boss.y - boss.size/6, eyeSize, eyeSize); ctx.fillRect(boss.x + boss.size/8, boss.y - boss.size/6, eyeSize, eyeSize);
+                ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/4 + 2, boss.y - boss.size/6 + 2, eyeSize/2, eyeSize/2); ctx.fillRect(boss.x + boss.size/8 + 2, boss.y - boss.size/6 + 2, eyeSize/2, eyeSize/2);
+                ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x + boss.size/2 - 8, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x - 4, boss.y - boss.size/2 - 15, 8, 15);
+            }
+            
+            sprites.forEach(sprite => {
+                ctx.fillStyle = sprite.color + '44'; ctx.beginPath(); ctx.arc(sprite.x, sprite.y, sprite.size + 6, 0, Math.PI * 2); ctx.fill();
+                ctx.save(); ctx.translate(sprite.x, sprite.y); ctx.rotate(sprite.angle);
+                ctx.fillStyle = '#000'; ctx.fillRect(-sprite.size/2 - 1, -sprite.size/2 - 1, sprite.size + 2, sprite.size + 2);
+                ctx.fillStyle = sprite.color; ctx.fillRect(-sprite.size/2, -sprite.size/2, sprite.size, sprite.size);
+                ctx.restore();
+                if (sprite.level > 1) { ctx.fillStyle = '#ff0'; ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.fillText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); }
+            });
+            
+            if (player.invincibleTime === 0 || Math.floor(player.invincibleTime / 4) % 2 === 0) {
+                ctx.fillStyle = player.color + '44'; ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
+                drawPixelChar(player.x, player.y, player.width, player.color);
+            }
+            
+            projectiles.forEach(proj => { ctx.fillStyle = proj.color; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.size, 0, Math.PI * 2); ctx.fill(); });
+            spriteProjectiles.forEach(proj => { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.size + 1, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = proj.color; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.size, 0, Math.PI * 2); ctx.fill(); });
+            
+            effects.forEach(effect => {
+                const alpha = effect.life / 30;
+                switch (effect.type) {
+                    case 'particle': ctx.fillStyle = effect.color; ctx.globalAlpha = alpha; ctx.fillRect(effect.x - 3, effect.y - 3, 6, 6); ctx.globalAlpha = 1; break;
+                    case 'hit': ctx.strokeStyle = effect.color || '#fff'; ctx.lineWidth = 2; ctx.globalAlpha = alpha; ctx.beginPath(); ctx.arc(effect.x, effect.y, 20 - effect.life, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; break;
+                    case 'slash': ctx.strokeStyle = effect.color; ctx.lineWidth = 4; ctx.globalAlpha = alpha; ctx.beginPath(); ctx.arc(effect.x, effect.y, 30, effect.angle - 0.5, effect.angle + 0.5); ctx.stroke(); ctx.globalAlpha = 1; break;
+                    case 'aoe': ctx.strokeStyle = effect.color; ctx.lineWidth = 3; ctx.globalAlpha = alpha * 0.5; ctx.beginPath(); ctx.arc(effect.x, effect.y, effect.radius * (1 - alpha * 0.3), 0, Math.PI * 2); ctx.stroke(); ctx.fillStyle = effect.color; ctx.globalAlpha = alpha * 0.2; ctx.fill(); ctx.globalAlpha = 1; break;
+                    case 'heal': ctx.fillStyle = '#5f5'; ctx.globalAlpha = alpha; ctx.font = '16px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.fillText('+', effect.x, effect.y - 20 + effect.life); ctx.globalAlpha = 1; break;
+                    case 'lightning': ctx.strokeStyle = effect.color; ctx.lineWidth = 3; ctx.globalAlpha = alpha; ctx.beginPath(); ctx.moveTo(effect.x, effect.y); const dx = effect.x2 - effect.x, dy = effect.y2 - effect.y; for (let i = 1; i <= 5; i++) { const t = i / 5; const jitter = i < 5 ? (Math.random() - 0.5) * 20 : 0; ctx.lineTo(effect.x + dx * t + jitter, effect.y + dy * t + jitter); } ctx.stroke(); ctx.globalAlpha = 1; break;
+                    case 'spin': ctx.strokeStyle = effect.color; ctx.lineWidth = 4; ctx.globalAlpha = alpha; ctx.beginPath(); ctx.arc(effect.x, effect.y, effect.radius, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; break;
+                    case 'laser_warning': ctx.strokeStyle = effect.color; ctx.lineWidth = 10; ctx.globalAlpha = Math.sin(effect.life * 0.5) * 0.5; ctx.beginPath(); ctx.moveTo(effect.x, effect.y); ctx.lineTo(effect.targetX, effect.targetY); ctx.stroke(); ctx.globalAlpha = 1; break;
+                    case 'screenFlash': ctx.fillStyle = effect.color; ctx.globalAlpha = alpha * 0.3; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.globalAlpha = 1; break;
+                }
+            });
+        }
+        
+        function updateUI() {
+            document.getElementById('healthFill').style.width = (player.hp / player.maxHp * 100) + '%';
+            document.getElementById('pointsDisplay').textContent = points;
+            document.getElementById('pointsFill').style.width = Math.min(100, (points / POINTS_FOR_SPRITE * 100)) + '%';
+            document.getElementById('spriteCount').textContent = sprites.length;
+            document.getElementById('waveNumber').textContent = wave;
+            document.getElementById('waveTimer').textContent = bossActive ? t('bossBattle') : `${t('nextWave')}: ${Math.ceil(WAVE_DURATION - waveTimer)}s`;
+            if (boss) document.getElementById('bossHealthFill').style.width = (boss.hp / boss.maxHp * 100) + '%';
+            updateSpriteButtons();
+        }
+        
+        function gameLoop() { if (gameStarted) { update(); draw(); } requestAnimationFrame(gameLoop); }
+        
+        function startGame() { document.getElementById('startScreen').style.display = 'none'; gameStarted = true; gameRunning = true; for (let i = 0; i < 8; i++) spawnOrb(); }
+        
+        function restartGame() {
+            player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0;
+            enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
+            currentSkill = null; updateSkillDisplay();
+            score = 0; points = 0; wave = 1; waveTimer = 0; bossActive = false; boss = null;
+            gameRunning = true;
+            document.getElementById('gameOver').style.display = 'none'; document.getElementById('victory').style.display = 'none'; document.getElementById('bossHealth').style.display = 'none';
+            for (let i = 0; i < 8; i++) spawnOrb();
+            updateUI();
+        }
+        
+        document.addEventListener('keydown', e => {
+            keys[e.key] = true;
+            if (!gameStarted || !gameRunning) return;
+            if (e.key >= '1' && e.key <= '9') { const index = parseInt(e.key) - 1; if (index < spriteTypes.length) summonSprite(index); }
+            else if (e.key === '0') { if (spriteTypes.length >= 10) summonSprite(9); }
+            if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); useSkill(); }
+        });
+        document.addEventListener('keyup', e => { keys[e.key] = false; });
+        
+        initSpriteButtons();
+        updateUI();
+        gameLoop();
+    </script>
+</body>
+</html>
