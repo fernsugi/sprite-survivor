@@ -64,6 +64,18 @@ js/
 - Chaser, Shooter, Tank, Speedy, Bomber, Sniper
 - Each has different speed, HP, damage, and behavior
 
+### Skills (in config.js)
+| Skill | Rarity | Effect |
+|-------|--------|--------|
+| Dash | Common (0.5) | Teleport in movement direction, brief invincibility |
+| Screen Blast | Common (0.4) | Damage all enemies on screen |
+| Full Heal | Rare (0.1) | Restore HP to max |
+| Orb Magnet | Rare (0.1) | Instantly collect all orbs and skill orbs on map |
+
+### Timer
+- `gameTime` tracks total play time in seconds
+- Displayed on game over and victory screens in `M:SS` format
+
 ## Key Global Variables (in state.js)
 - `player` - position, hp, invincibility frames
 - `sprites[]` - active player sprites
@@ -72,6 +84,7 @@ js/
 - `spriteProjectiles[]` - player sprite projectiles
 - `effects[]` - visual particles and indicators
 - `boss` - current boss object (null if no boss)
+- `gameTime` - elapsed time in seconds
 
 ## Design Patterns
 - All entities in arrays, removed with `splice()` when dead/expired

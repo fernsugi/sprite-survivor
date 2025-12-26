@@ -57,6 +57,25 @@ function useSkill() {
                 effects.push({ x: canvas.width / 2, y: canvas.height / 2, vx: (Math.random() - 0.5) * 20, vy: (Math.random() - 0.5) * 20, life: 40, color: Math.random() > 0.5 ? '#f55' : '#fa0', type: 'particle' });
             }
             break;
+        case 'skillMagnet':
+            // Collect all orbs instantly
+            const collectedOrbs = orbs.length;
+            orbs.forEach(orb => {
+                points++; score += 10;
+                for (let j = 0; j < 3; j++) {
+                    effects.push({ x: orb.x, y: orb.y, vx: (player.x - orb.x) * 0.1 + (Math.random() - 0.5) * 2, vy: (player.y - orb.y) * 0.1 + (Math.random() - 0.5) * 2, life: 25, color: '#ff0', type: 'particle' });
+                }
+            });
+            orbs.length = 0;
+            // Also collect skill orbs
+            skillOrbs.forEach(orb => {
+                for (let j = 0; j < 5; j++) {
+                    effects.push({ x: orb.x, y: orb.y, vx: (player.x - orb.x) * 0.1 + (Math.random() - 0.5) * 3, vy: (player.y - orb.y) * 0.1 + (Math.random() - 0.5) * 3, life: 30, color: orb.skill.color, type: 'particle' });
+                }
+            });
+            skillOrbs.length = 0;
+            effects.push({ x: player.x, y: player.y, life: 30, type: 'aoe', color: '#ff0', radius: 300 });
+            break;
     }
     currentSkill = null;
     updateSkillDisplay();

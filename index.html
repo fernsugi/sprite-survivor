@@ -51,6 +51,10 @@
                 <div id="waveTimer" style="font-size: 8px; margin-top: 4px;"></div>
             </div>
 
+            <div id="gameTimerDisplay">
+                <span id="gameTimer">0:00</span>
+            </div>
+
             <div id="bossHealth">
                 <div class="boss-name" id="bossName">BOSS</div>
                 <div class="health-bar">
@@ -62,6 +66,7 @@
                 <h1 data-i18n="gameOver">GAME OVER</h1>
                 <p><span data-i18n="finalScore">Final Score</span>: <span id="finalScore">0</span></p>
                 <p><span data-i18n="waveReached">Wave Reached</span>: <span id="finalWave">1</span></p>
+                <p><span data-i18n="time">Time</span>: <span id="finalTime">0:00</span></p>
                 <button class="restart-btn" onclick="restartGame()" data-i18n="restart">RESTART</button>
             </div>
 
@@ -69,6 +74,7 @@
                 <h1 data-i18n="victory">VICTORY!</h1>
                 <p data-i18n="victoryMsg">You defeated the final boss!</p>
                 <p><span data-i18n="finalScore">Final Score</span>: <span id="victoryScore">0</span></p>
+                <p><span data-i18n="time">Time</span>: <span id="victoryTime">0:00</span></p>
                 <button class="restart-btn" onclick="restartGame()" data-i18n="playAgain">PLAY AGAIN</button>
             </div>
         </div>

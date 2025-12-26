@@ -148,7 +148,7 @@ function updateBoss() {
         if (boss.hp <= 0) {
             score += 1000;
             for (let i = 0; i < 50; i++) effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 60, color: boss.color, type: 'particle' });
-            if (wave >= 20) { gameRunning = false; document.getElementById('victory').style.display = 'flex'; document.getElementById('victoryScore').textContent = score; }
+            if (wave >= 20) { gameRunning = false; document.getElementById('victory').style.display = 'flex'; document.getElementById('victoryScore').textContent = score; document.getElementById('victoryTime').textContent = formatTime(gameTime); }
             else { boss = null; bossActive = false; wave++; waveTimer = 0; document.getElementById('bossHealth').style.display = 'none'; }
         }
     }

@@ -9,6 +9,7 @@ let score = 0;
 let points = 0;
 let wave = 1;
 let waveTimer = 0;
+let gameTime = 0;
 let bossActive = false;
 let boss = null;
 

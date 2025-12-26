@@ -60,8 +60,17 @@ function updatePlayer() {
     if (player.invincibleTime > 0) player.invincibleTime--;
 }
 
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
 function update() {
     if (!gameRunning) return;
+
+    // Game timer
+    gameTime += 1/60;
 
     // Wave timer
     waveTimer += 1/60;
@@ -94,6 +103,7 @@ function update() {
         document.getElementById('gameOver').style.display = 'flex';
         document.getElementById('finalScore').textContent = score;
         document.getElementById('finalWave').textContent = wave;
+        document.getElementById('finalTime').textContent = formatTime(gameTime);
     }
 
     updateUI();
@@ -115,7 +125,7 @@ function restartGame() {
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
-    score = 0; points = 0; wave = 1; waveTimer = 0; bossActive = false; boss = null;
+    score = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     gameRunning = true;
     document.getElementById('gameOver').style.display = 'none';
     document.getElementById('victory').style.display = 'none';

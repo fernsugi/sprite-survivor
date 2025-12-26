@@ -7,7 +7,8 @@ const POINTS_FOR_SPRITE = 10;
 const skillTypes = [
     { name: 'skillDash', color: '#5ff', rarity: 0.5 },
     { name: 'skillHeal', color: '#5f5', rarity: 0.1 },
-    { name: 'skillNuke', color: '#f55', rarity: 0.4 }
+    { name: 'skillNuke', color: '#f55', rarity: 0.4 },
+    { name: 'skillMagnet', color: '#ff0', rarity: 0.05 }
 ];
 
 // Sprite Types

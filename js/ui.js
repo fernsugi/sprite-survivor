@@ -7,6 +7,7 @@ function updateUI() {
     document.getElementById('spriteCount').textContent = sprites.length;
     document.getElementById('waveNumber').textContent = wave;
     document.getElementById('waveTimer').textContent = bossActive ? t('bossBattle') : `${t('nextWave')}: ${Math.ceil(WAVE_DURATION - waveTimer)}s`;
+    document.getElementById('gameTimer').textContent = formatTime(gameTime);
     if (boss) document.getElementById('bossHealthFill').style.width = (boss.hp / boss.maxHp * 100) + '%';
     updateSpriteButtons();
 }
