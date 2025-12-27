@@ -566,6 +566,69 @@ const translations = {
         resume: "REPRENDRE",
         instructPause: "- Pause",
         cheatMode: "MODE TRICHE"
+    },
+    vi: {
+        spriteFontSize: "7px",
+        costFontSize: "8px",
+        descFontSize: "7px",
+        title: "SPRITE SURVIVOR",
+        subtitle: "Triệu hồi linh hồn, sống sót qua bầy quái",
+        startGame: "BẮT ĐẦU",
+        instructMove: "- Di chuyển",
+        instructSummon: "- Triệu hồi sprite",
+        instructSkill: "- Dùng kỹ năng (khi có)",
+        instructTip: "Thu thập cầu, triệu hồi sprite, sinh tồn!",
+        hp: "HP",
+        points: "ĐIỂM",
+        sprites: "SPRITE",
+        skill: "KỸ NĂNG",
+        pressSpace: "[SPACE]",
+        summonSprites: "TRIỆU HỒI SPRITE",
+        wave: "ĐỢT",
+        nextWave: "Đợt tiếp theo",
+        bossBattle: "ĐÁNH BOSS!",
+        gameOver: "KẾT THÚC",
+        finalScore: "Điểm cuối",
+        waveReached: "Đợt đạt được",
+        restart: "CHƠI LẠI",
+        victory: "CHIẾN THẮNG!",
+        victoryMsg: "Bạn đã đánh bại boss cuối!",
+        playAgain: "CHƠI LẠI",
+        language: "NGÔN NGỮ",
+        skillDash: "LƯỚT",
+        skillHeal: "HỒI ĐẦY",
+        skillNuke: "NỔ MÀN HÌNH",
+        skillMagnet: "HÚT CẦU",
+        time: "Thời gian",
+        archer: "Cung thủ",
+        knight: "Hiệp sĩ",
+        mage: "Pháp sư",
+        cleric: "Thầy tu",
+        ninja: "Ninja",
+        wizard: "Phù thủy",
+        berserker: "Cuồng chiến",
+        frost: "Băng giá",
+        vampire: "Ma cà rồng",
+        bomber: "Ném bom",
+        descArcher: "Bắn tên",
+        descKnight: "Chém kiếm",
+        descMage: "Phép vùng",
+        descCleric: "Hồi máu",
+        descNinja: "Đánh nhanh",
+        descWizard: "Sét đánh",
+        descBerserker: "Xoay tấn công",
+        descFrost: "Làm chậm địch",
+        descVampire: "Hút máu",
+        descBomber: "Đạn nổ",
+        boss1: "Chúa Quỷ",
+        boss2: "Vua Bóng Tối",
+        boss3: "Hoàng Đế Hư Vô",
+        boss4: "Thần Chết",
+        paused: "TẠM DỪNG",
+        pauseHint: "Nhấn ESC để tiếp tục",
+        resume: "TIẾP TỤC",
+        instructPause: "- Tạm dừng",
+        cheatMode: "CHẾ ĐỘ ĂN GIAN"
     }
 };
 
@@ -577,7 +640,7 @@ function setLanguage(lang) {
 
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
-        const langMap = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文', 'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский', 'fr': 'Français' };
+        const langMap = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文', 'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский', 'fr': 'Français', 'vi': 'Tiếng Việt' };
         if (btn.textContent.includes(langMap[lang])) {
             btn.classList.add('active');
         }
