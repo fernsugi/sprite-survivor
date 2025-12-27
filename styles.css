@@ -95,6 +95,7 @@ body.lang-vi .sprite-btn .desc {
     margin-bottom: 10px;
     font-size: 8px !important;
     color: #aaa;
+    font-family: 'Press Start 2P', cursive !important;
 }
 
 .lang-btn {
@@ -467,6 +468,17 @@ body.lang-vi .sprite-btn .desc {
     background: linear-gradient(180deg, #666, #444);
     border-color: #999;
     transform: scale(1.05);
+}
+
+.menu-btn {
+    margin-top: 15px;
+    background: linear-gradient(180deg, #433, #322);
+    border-color: #644;
+}
+
+.menu-btn:hover {
+    background: linear-gradient(180deg, #544, #433);
+    border-color: #866;
 }
 
 #controls {

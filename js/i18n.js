@@ -61,7 +61,8 @@ const translations = {
         pauseHint: "Press ESC to resume",
         resume: "RESUME",
         instructPause: "- Pause",
-        cheatMode: "CHEAT MODE"
+        cheatMode: "CHEAT MODE",
+        mainMenu: "MAIN MENU"
     },
     ja: {
         spriteFontSize: "9px",
@@ -124,7 +125,8 @@ const translations = {
         pauseHint: "ESCで再開",
         resume: "再開",
         instructPause: "- 一時停止",
-        cheatMode: "チートモード"
+        cheatMode: "チートモード",
+        mainMenu: "メインメニュー"
     },
     ko: {
         spriteFontSize: "8px",
@@ -187,7 +189,8 @@ const translations = {
         pauseHint: "ESC로 재개",
         resume: "재개",
         instructPause: "- 일시정지",
-        cheatMode: "치트 모드"
+        cheatMode: "치트 모드",
+        mainMenu: "메인 메뉴"
     },
     "zh-TW": {
         spriteFontSize: "9px",
@@ -250,7 +253,8 @@ const translations = {
         pauseHint: "按ESC繼續",
         resume: "繼續",
         instructPause: "- 暫停",
-        cheatMode: "作弊模式"
+        cheatMode: "作弊模式",
+        mainMenu: "主選單"
     },
     "zh-CN": {
         spriteFontSize: "9px",
@@ -313,7 +317,8 @@ const translations = {
         pauseHint: "按ESC继续",
         resume: "继续",
         instructPause: "- 暂停",
-        cheatMode: "作弊模式"
+        cheatMode: "作弊模式",
+        mainMenu: "主菜单"
     },
     es: {
         spriteFontSize: "7px",
@@ -376,7 +381,8 @@ const translations = {
         pauseHint: "Presiona ESC para continuar",
         resume: "CONTINUAR",
         instructPause: "- Pausar",
-        cheatMode: "MODO TRAMPA"
+        cheatMode: "MODO TRAMPA",
+        mainMenu: "MENU PRINCIPAL"
     },
     pt: {
         spriteFontSize: "6px",
@@ -439,7 +445,8 @@ const translations = {
         pauseHint: "Pressione ESC para continuar",
         resume: "CONTINUAR",
         instructPause: "- Pausar",
-        cheatMode: "MODO TRAPAÇA"
+        cheatMode: "MODO TRAPAÇA",
+        mainMenu: "MENU PRINCIPAL"
     },
     ru: {
         spriteFontSize: "7px",
@@ -502,7 +509,8 @@ const translations = {
         pauseHint: "Нажмите ESC для продолжения",
         resume: "ПРОДОЛЖИТЬ",
         instructPause: "- Пауза",
-        cheatMode: "ЧИТ-РЕЖИМ"
+        cheatMode: "ЧИТ-РЕЖИМ",
+        mainMenu: "ГЛАВНОЕ МЕНЮ"
     },
     fr: {
         spriteFontSize: "7px",
@@ -565,7 +573,8 @@ const translations = {
         pauseHint: "Appuyez sur ESC pour reprendre",
         resume: "REPRENDRE",
         instructPause: "- Pause",
-        cheatMode: "MODE TRICHE"
+        cheatMode: "MODE TRICHE",
+        mainMenu: "MENU PRINCIPAL"
     },
     vi: {
         spriteFontSize: "10px",
@@ -594,7 +603,7 @@ const translations = {
         victory: "CHIẾN THẮNG!",
         victoryMsg: "Bạn đã đánh bại boss cuối!",
         playAgain: "CHƠI LẠI",
-        language: "NGÔN NGỮ",
+        language: "T.Noi",
         skillDash: "LƯỚT",
         skillHeal: "HỒI ĐẦY",
         skillNuke: "NỔ MÀN HÌNH",
@@ -628,7 +637,8 @@ const translations = {
         pauseHint: "Nhấn ESC để tiếp tục",
         resume: "TIẾP TỤC",
         instructPause: "- Tạm dừng",
-        cheatMode: "CHẾ ĐỘ ĂN GIAN"
+        cheatMode: "CHẾ ĐỘ ĂN GIAN",
+        mainMenu: "MENU CHÍNH"
     }
 };
 

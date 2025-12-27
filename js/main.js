@@ -181,6 +181,23 @@ function restartGame() {
     SFX.waveStart();
 }
 
+function goToMainMenu() {
+    player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0;
+    enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
+    currentSkill = null; updateSkillDisplay();
+    score = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    gameStarted = false;
+    gameRunning = false;
+    gamePaused = false;
+    cheatMode = false;
+    document.getElementById('gameOver').style.display = 'none';
+    document.getElementById('victory').style.display = 'none';
+    document.getElementById('bossHealth').style.display = 'none';
+    document.getElementById('pauseScreen').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'flex';
+    updateUI();
+}
+
 // Event Listeners
 const altSummonKeys = { 'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, ',': 7, '.': 8, '/': 9 };
 document.addEventListener('keydown', e => {
