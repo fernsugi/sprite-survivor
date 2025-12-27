@@ -20,7 +20,7 @@ index.html      - HTML structure only
 styles.css      - All CSS styling
 js/
 ├── config.js   - Game constants, sprite/enemy/skill type definitions
-├── i18n.js     - 5 languages (en/ja/ko/zh-TW/zh-CN), setLanguage(), t()
+├── i18n.js     - 9 languages (en/ja/ko/zh-TW/zh-CN/es/pt/ru/fr), setLanguage(), t()
 ├── state.js    - Canvas, player object, entity arrays (enemies, sprites, etc.)
 ├── ui.js       - DOM UI updates (health bars, wave info, sprite buttons)
 ├── skills.js   - Skill orbs spawning and skill activation (Dash/Heal/Nuke)
