@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+    <!-- Main page with all language alternates -->
+    <url>
+        <loc>https://spritesurvivor.com/</loc>
+        <lastmod>2024-12-27</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+
+        <!-- Language alternates for international SEO -->
+        <xhtml:link rel="alternate" hreflang="en" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="zh-TW" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="zh-CN" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://spritesurvivor.com/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://spritesurvivor.com/"/>
+    </url>
+
+</urlset>

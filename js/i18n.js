@@ -190,9 +190,9 @@ const translations = {
         cheatMode: "치트 모드"
     },
     "zh-TW": {
-        spriteFontSize: "8px",
+        spriteFontSize: "9px",
         costFontSize: "8px",
-        descFontSize: "8px",
+        descFontSize: "9px",
         title: "精靈生存者",
         subtitle: "召喚精靈，在群敵中生存",
         startGame: "開始遊戲",
@@ -253,9 +253,9 @@ const translations = {
         cheatMode: "作弊模式"
     },
     "zh-CN": {
-        spriteFontSize: "8px",
+        spriteFontSize: "9px",
         costFontSize: "8px",
-        descFontSize: "8px",
+        descFontSize: "9px",
         title: "精灵生存者",
         subtitle: "召唤精灵，在群敌中生存",
         startGame: "开始游戏",
