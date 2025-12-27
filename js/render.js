@@ -222,13 +222,13 @@ function draw() {
     if (boss) {
         // Subtle animated aura - pulsing ring + soft glow with white
         const bossPulse = Math.sin(boss.phase) * 5;
-        ctx.globalAlpha = 0.25;
+        ctx.globalAlpha = 0.12;
         ctx.fillStyle = '#fff';
         ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.1;
+        ctx.globalAlpha = 0.05;
         ctx.fillStyle = boss.color;
         ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.2 + Math.sin(boss.phase * 2) * 0.05;
+        ctx.globalAlpha = 0.1 + Math.sin(boss.phase * 2) * 0.03;
         ctx.strokeStyle = boss.color;
         ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20 + bossPulse, 0, Math.PI * 2); ctx.stroke();
@@ -246,13 +246,13 @@ function draw() {
         const s = sprite.size;
         // Subtle animated aura - pulsing ring + soft glow with white
         const pulse = Math.sin(sprite.angle * 2) * 2;
-        ctx.globalAlpha = 0.12;
+        ctx.globalAlpha = 0.06;
         ctx.fillStyle = '#fff';
         ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.08;
+        ctx.globalAlpha = 0.04;
         ctx.fillStyle = sprite.color;
         ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.15 + Math.sin(sprite.angle * 3) * 0.05;
+        ctx.globalAlpha = 0.08 + Math.sin(sprite.angle * 3) * 0.03;
         ctx.strokeStyle = sprite.color;
         ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6 + pulse, 0, Math.PI * 2); ctx.stroke();
