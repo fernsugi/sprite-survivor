@@ -13,16 +13,16 @@ const skillTypes = [
 
 // Sprite Types
 const spriteTypes = [
-    { nameKey: 'archer', cost: 10, color: '#5f5', descKey: 'descArcher', type: 'shooter', damage: 8, range: 200, cooldown: 60 },
-    { nameKey: 'knight', cost: 15, color: '#f55', descKey: 'descKnight', type: 'melee', damage: 15, range: 40, cooldown: 45 },
-    { nameKey: 'mage', cost: 20, color: '#a5f', descKey: 'descMage', type: 'aoe', damage: 12, range: 80, cooldown: 90 },
+    { nameKey: 'archer', cost: 10, color: '#5f5', descKey: 'descArcher', type: 'shooter', damage: 8, range: 250, cooldown: 60 },
+    { nameKey: 'knight', cost: 15, color: '#f55', descKey: 'descKnight', type: 'melee', damage: 15, range: 40, cooldown: 45, blocksProjectiles: true },
+    { nameKey: 'mage', cost: 20, color: '#a5f', descKey: 'descMage', type: 'aoe', damage: 12, range: 80, cooldown: 75 },
     { nameKey: 'cleric', cost: 25, color: '#ff5', descKey: 'descCleric', type: 'healer', healAmount: 5, cooldown: 120 },
     { nameKey: 'ninja', cost: 15, color: '#555', descKey: 'descNinja', type: 'shooter', damage: 5, range: 150, cooldown: 20 },
-    { nameKey: 'wizard', cost: 30, color: '#5ff', descKey: 'descWizard', type: 'chain', damage: 10, range: 120, cooldown: 80 },
-    { nameKey: 'berserker', cost: 20, color: '#f80', descKey: 'descBerserker', type: 'spin', damage: 20, range: 50, cooldown: 100 },
+    { nameKey: 'wizard', cost: 25, color: '#5ff', descKey: 'descWizard', type: 'chain', damage: 10, range: 120, cooldown: 80 },
+    { nameKey: 'berserker', cost: 20, color: '#f80', descKey: 'descBerserker', type: 'spin', damage: 20, range: 50, cooldown: 75, reflectsProjectiles: true },
     { nameKey: 'frost', cost: 25, color: '#8ef', descKey: 'descFrost', type: 'slow', damage: 5, range: 100, cooldown: 70 },
     { nameKey: 'vampire', cost: 30, color: '#d4a', descKey: 'descVampire', type: 'vampire', damage: 12, range: 60, cooldown: 50 },
-    { nameKey: 'bomber', cost: 35, color: '#fa0', descKey: 'descBomber', type: 'explode', damage: 25, range: 180, cooldown: 120 }
+    { nameKey: 'bomber', cost: 30, color: '#fa0', descKey: 'descBomber', type: 'explode', damage: 25, range: 180, cooldown: 90 }
 ];
 
 // Enemy Types

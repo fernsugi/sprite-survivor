@@ -133,9 +133,56 @@ function updateProjectiles() {
         proj.x += proj.vx; proj.y += proj.vy;
         if (proj.life !== undefined) { proj.life--; if (proj.life <= 0) { projectiles.splice(i, 1); continue; } }
         if (proj.x < -50 || proj.x > canvas.width + 50 || proj.y < -50 || proj.y > canvas.height + 50) { projectiles.splice(i, 1); continue; }
+
+        // Check for Knight blocking or Berserker reflecting
+        let blocked = false;
+        for (const sprite of sprites) {
+            const sdx = sprite.x - proj.x, sdy = sprite.y - proj.y;
+            const sdist = Math.sqrt(sdx * sdx + sdy * sdy);
+            const blockRadius = sprite.size + 10;
+
+            if (sdist < blockRadius) {
+                if (sprite.blocksProjectiles) {
+                    // Knight blocks: destroy projectile
+                    projectiles.splice(i, 1);
+                    effects.push({ x: proj.x, y: proj.y, life: 15, type: 'hit', color: '#f55' });
+                    for (let j = 0; j < 5; j++) effects.push({ x: proj.x, y: proj.y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, life: 15, color: '#f55', type: 'particle' });
+                    blocked = true;
+                    break;
+                } else if (sprite.reflectsProjectiles) {
+                    // Berserker reflects: reverse direction and make it damage enemies
+                    proj.vx *= -1.5;
+                    proj.vy *= -1.5;
+                    proj.reflected = true;
+                    proj.color = '#f80';
+                    effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: '#f80' });
+                    break;
+                }
+            }
+        }
+        if (blocked) continue;
+
+        // Reflected projectiles damage enemies instead of player
+        if (proj.reflected) {
+            const targets = [...enemies]; if (boss) targets.push(boss);
+            for (let j = targets.length - 1; j >= 0; j--) {
+                const enemy = targets[j];
+                const edx = enemy.x - proj.x, edy = enemy.y - proj.y;
+                const edist = Math.sqrt(edx * edx + edy * edy);
+                if (edist < (enemy.size || 14)/2 + proj.size) {
+                    enemy.hp -= proj.damage;
+                    effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: '#f80' });
+                    projectiles.splice(i, 1);
+                    blocked = true;
+                    break;
+                }
+            }
+            if (blocked) continue;
+        }
+
         const dx = player.x - proj.x, dy = player.y - proj.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < player.width/2 + proj.size && player.invincibleTime <= 0) {
+        if (dist < player.width/2 + proj.size && player.invincibleTime <= 0 && !proj.reflected) {
             player.hp -= proj.damage; player.invincibleTime = 30; projectiles.splice(i, 1);
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
         }

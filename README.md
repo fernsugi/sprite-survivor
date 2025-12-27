@@ -10,10 +10,9 @@ A comprehensive guide to team compositions, strategies, and tips for clearing th
 2. [Tier List](#tier-list)
 3. [S-Tier Compositions](#s-tier-compositions)
 4. [A-Tier Compositions](#a-tier-compositions)
-5. [B-Tier Compositions](#b-tier-compositions)
-6. [Honorable Mentions (Fun Comps)](#honorable-mentions-fun-comps)
-7. [Skill Usage Guide](#skill-usage-guide)
-8. [General Tips](#general-tips)
+5. [Honorable Mentions (Fun Comps)](#honorable-mentions-fun-comps)
+6. [Skill Usage Guide](#skill-usage-guide)
+7. [General Tips](#general-tips)
 
 ---
 
@@ -45,12 +44,13 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 | Tier | Composition | Playstyle |
 |------|-------------|-----------|
 | S | Ninja / Cleric / Frost | Consistent DPS, safe, beginner-friendly |
-| S | Archer / Cleric / Frost | Budget, ultra-safe, longest range |
-| A+ | Wizard / Cleric / Frost | Chain lightning, swarm destroyer |
+| S | Knight / Cleric / Frost | High DPS, blocks projectiles, aggressive |
+| A | Archer / Cleric / Frost | Budget, ultra-safe, longest range (250) |
+| A | Berserker / Cleric / Frost | Spin AOE, reflects projectiles back |
+| A | Wizard / Cleric / Frost | Chain lightning, swarm destroyer |
 | A | Bomber / Cleric / Frost | High burst, explosive AOE |
-| A | Ninja / Vampire / Frost | Aggressive, dual sustain |
-| B | Berserker / Cleric / Frost | Spin-to-win, risky but fun |
-| B | Knight / Cleric / Frost | Melee brawler, high risk |
+| B | Ninja / Vampire / Frost | Aggressive, dual sustain |
+| B | Mage / Cleric / Frost | AOE specialist, solid damage |
 
 ---
 
@@ -122,7 +122,7 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 | Sprite | Role | Key Strength |
 |--------|------|--------------|
-| Archer | Main DPS | 10 cost = fastest merging, 200 range = safest |
+| Archer | Main DPS | 10 cost = fastest merging, 250 range = safest |
 | Cleric | Sustain | Essential for boss fights |
 | Frost | Utility | Enemies never reach you |
 
@@ -139,7 +139,7 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 - Your range advantage means enemies die before reaching you
 
 **Wave 5 (First Boss):**
-- Stay at max range (200 units)
+- Stay at max range (250 units)
 - Circle the outer edge of the arena
 - Boss should melt without you taking much damage
 
@@ -149,7 +149,7 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 - Cleric Lv2 for consistent healing
 
 **Waves 11-15: Cruise Control**
-- 200 range means you're shooting enemies as they spawn
+- 250 range means you're shooting enemies as they spawn
 - Frost slow + long range = enemies never touch you
 - This is the safest comp in the game
 
@@ -183,8 +183,8 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 #### The Drawback
 
-- 30 cost = slow early game
-- You WILL struggle waves 1-5
+- 25 cost = moderate early game
+- May struggle waves 1-5
 - Requires good kiting to survive until Lv3 Wizard
 
 #### Strategy Summary
@@ -209,8 +209,8 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 #### The Drawback
 
-- 35 cost = slowest merging in the game
-- 120 cooldown = long gaps between attacks
+- 30 cost = slow merging
+- 90 cooldown = moderate gaps between attacks
 - Feast or famine damage pattern
 
 #### Strategy Summary
@@ -230,7 +230,7 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 #### Why It Works
 
 - Ninja provides ranged DPS
-- Vampire provides melee DPS + lifesteal (self-healing)
+- Vampire provides melee DPS + 50% lifesteal (strong self-healing)
 - No Cleric needed = more offensive power
 
 #### The Drawback
@@ -245,15 +245,15 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 **Waves 6-10:** Add Vampire once Ninja is Lv3+. Let Vampire facetank while Ninja shoots.
 
-**Waves 11-20:** Lv3+ Vampire is nearly unkillable with lifesteal. Play aggressive, stay near your Vampire.
+**Waves 11-20:** Lv3+ Vampire with 50% lifesteal is nearly unkillable. Play aggressive, stay near your Vampire.
 
 ---
 
-## B-Tier Compositions
+## A-Tier Compositions (Continued)
 
 ### Berserker / Cleric / Frost
 
-**Spin to Win** - High AOE burst, satisfying gameplay.
+**Spin to Win + Reflect** - High AOE burst with projectile defense.
 
 #### Why It Works
 
@@ -263,9 +263,10 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 #### The Drawbacks
 
-- 100 cooldown = long wait between spins
+- 75 cooldown = moderate wait between spins
 - Melee range = Berserker takes damage
 - 20 cost = slower merging than Ninja/Archer
+- **New:** Reflects enemy projectiles back at them!
 
 #### Strategy Summary
 
@@ -275,31 +276,38 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 **Waves 11-20:** Frost + Berserker = lawnmower. Enemies walk into spin and die. Fun but risky.
 
-#### Why B-Tier?
+#### Why A-Tier Now?
 
-Against bosses, the 100 cooldown kills your DPS. Bosses move, so they're often outside spin range when it finally comes off cooldown. Ninja does 2x the sustained boss damage.
+The 75 cooldown buff and projectile reflection make Berserker much stronger. Reflecting boss projectiles back deals significant damage while protecting you. Still requires good positioning but now competitive with ranged options.
 
 ---
 
+## S-Tier Compositions (Continued)
+
 ### Knight / Cleric / Frost
 
-**The Melee Brawler** - Pure melee chaos.
+**The Projectile Blocker** - High DPS with defensive utility.
 
 #### Why It Works
 
-- 15 damage, 45 cooldown = decent melee DPS
+- 15 damage, 45 cooldown = 20 DPS (highest sustained)
 - Cheap at 15 cost
+- **Blocks enemy projectiles** - destroys bullets that hit the Knight
 - Satisfying slash attacks
 
 #### The Drawbacks
 
 - 40 range = must be in enemy's face
-- Knights take damage constantly
-- Cleric can't outheal sustained melee damage in late waves
+- Knights take melee damage constantly
+- Requires Frost to kite effectively
+
+#### Why S-Tier Now?
+
+Projectile blocking completely changes Knight's viability. Against Shooters, Snipers, and boss bullet patterns, Knights act as shields for your player. Combined with Frost slow and Cleric healing, Knight becomes a powerful aggressive option that also provides protection.
 
 #### Strategy Summary
 
-Only recommended for challenge runs. You will take significantly more damage than any ranged comp.
+Rush Knight early, add Cleric for sustain, then Frost to slow enemies into melee range. Position Knights between you and ranged enemies to block incoming fire.
 
 ---
 
@@ -367,13 +375,15 @@ These aren't optimal, but they're satisfying to play.
 
 **Why It's Fun:**
 - Self-sustaining army of the undead
-- Lifesteal means they never die (in theory)
+- 50% lifesteal means they heal you constantly
 - Aesthetic as hell
 
 **Why It's Bad:**
 - 30 cost = very slow merging
 - Melee range = all your Vampires clump on one enemy
 - Swarms overwhelm you before lifesteal kicks in
+
+**Why It's Better Now:** 50% lifesteal (up from 30%) makes pure Vampire more viable. Still not optimal, but surprisingly effective in late game.
 
 **When to Play:** Halloween special runs.
 

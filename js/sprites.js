@@ -87,7 +87,9 @@ function summonSprite(typeIndex) {
         damage: type.damage || 0, healAmount: type.healAmount || 0,
         range: type.range || 50, cooldown: type.cooldown, currentCooldown: 0,
         level: 1, size: 12, angle: 0, orbitAngle: angle,
-        orbitSpeed: 0.02 + Math.random() * 0.01
+        orbitSpeed: 0.02 + Math.random() * 0.01,
+        blocksProjectiles: type.blocksProjectiles || false,
+        reflectsProjectiles: type.reflectsProjectiles || false
     };
     sprites.push(newSprite);
     checkAllMerges();
@@ -167,7 +169,7 @@ function updateSprites() {
             case 'vampire':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown; nearestEnemy.hp -= sprite.damage;
-                    player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.3));
+                    player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.5));
                     for (let j = 0; j < 5; j++) effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, vx: (player.x - nearestEnemy.x) * 0.05 + (Math.random() - 0.5) * 2, vy: (player.y - nearestEnemy.y) * 0.05 + (Math.random() - 0.5) * 2, life: 25, color: '#d4a', type: 'particle' });
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: '#d4a', angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
                 }
