@@ -11,11 +11,17 @@ function spawnOrb() {
 
 const ORB_HEAL_AMOUNT = 2;
 const ORB_SCORE = 10;
+const ORB_SPEED_BOOST = 0.05;
+const ORB_SPEED_BOOST_DURATION = 180; // 3 seconds at 60fps
+const ORB_SPEED_BOOST_MAX = 1.0;
 
 function collectOrb(orb, effectColor = '#fff') {
     points++;
     score += ORB_SCORE;
     player.hp = Math.min(player.maxHp, player.hp + ORB_HEAL_AMOUNT);
+    // Add speed boost (stacks up to max)
+    player.speedBoost = Math.min(ORB_SPEED_BOOST_MAX, player.speedBoost + ORB_SPEED_BOOST);
+    player.speedBoostTimer = ORB_SPEED_BOOST_DURATION;
     for (let j = 0; j < 5; j++) {
         effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 20, color: effectColor, type: 'particle' });
     }
@@ -57,6 +63,14 @@ function updateOrbs() {
 }
 
 function updatePlayer() {
+    // Update speed boost timer
+    if (player.speedBoostTimer > 0) {
+        player.speedBoostTimer--;
+        if (player.speedBoostTimer <= 0) {
+            player.speedBoost = 0;
+        }
+    }
+
     let dx = 0, dy = 0;
     if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
     if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
@@ -65,7 +79,8 @@ function updatePlayer() {
     if (dx !== 0 || dy !== 0) {
         const len = Math.sqrt(dx * dx + dy * dy);
         dx /= len; dy /= len;
-        player.x += dx * player.speed; player.y += dy * player.speed;
+        const currentSpeed = player.speed + player.speedBoost;
+        player.x += dx * currentSpeed; player.y += dy * currentSpeed;
     }
     player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
     player.y = Math.max(player.height / 2, Math.min(canvas.height - player.height / 2, player.y));
@@ -144,7 +159,7 @@ function startGame(cheat = false) {
 }
 
 function restartGame() {
-    player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0;
+    player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;

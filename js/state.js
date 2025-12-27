@@ -28,7 +28,9 @@ const player = {
     maxHp: 100,
     hp: 100,
     invincibleTime: 0,
-    color: '#4af'
+    color: '#4af',
+    speedBoost: 0,
+    speedBoostTimer: 0
 };
 
 // Current Skill
