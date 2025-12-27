@@ -65,9 +65,12 @@ function useSkill() {
                     for (let j = 0; j < 10; j++) effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 5, vy: (Math.random() - 0.5) * 5, life: 30, color: collectedSkill.color, type: 'particle' });
                 }
             }
-            if (pickedUpSkill) updateSkillDisplay();
             for (let i = 0; i < 15; i++) {
                 effects.push({ x: player.x - dx * i * 10, y: player.y - dy * i * 10, vx: 0, vy: 0, life: 20 - i, color: '#5ff', type: 'particle' });
+            }
+            if (pickedUpSkill) {
+                updateSkillDisplay();
+                return; // Don't clear the skill we just picked up
             }
             break;
         case 'skillHeal':
