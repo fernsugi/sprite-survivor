@@ -9,12 +9,13 @@ A comprehensive guide to team compositions, strategies, and tips for clearing th
 ## Table of Contents
 
 1. [Game Basics](#game-basics)
-2. [Tier List](#tier-list)
-3. [S-Tier Compositions](#s-tier-compositions)
-4. [A-Tier Compositions](#a-tier-compositions)
-5. [Honorable Mentions (Fun Comps)](#honorable-mentions-fun-comps)
-6. [Skill Usage Guide](#skill-usage-guide)
-7. [General Tips](#general-tips)
+2. [Boss Guide](#boss-guide)
+3. [Tier List](#tier-list)
+4. [S-Tier Compositions](#s-tier-compositions)
+5. [A-Tier Compositions](#a-tier-compositions)
+6. [Honorable Mentions (Fun Comps)](#honorable-mentions-fun-comps)
+7. [Skill Usage Guide](#skill-usage-guide)
+8. [General Tips](#general-tips)
 
 ---
 
@@ -38,6 +39,95 @@ A comprehensive guide to team compositions, strategies, and tips for clearing th
 | 5 | 5.06x | +107% | -20 frames |
 
 A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, not diversity.**
+
+---
+
+## Boss Guide
+
+Each boss has unique mechanics that require different strategies.
+
+### Boss Stats
+
+| Boss | Wave | HP | Damage | Size | Color |
+|------|------|-----|--------|------|-------|
+| Demon Lord | 5 | 750 | 37.5 | 55 | Red |
+| Shadow King | 10 | 1000 | 50 | 60 | Purple |
+| Void Emperor | 15 | 1250 | 62.5 | 65 | Dark |
+| Death Titan | 20 | 1500 | 75 | 70 | Orange |
+
+### Boss 1: Demon Lord (Wave 5)
+
+**Unique Mechanics:**
+
+| Mechanic | Description |
+|----------|-------------|
+| **Rage Mode** | Below 50% HP, attack speed increases by 25% |
+| **Visual** | Pulsing orange ring when enraged |
+
+**Strategy:** Kill quickly before rage activates. If rage triggers, expect faster projectile patterns. Knight's projectile blocking is very effective here.
+
+---
+
+### Boss 2: Shadow King (Wave 10)
+
+**Unique Mechanics:**
+
+| Mechanic | Description |
+|----------|-------------|
+| **Shadow Step** | Teleports to random position every 5 seconds |
+| **Clone Decoy** | At 50% HP, spawns a weaker clone (20% boss HP) |
+
+**Strategy:** Don't chase the boss when it teleports - let your sprites auto-target. Kill the clone immediately when it spawns, as it can distract your sprites from the real boss.
+
+---
+
+### Boss 3: Void Emperor (Wave 15)
+
+**Unique Mechanics:**
+
+| Mechanic | Description |
+|----------|-------------|
+| **Gravity Well** | Every 8 seconds, pulls player toward boss for 3 seconds |
+| **Void Shield** | Regenerates 100 damage shield every 20 seconds |
+
+**Strategy:**
+- When gravity activates, move away from boss to counteract the pull
+- Frost slow helps you escape gravity wells
+- Burst damage is valuable to break shields quickly
+- Melee builds actually benefit from gravity (free gap-closer!)
+
+---
+
+### Boss 4: Death Titan (Wave 20)
+
+**Unique Mechanics:**
+
+| Mechanic | Description |
+|----------|-------------|
+| **Death Aura** | Deals 1 damage/second to player within 150 range |
+| **Enrage** | After 60 seconds, attack speed doubles permanently |
+
+**Strategy:**
+- **Ranged builds (Archer/Ninja):** Stay at 150+ range to avoid aura entirely
+- **Melee builds (Knight):** Accept aura damage, ensure Cleric can outheal (2.5 HP/s > 1 dmg/s)
+- **Kill before 60 seconds** to avoid enrage - most builds can do this easily
+- Save Full Heal skill for this fight
+
+---
+
+### Common Attack Patterns (All Bosses)
+
+All bosses share these 5 attack patterns, cycling every second:
+
+| Pattern | Name | Description | Counter |
+|---------|------|-------------|---------|
+| 0 | Circle Burst | 12 projectiles in all directions | Move between gaps |
+| 1 | Aimed Spread | 5 projectiles aimed at player | Dash sideways |
+| 2 | Minion Spawn | Spawns 3 weak Chasers | AOE clears them |
+| 3 | Laser | Warning line, then beam | Move perpendicular |
+| 4 | Spiral | 8 projectiles in rotating pattern | Stay mobile |
+
+**Pro Tip:** Knight blocks and Berserker reflects work on ALL boss projectiles!
 
 ---
 

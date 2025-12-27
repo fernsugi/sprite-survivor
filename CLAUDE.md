@@ -64,6 +64,25 @@ js/
 - Chaser, Shooter, Tank, Speedy, Bomber, Sniper
 - Each has different speed, HP, damage, and behavior
 
+### Boss System (in enemies.js)
+Bosses spawn every 5 waves with unique mechanics:
+
+| Wave | Boss | HP | Unique Mechanics |
+|------|------|-----|------------------|
+| 5 | Demon Lord | 500 | Rage mode at 50% HP (25% faster attacks) |
+| 10 | Shadow King | 1000 | Teleport every 5s, Clone decoy at 50% HP |
+| 15 | Void Emperor | 2000 | Gravity well (pulls player), Shield (100 dmg absorb, regenerates) |
+| 20 | Death Titan | 3000 | Death aura (1 dmg/s within 150 range), Enrage after 60s |
+
+Boss-specific properties in boss object:
+- `bossNum` - which boss (1-4)
+- `rageMode` - Demon Lord rage state
+- `teleportTimer`, `cloneSpawned` - Shadow King tracking
+- `gravityTimer`, `shield`, `shieldTimer` - Void Emperor mechanics
+- `enrageTimer`, `enraged` - Death Titan mechanics
+
+Shield damage absorption handled by `applyDamage()` helper in sprites.js.
+
 ### Skills (in config.js)
 | Skill | Rarity | Effect |
 |-------|--------|--------|
