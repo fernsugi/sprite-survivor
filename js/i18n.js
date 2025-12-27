@@ -61,7 +61,8 @@ const translations = {
         paused: "PAUSED",
         pauseHint: "Press ESC to resume",
         resume: "RESUME",
-        instructPause: "- Pause"
+        instructPause: "- Pause",
+        cheatMode: "CHEAT MODE"
     },
     ja: {
         spriteFontSize: "9px",
@@ -124,7 +125,8 @@ const translations = {
         paused: "一時停止",
         pauseHint: "ESCで再開",
         resume: "再開",
-        instructPause: "- 一時停止"
+        instructPause: "- 一時停止",
+        cheatMode: "チートモード"
     },
     ko: {
         spriteFontSize: "8px",
@@ -187,7 +189,8 @@ const translations = {
         paused: "일시정지",
         pauseHint: "ESC로 재개",
         resume: "재개",
-        instructPause: "- 일시정지"
+        instructPause: "- 일시정지",
+        cheatMode: "치트 모드"
     },
     "zh-TW": {
         spriteFontSize: "8px",
@@ -250,7 +253,8 @@ const translations = {
         paused: "暫停",
         pauseHint: "按ESC繼續",
         resume: "繼續",
-        instructPause: "- 暫停"
+        instructPause: "- 暫停",
+        cheatMode: "作弊模式"
     },
     "zh-CN": {
         spriteFontSize: "8px",
@@ -313,7 +317,8 @@ const translations = {
         paused: "暂停",
         pauseHint: "按ESC继续",
         resume: "继续",
-        instructPause: "- 暂停"
+        instructPause: "- 暂停",
+        cheatMode: "作弊模式"
     }
 };
 

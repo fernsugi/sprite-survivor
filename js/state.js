@@ -6,6 +6,7 @@ const ctx = canvas.getContext('2d');
 let gameStarted = false;
 let gameRunning = false;
 let gamePaused = false;
+let cheatMode = false;
 let score = 0;
 let points = 0;
 let wave = 1;

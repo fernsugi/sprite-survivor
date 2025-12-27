@@ -134,7 +134,9 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-function startGame() {
+function startGame(cheat = false) {
+    cheatMode = cheat;
+    if (cheatMode) points = Infinity;
     document.getElementById('startScreen').style.display = 'none';
     gameStarted = true;
     gameRunning = true;
@@ -145,7 +147,7 @@ function restartGame() {
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
-    score = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    score = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     gameRunning = true;
     gamePaused = false;
     document.getElementById('gameOver').style.display = 'none';
