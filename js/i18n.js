@@ -568,9 +568,9 @@ const translations = {
         cheatMode: "MODE TRICHE"
     },
     vi: {
-        spriteFontSize: "7px",
-        costFontSize: "8px",
-        descFontSize: "7px",
+        spriteFontSize: "10px",
+        costFontSize: "10px",
+        descFontSize: "10px",
         title: "SPRITE SURVIVOR",
         subtitle: "Triệu hồi linh hồn, sống sót qua bầy quái",
         startGame: "BẮT ĐẦU",
@@ -638,9 +638,12 @@ function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('spriteSurvivorLang', lang);
 
+    // Vietnamese needs a different font due to diacritics
+    document.body.classList.toggle('lang-vi', lang === 'vi');
+
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
-        const langMap = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文', 'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский', 'fr': 'Français', 'vi': 'Tiếng Việt' };
+        const langMap = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文', 'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский', 'fr': 'Français', 'vi': 'T.Viet' };
         if (btn.textContent.includes(langMap[lang])) {
             btn.classList.add('active');
         }
