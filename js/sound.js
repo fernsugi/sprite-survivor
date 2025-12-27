@@ -116,9 +116,95 @@ const SFX = {
     },
 
     // Sprite sounds
+    // Generic summon (fallback)
     summonSprite: () => {
         playTone(300, 0.1, 'square', 0.2);
         setTimeout(() => playTone(500, 0.15, 'square', 0.2), 80);
+    },
+
+    // Unique spawn sounds for each sprite type
+    summonArcher: () => {
+        // Bow string twang - quick snap with resonance
+        playTone(180, 0.05, 'sawtooth', 0.25);
+        playTone(320, 0.12, 'triangle', 0.2);
+        setTimeout(() => playTone(280, 0.08, 'triangle', 0.15), 40);
+    },
+
+    summonKnight: () => {
+        // Sword unsheathe - metallic sliding sound
+        playNoise(0.08, 0.15);
+        playTone(800, 0.05, 'square', 0.2);
+        setTimeout(() => playTone(600, 0.08, 'square', 0.25), 30);
+        setTimeout(() => playTone(400, 0.1, 'sawtooth', 0.2), 60);
+    },
+
+    summonMage: () => {
+        // Mystical shimmer - ascending magical tones
+        playTone(400, 0.08, 'sine', 0.2);
+        setTimeout(() => playTone(600, 0.08, 'sine', 0.2), 50);
+        setTimeout(() => playTone(800, 0.1, 'sine', 0.25), 100);
+        setTimeout(() => playTone(1000, 0.15, 'sine', 0.15), 150);
+    },
+
+    summonCleric: () => {
+        // Holy bell chime - pure heavenly tone
+        playTone(880, 0.2, 'sine', 0.25);
+        playTone(1320, 0.25, 'sine', 0.15);
+        setTimeout(() => playTone(1100, 0.2, 'sine', 0.2), 80);
+    },
+
+    summonNinja: () => {
+        // Quick swoosh - fast stealthy sound
+        playNoise(0.06, 0.12);
+        playTone(1200, 0.03, 'sawtooth', 0.15);
+        setTimeout(() => playTone(600, 0.05, 'sawtooth', 0.1), 20);
+    },
+
+    summonWizard: () => {
+        // Electric crackle - arcane energy
+        playNoise(0.04, 0.1);
+        playTone(1500, 0.03, 'sawtooth', 0.15);
+        setTimeout(() => {
+            playNoise(0.03, 0.08);
+            playTone(1800, 0.03, 'sawtooth', 0.12);
+        }, 40);
+        setTimeout(() => {
+            playTone(1000, 0.08, 'square', 0.2);
+            playTone(1200, 0.1, 'sawtooth', 0.15);
+        }, 80);
+    },
+
+    summonBerserker: () => {
+        // Aggressive roar - low powerful sound
+        playTone(80, 0.15, 'sawtooth', 0.3);
+        playTone(100, 0.12, 'square', 0.25);
+        setTimeout(() => playTone(120, 0.1, 'sawtooth', 0.2), 50);
+        setTimeout(() => playNoise(0.08, 0.15), 80);
+    },
+
+    summonFrost: () => {
+        // Icy crystalline - cold tinkling
+        playTone(2000, 0.05, 'sine', 0.15);
+        setTimeout(() => playTone(2400, 0.05, 'sine', 0.12), 30);
+        setTimeout(() => playTone(1800, 0.06, 'sine', 0.15), 60);
+        setTimeout(() => playTone(2200, 0.08, 'sine', 0.1), 100);
+        setTimeout(() => playTone(1600, 0.1, 'sine', 0.12), 140);
+    },
+
+    summonVampire: () => {
+        // Dark ominous - descending eerie tone
+        playTone(500, 0.1, 'sawtooth', 0.2);
+        setTimeout(() => playTone(400, 0.1, 'sawtooth', 0.2), 60);
+        setTimeout(() => playTone(300, 0.12, 'sawtooth', 0.2), 120);
+        setTimeout(() => playTone(200, 0.15, 'square', 0.15), 180);
+    },
+
+    summonBomber: () => {
+        // Fuse lighting - sizzle then ready beep
+        playNoise(0.1, 0.15);
+        playTone(100, 0.08, 'sawtooth', 0.1);
+        setTimeout(() => playTone(800, 0.05, 'square', 0.2), 100);
+        setTimeout(() => playTone(1000, 0.08, 'square', 0.25), 140);
     },
 
     mergeSprite: () => {

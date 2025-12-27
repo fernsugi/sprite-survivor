@@ -103,7 +103,20 @@ function summonSprite(typeIndex) {
         reflectsProjectiles: type.reflectsProjectiles || false
     };
     sprites.push(newSprite);
-    SFX.summonSprite();
+    // Play sprite-specific summon sound
+    const summonSounds = [
+        SFX.summonArcher,    // 0 - Archer
+        SFX.summonKnight,    // 1 - Knight
+        SFX.summonMage,      // 2 - Mage
+        SFX.summonCleric,    // 3 - Cleric
+        SFX.summonNinja,     // 4 - Ninja
+        SFX.summonWizard,    // 5 - Wizard
+        SFX.summonBerserker, // 6 - Berserker
+        SFX.summonFrost,     // 7 - Frost
+        SFX.summonVampire,   // 8 - Vampire
+        SFX.summonBomber     // 9 - Bomber
+    ];
+    (summonSounds[typeIndex] || SFX.summonSprite)();
     checkAllMerges();
     updateUI();
 }
