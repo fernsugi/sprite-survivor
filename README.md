@@ -1,6 +1,7 @@
 # Sprite Survivor Strategy Guide
 
 A comprehensive guide to team compositions, strategies, and tips for clearing the game.
+Try it live here: https://fernsugi.github.io/sprite-survivor/
 
 ---
 
