@@ -98,9 +98,10 @@ const SFX = {
     },
 
     collectSkillOrb: () => {
-        playTone(400, 0.1, 'sine', 0.3);
-        setTimeout(() => playTone(600, 0.1, 'sine', 0.3), 60);
-        setTimeout(() => playTone(800, 0.15, 'sine', 0.3), 120);
+        // Magical pickup - sparkle with power chord
+        playTone(800, 0.08, 'square', 0.2);
+        playTone(1000, 0.08, 'square', 0.15);
+        setTimeout(() => playTone(1200, 0.12, 'sine', 0.25), 70);
     },
 
     playerHit: () => {
@@ -139,11 +140,12 @@ const SFX = {
     },
 
     summonMage: () => {
-        // Mystical shimmer - ascending magical tones
-        playTone(400, 0.08, 'sine', 0.2);
-        setTimeout(() => playTone(600, 0.08, 'sine', 0.2), 50);
-        setTimeout(() => playTone(800, 0.1, 'sine', 0.25), 100);
-        setTimeout(() => playTone(1000, 0.15, 'sine', 0.15), 150);
+        // Arcane conjuring - deep mystical with ethereal warble
+        playTone(250, 0.12, 'triangle', 0.18);
+        playTone(375, 0.1, 'sine', 0.12);
+        setTimeout(() => playTone(300, 0.1, 'triangle', 0.15), 80);
+        setTimeout(() => playNoise(0.05, 0.08), 120);
+        setTimeout(() => playTone(500, 0.15, 'sine', 0.12), 160);
     },
 
     summonCleric: () => {
@@ -200,11 +202,14 @@ const SFX = {
     },
 
     summonBomber: () => {
-        // Fuse lighting - sizzle then ready beep
-        playNoise(0.1, 0.15);
-        playTone(100, 0.08, 'sawtooth', 0.1);
-        setTimeout(() => playTone(800, 0.05, 'square', 0.2), 100);
-        setTimeout(() => playTone(1000, 0.08, 'square', 0.25), 140);
+        // Bomb armed - fuse sizzle then ominous boom
+        playNoise(0.2, 0.25);
+        setTimeout(() => {
+            playTone(40, 0.25, 'sawtooth', 0.35);
+            playTone(55, 0.2, 'square', 0.3);
+            playNoise(0.15, 0.2);
+        }, 120);
+        setTimeout(() => playTone(30, 0.3, 'sine', 0.25), 250);
     },
 
     mergeSprite: () => {
@@ -301,9 +306,14 @@ const SFX = {
     },
 
     skillHeal: () => {
-        for (let i = 0; i < 4; i++) {
-            setTimeout(() => playTone(400 + i * 150, 0.15, 'sine', 0.25), i * 80);
-        }
+        // Full restoration - powerful holy burst
+        playTone(600, 0.15, 'triangle', 0.2);
+        playTone(900, 0.15, 'triangle', 0.15);
+        setTimeout(() => {
+            playTone(800, 0.2, 'sine', 0.25);
+            playTone(1200, 0.2, 'sine', 0.2);
+        }, 100);
+        setTimeout(() => playTone(1600, 0.25, 'sine', 0.15), 200);
     },
 
     skillNuke: () => {
