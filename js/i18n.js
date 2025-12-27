@@ -321,6 +321,7 @@ let currentLang = 'en';
 
 function setLanguage(lang) {
     currentLang = lang;
+    localStorage.setItem('spriteSurvivorLang', lang);
 
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -345,3 +346,17 @@ function setLanguage(lang) {
 function t(key) {
     return translations[currentLang][key] || translations['en'][key] || key;
 }
+
+// Load saved language on startup
+(function initLanguage() {
+    const savedLang = localStorage.getItem('spriteSurvivorLang');
+    if (savedLang && translations[savedLang]) {
+        currentLang = savedLang;
+        // Defer UI update until DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => setLanguage(savedLang));
+        } else {
+            setLanguage(savedLang);
+        }
+    }
+})();
