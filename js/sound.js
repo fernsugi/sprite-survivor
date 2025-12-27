@@ -15,7 +15,7 @@ function initAudio() {
 
         // Create master gain (volume control)
         masterGain = audioCtx.createGain();
-        masterGain.gain.value = 0.5; // Master volume at 50%
+        masterGain.gain.value = 0.1; // Master volume at 10%
 
         // Create compressor to prevent clipping
         compressor = audioCtx.createDynamicsCompressor();

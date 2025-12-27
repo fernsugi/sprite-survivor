@@ -472,7 +472,10 @@ body.lang-vi .sprite-btn .desc {
 }
 
 .menu-btn {
-    margin-top: 15px;
+    margin-top: 10px;
+    padding: 8px 15px;
+    font-size: 8px;
+    border-width: 2px;
     background: linear-gradient(180deg, #433, #322);
     border-color: #644;
 }
