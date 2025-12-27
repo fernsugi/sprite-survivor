@@ -97,19 +97,9 @@ function useSkill() {
             break;
         case 'skillMagnet':
             SFX.skillMagnet();
-            // Collect all orbs instantly
-            const collectedOrbs = orbs.length;
-            orbs.forEach(orb => {
-                collectOrb(orb, '#ff0');
-            });
-            orbs.length = 0;
-            // Also collect skill orbs
-            skillOrbs.forEach(orb => {
-                for (let j = 0; j < 5; j++) {
-                    effects.push({ x: orb.x, y: orb.y, vx: (player.x - orb.x) * 0.1 + (Math.random() - 0.5) * 3, vy: (player.y - orb.y) * 0.1 + (Math.random() - 0.5) * 3, life: 30, color: orb.skill.color, type: 'particle' });
-                }
-            });
-            skillOrbs.length = 0;
+            // Magnetize all orbs - they will fly towards player
+            orbs.forEach(orb => { orb.magnetized = true; });
+            skillOrbs.forEach(orb => { orb.magnetized = true; });
             effects.push({ x: player.x, y: player.y, life: 30, type: 'aoe', color: '#ff0', radius: 300 });
             break;
     }

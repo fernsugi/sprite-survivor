@@ -220,7 +220,19 @@ function draw() {
 
     // Boss
     if (boss) {
-        ctx.fillStyle = boss.color + '44'; ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20 + Math.sin(boss.phase) * 5, 0, Math.PI * 2); ctx.fill();
+        // Subtle animated aura - pulsing ring + soft glow with white
+        const bossPulse = Math.sin(boss.phase) * 5;
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = boss.color;
+        ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.2 + Math.sin(boss.phase * 2) * 0.05;
+        ctx.strokeStyle = boss.color;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20 + bossPulse, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 1;
         ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/2 - 2, boss.y - boss.size/2 - 2, boss.size + 4, boss.size + 4);
         ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2, boss.size, boss.size);
         const eyeSize = boss.size / 6;
@@ -229,19 +241,164 @@ function draw() {
         ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x + boss.size/2 - 8, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x - 4, boss.y - boss.size/2 - 15, 8, 15);
     }
 
-    // Sprites
+    // Sprites - unique shapes per type
     sprites.forEach(sprite => {
-        ctx.fillStyle = sprite.color + '44'; ctx.beginPath(); ctx.arc(sprite.x, sprite.y, sprite.size + 6, 0, Math.PI * 2); ctx.fill();
+        const s = sprite.size;
+        // Subtle animated aura - pulsing ring + soft glow with white
+        const pulse = Math.sin(sprite.angle * 2) * 2;
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.08;
+        ctx.fillStyle = sprite.color;
+        ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.15 + Math.sin(sprite.angle * 3) * 0.05;
+        ctx.strokeStyle = sprite.color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6 + pulse, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 1;
         ctx.save(); ctx.translate(sprite.x, sprite.y); ctx.rotate(sprite.angle);
-        ctx.fillStyle = '#000'; ctx.fillRect(-sprite.size/2 - 1, -sprite.size/2 - 1, sprite.size + 2, sprite.size + 2);
-        ctx.fillStyle = sprite.color; ctx.fillRect(-sprite.size/2, -sprite.size/2, sprite.size, sprite.size);
+
+        // Draw unique shape based on sprite type
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        switch (sprite.nameKey) {
+            case 'archer': // Arrow/triangle pointing up
+                ctx.moveTo(0, -s/2 - 2); ctx.lineTo(-s/2 - 1, s/2 + 1); ctx.lineTo(s/2 + 1, s/2 + 1);
+                break;
+            case 'knight': // Square with shield notch
+                ctx.rect(-s/2 - 1, -s/2 - 1, s + 2, s + 2);
+                break;
+            case 'mage': // Diamond
+                ctx.moveTo(0, -s/2 - 2); ctx.lineTo(-s/2 - 1, 0); ctx.lineTo(0, s/2 + 2); ctx.lineTo(s/2 + 1, 0);
+                break;
+            case 'cleric': // Circle
+                ctx.arc(0, 0, s/2 + 2, 0, Math.PI * 2);
+                break;
+            case 'ninja': // 4-pointed star/shuriken
+                for (let i = 0; i < 4; i++) {
+                    const a = i * Math.PI / 2;
+                    ctx.lineTo(Math.cos(a) * (s/2 + 2), Math.sin(a) * (s/2 + 2));
+                    ctx.lineTo(Math.cos(a + Math.PI/4) * (s/4), Math.sin(a + Math.PI/4) * (s/4));
+                }
+                break;
+            case 'wizard': // Pentagon (hat shape)
+                ctx.moveTo(0, -s/2 - 3); ctx.lineTo(-s/2 - 1, -s/6); ctx.lineTo(-s/3, s/2 + 1); ctx.lineTo(s/3, s/2 + 1); ctx.lineTo(s/2 + 1, -s/6);
+                break;
+            case 'berserker': // Spiky square
+                const sp = s/2 + 1;
+                ctx.moveTo(-sp, -sp + 3); ctx.lineTo(-sp + 3, -sp); ctx.lineTo(sp - 3, -sp); ctx.lineTo(sp, -sp + 3);
+                ctx.lineTo(sp, sp - 3); ctx.lineTo(sp - 3, sp); ctx.lineTo(-sp + 3, sp); ctx.lineTo(-sp, sp - 3);
+                break;
+            case 'frost': // Hexagon/crystal
+                for (let i = 0; i < 6; i++) {
+                    const a = i * Math.PI / 3 - Math.PI / 6;
+                    ctx.lineTo(Math.cos(a) * (s/2 + 2), Math.sin(a) * (s/2 + 2));
+                }
+                break;
+            case 'vampire': // Diamond with cape wings
+                ctx.moveTo(0, -s/2 - 2); ctx.lineTo(-s/3, -s/6); ctx.lineTo(-s/2 - 3, s/4);
+                ctx.lineTo(-s/4, s/3); ctx.lineTo(0, s/2 + 2); ctx.lineTo(s/4, s/3);
+                ctx.lineTo(s/2 + 3, s/4); ctx.lineTo(s/3, -s/6);
+                break;
+            case 'bomber': // Round bomb
+                ctx.arc(0, 0, s/2 + 2, 0, Math.PI * 2);
+                break;
+            default: // Fallback square
+                ctx.rect(-s/2 - 1, -s/2 - 1, s + 2, s + 2);
+        }
+        ctx.closePath(); ctx.fill();
+
+        // Inner colored shape
+        ctx.fillStyle = sprite.color;
+        ctx.beginPath();
+        switch (sprite.nameKey) {
+            case 'archer':
+                ctx.moveTo(0, -s/2); ctx.lineTo(-s/2 + 1, s/2 - 1); ctx.lineTo(s/2 - 1, s/2 - 1);
+                break;
+            case 'knight':
+                ctx.rect(-s/2, -s/2, s, s);
+                break;
+            case 'mage':
+                ctx.moveTo(0, -s/2); ctx.lineTo(-s/2 + 1, 0); ctx.lineTo(0, s/2); ctx.lineTo(s/2 - 1, 0);
+                break;
+            case 'cleric':
+                ctx.arc(0, 0, s/2, 0, Math.PI * 2);
+                break;
+            case 'ninja':
+                for (let i = 0; i < 4; i++) {
+                    const a = i * Math.PI / 2;
+                    ctx.lineTo(Math.cos(a) * s/2, Math.sin(a) * s/2);
+                    ctx.lineTo(Math.cos(a + Math.PI/4) * (s/5), Math.sin(a + Math.PI/4) * (s/5));
+                }
+                break;
+            case 'wizard':
+                ctx.moveTo(0, -s/2 - 1); ctx.lineTo(-s/2 + 1, -s/6 + 1); ctx.lineTo(-s/3 + 1, s/2 - 1); ctx.lineTo(s/3 - 1, s/2 - 1); ctx.lineTo(s/2 - 1, -s/6 + 1);
+                break;
+            case 'berserker':
+                const spi = s/2 - 1;
+                ctx.moveTo(-spi, -spi + 2); ctx.lineTo(-spi + 2, -spi); ctx.lineTo(spi - 2, -spi); ctx.lineTo(spi, -spi + 2);
+                ctx.lineTo(spi, spi - 2); ctx.lineTo(spi - 2, spi); ctx.lineTo(-spi + 2, spi); ctx.lineTo(-spi, spi - 2);
+                break;
+            case 'frost':
+                for (let i = 0; i < 6; i++) {
+                    const a = i * Math.PI / 3 - Math.PI / 6;
+                    ctx.lineTo(Math.cos(a) * s/2, Math.sin(a) * s/2);
+                }
+                break;
+            case 'vampire':
+                ctx.moveTo(0, -s/2); ctx.lineTo(-s/3 + 1, -s/6 + 1); ctx.lineTo(-s/2 - 1, s/4 - 1);
+                ctx.lineTo(-s/4 + 1, s/3 - 1); ctx.lineTo(0, s/2); ctx.lineTo(s/4 - 1, s/3 - 1);
+                ctx.lineTo(s/2 + 1, s/4 - 1); ctx.lineTo(s/3 - 1, -s/6 + 1);
+                break;
+            case 'bomber':
+                ctx.arc(0, 0, s/2, 0, Math.PI * 2);
+                break;
+            default:
+                ctx.rect(-s/2, -s/2, s, s);
+        }
+        ctx.closePath(); ctx.fill();
+
+        // Bomber fuse detail
+        if (sprite.nameKey === 'bomber') {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-1, -s/2 - 4, 2, 5);
+            ctx.fillStyle = '#f80';
+            ctx.beginPath(); ctx.arc(0, -s/2 - 5, 2, 0, Math.PI * 2); ctx.fill();
+        }
+
+        // Knight shield detail
+        if (sprite.nameKey === 'knight') {
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(-s/4, -s/4, s/2, s/2);
+        }
+
+        // Cleric cross detail
+        if (sprite.nameKey === 'cleric') {
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(-1, -s/3, 2, s/1.5);
+            ctx.fillRect(-s/3, -1, s/1.5, 2);
+        }
+
         ctx.restore();
         if (sprite.level > 1) { ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); ctx.fillStyle = '#fff'; ctx.fillText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); }
     });
 
     // Player
     if (player.invincibleTime === 0 || Math.floor(player.invincibleTime / 4) % 2 === 0) {
-        ctx.fillStyle = player.color + '44'; ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
+        // Subtle animated aura - pulsing ring + soft glow with white
+        const playerPulse = Math.sin(gameTime * 3) * 2;
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = player.color;
+        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.15 + Math.sin(gameTime * 4) * 0.05;
+        ctx.strokeStyle = player.color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4 + playerPulse, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 1;
         // Draw player body
         const size = player.width, s = size / 4;
         ctx.fillStyle = '#000'; ctx.fillRect(Math.floor(player.x - size/2 - 1), Math.floor(player.y - size/2 - 1), size + 2, size + 2);

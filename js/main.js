@@ -44,9 +44,14 @@ function updateOrbs() {
         const orb = orbs[i];
         const dx = player.x - orb.x, dy = player.y - orb.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
+        // Move magnetized orbs towards player
+        if (orb.magnetized && dist > 5) {
+            orb.x += dx * 0.15;
+            orb.y += dy * 0.15;
+        }
         if (dist < player.width / 2 + orb.size) {
             orbs.splice(i, 1);
-            collectOrb(orb, '#fff');
+            collectOrb(orb, orb.magnetized ? '#ff0' : '#fff');
         }
     }
 
@@ -54,6 +59,11 @@ function updateOrbs() {
         const orb = skillOrbs[i];
         const dx = player.x - orb.x, dy = player.y - orb.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
+        // Move magnetized orbs towards player
+        if (orb.magnetized && dist > 5) {
+            orb.x += dx * 0.15;
+            orb.y += dy * 0.15;
+        }
         if (dist < player.width / 2 + orb.size) {
             skillOrbs.splice(i, 1);
             currentSkill = orb.skill;
