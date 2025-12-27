@@ -74,6 +74,7 @@ function checkAllMerges() {
 }
 
 function summonSprite(typeIndex) {
+    if (gamePaused || !gameRunning) return;
     const type = spriteTypes[typeIndex];
     if (points < type.cost) return;
     points -= type.cost;
