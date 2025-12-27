@@ -143,7 +143,7 @@ function updateSprites() {
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown;
                     let chainTargets = [nearestEnemy], lastTarget = nearestEnemy;
-                    for (let c = 0; c < 3 + sprite.level; c++) {
+                    for (let c = 0; c < 5 + sprite.level; c++) {
                         let nextTarget = null, nextDist = Infinity;
                         targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 80 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
                         if (nextTarget) { chainTargets.push(nextTarget); lastTarget = nextTarget; }

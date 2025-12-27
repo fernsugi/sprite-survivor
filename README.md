@@ -46,12 +46,12 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 |------|-------------|-----------|
 | S | Ninja / Cleric / Frost | Consistent DPS, safe, beginner-friendly |
 | S | Knight / Cleric / Frost | High DPS, blocks projectiles, aggressive |
-| A | Archer / Cleric / Frost | Budget, ultra-safe, longest range (250) |
+| S | Archer / Cleric / Frost | Budget, ultra-safe, 12 DPS, longest range (250) |
 | A | Berserker / Cleric / Frost | Spin AOE, reflects projectiles back |
 | A | Wizard / Cleric / Frost | Chain lightning, swarm destroyer |
 | A | Bomber / Cleric / Frost | High burst, explosive AOE |
 | B | Ninja / Vampire / Frost | Aggressive, dual sustain |
-| B | Mage / Cleric / Frost | AOE specialist, solid damage |
+| B | Mage / Cleric / Frost | AOE specialist, range 100, solid damage |
 
 ---
 
@@ -123,9 +123,13 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 | Sprite | Role | Key Strength |
 |--------|------|--------------|
-| Archer | Main DPS | 10 cost = fastest merging, 250 range = safest |
+| Archer | Main DPS | 10 cost, 12 DPS, 250 range = budget + safe |
 | Cleric | Sustain | Essential for boss fights |
 | Frost | Utility | Enemies never reach you |
+
+#### Why S-Tier Now?
+
+Archer received major buffs: damage 8→10, cooldown 60→50. This brings DPS from 8/s to 12/s, making it competitive with Ninja (15/s) while costing 33% less and having 66% more range.
 
 #### Detailed Strategy
 
@@ -178,8 +182,8 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 #### Why It Works
 
-- Chain lightning jumps between enemies
-- One attack can hit 5+ enemies
+- Chain lightning jumps between 6+ enemies (5 + level)
+- Cooldown reduced to 70 = 8.6 DPS base, multiplied by chain hits
 - Frost clumps enemies together for maximum chains
 
 #### The Drawback
@@ -187,6 +191,10 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 - 25 cost = moderate early game
 - May struggle waves 1-5
 - Requires good kiting to survive until Lv3 Wizard
+
+#### Why A-Tier Now?
+
+Wizard received buffs: cooldown 80→70, chain targets 3→5 + level. At Lv1, Wizard now hits 6 targets instead of 4, making it much better at clearing swarms.
 
 #### Strategy Summary
 
