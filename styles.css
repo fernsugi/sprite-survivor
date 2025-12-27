@@ -17,6 +17,42 @@ body {
     overflow: hidden;
 }
 
+/* Responsive scaling for different screen sizes */
+@media (max-width: 1400px), (max-height: 850px) {
+    #gameWrapper {
+        transform: scale(0.9);
+        transform-origin: center center;
+    }
+}
+
+@media (max-width: 1280px), (max-height: 780px) {
+    #gameWrapper {
+        transform: scale(0.8);
+        transform-origin: center center;
+    }
+}
+
+@media (max-width: 1150px), (max-height: 700px) {
+    #gameWrapper {
+        transform: scale(0.7);
+        transform-origin: center center;
+    }
+}
+
+@media (max-width: 1000px), (max-height: 620px) {
+    #gameWrapper {
+        transform: scale(0.6);
+        transform-origin: center center;
+    }
+}
+
+@media (max-width: 850px), (max-height: 540px) {
+    #gameWrapper {
+        transform: scale(0.5);
+        transform-origin: center center;
+    }
+}
+
 #gameWrapper {
     display: flex;
     gap: 20px;
