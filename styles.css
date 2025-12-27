@@ -96,6 +96,7 @@ body.lang-vi .sprite-btn .desc {
     font-size: 8px !important;
     color: #aaa;
     font-family: 'Press Start 2P', cursive !important;
+    line-height: 1.2;
 }
 
 .lang-btn {
