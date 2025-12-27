@@ -7,26 +7,208 @@ function drawPixelChar(x, y, size, color, outline = '#000') {
     ctx.fillStyle = '#fff'; ctx.fillRect(Math.floor(x - s), Math.floor(y - s), s, s); ctx.fillRect(Math.floor(x + s/2), Math.floor(y - s), s, s);
 }
 
+// Environment themes for each boss phase
+const environments = {
+    // Phase 1 (Waves 1-5): Dark Forest - purple/blue with tree silhouettes
+    forest: {
+        bg: '#1a1a2e', tile: '#1e1e36', accent: '#252540',
+        drawDetails: () => {
+            ctx.fillStyle = '#151525';
+            // Subtle tree silhouettes at edges
+            for (let i = 0; i < 6; i++) {
+                const x = i * 180 + 50;
+                ctx.fillRect(x, canvas.height - 80, 8, 80);
+                ctx.beginPath(); ctx.moveTo(x + 4, canvas.height - 80);
+                ctx.lineTo(x - 20, canvas.height - 40); ctx.lineTo(x + 28, canvas.height - 40);
+                ctx.fill();
+                ctx.beginPath(); ctx.moveTo(x + 4, canvas.height - 110);
+                ctx.lineTo(x - 15, canvas.height - 70); ctx.lineTo(x + 23, canvas.height - 70);
+                ctx.fill();
+            }
+            // Top trees (upside down effect - distant)
+            ctx.globalAlpha = 0.3;
+            for (let i = 0; i < 5; i++) {
+                const x = i * 220 + 100;
+                ctx.fillRect(x, 0, 6, 40);
+                ctx.beginPath(); ctx.moveTo(x + 3, 40);
+                ctx.lineTo(x - 12, 15); ctx.lineTo(x + 18, 15);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+        }
+    },
+    // Phase 2 (Waves 6-10): Volcanic - red/orange with lava cracks
+    volcanic: {
+        bg: '#1a1210', tile: '#241815', accent: '#2a1a15',
+        drawDetails: () => {
+            // Lava cracks in the ground
+            ctx.strokeStyle = '#f642';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.4;
+            const cracks = [[100, 600, 150, 650, 120, 720], [300, 680, 350, 700, 400, 750],
+                [600, 620, 580, 680, 620, 730], [800, 650, 850, 700, 820, 750],
+                [200, 50, 180, 100, 220, 130], [700, 30, 750, 80, 720, 120]];
+            cracks.forEach(c => {
+                ctx.beginPath(); ctx.moveTo(c[0], c[1]);
+                ctx.lineTo(c[2], c[3]); ctx.lineTo(c[4], c[5]); ctx.stroke();
+            });
+            // Subtle ember particles (static positions)
+            ctx.fillStyle = '#f84';
+            for (let i = 0; i < 15; i++) {
+                const x = (i * 137 + Math.sin(i * 3) * 50) % canvas.width;
+                const y = (i * 89 + Math.cos(i * 2) * 30) % canvas.height;
+                ctx.globalAlpha = 0.2 + Math.sin(gameTime * 2 + i) * 0.1;
+                ctx.fillRect(x, y, 3, 3);
+            }
+            ctx.globalAlpha = 1;
+        }
+    },
+    // Phase 3 (Waves 11-15): Ice Cavern - blue/cyan with ice crystals
+    ice: {
+        bg: '#101820', tile: '#152028', accent: '#182530',
+        drawDetails: () => {
+            // Ice crystal formations
+            ctx.fillStyle = '#4af8';
+            ctx.globalAlpha = 0.25;
+            const crystals = [[50, 700], [200, 720], [400, 690], [650, 710], [850, 680], [950, 720],
+                [100, 30], [350, 20], [600, 40], [800, 25]];
+            crystals.forEach(([cx, cy]) => {
+                // Crystal shape
+                ctx.beginPath();
+                ctx.moveTo(cx, cy); ctx.lineTo(cx - 8, cy + 25); ctx.lineTo(cx + 8, cy + 25);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(cx + 15, cy + 10); ctx.lineTo(cx + 10, cy + 30); ctx.lineTo(cx + 20, cy + 30);
+                ctx.fill();
+            });
+            // Frost overlay on edges
+            ctx.fillStyle = '#8ef';
+            ctx.globalAlpha = 0.08;
+            ctx.fillRect(0, 0, canvas.width, 30);
+            ctx.fillRect(0, canvas.height - 30, canvas.width, 30);
+            ctx.fillRect(0, 0, 20, canvas.height);
+            ctx.fillRect(canvas.width - 20, 0, 20, canvas.height);
+            ctx.globalAlpha = 1;
+        }
+    },
+    // Phase 4 (Waves 16-20): Void Realm - deep purple/black with void energy
+    void: {
+        bg: '#0a0812', tile: '#0f0d18', accent: '#12101d',
+        drawDetails: () => {
+            // Void energy wisps
+            ctx.globalAlpha = 0.15;
+            for (let i = 0; i < 12; i++) {
+                const x = (i * 97 + 50) % canvas.width;
+                const y = (i * 73 + 30) % canvas.height;
+                const pulse = Math.sin(gameTime * 1.5 + i * 0.8) * 10;
+                ctx.fillStyle = '#a4f';
+                ctx.beginPath();
+                ctx.arc(x, y, 15 + pulse, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            // Dark vignette effect
+            const gradient = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 100,
+                canvas.width / 2, canvas.height / 2, 500
+            );
+            gradient.addColorStop(0, 'transparent');
+            gradient.addColorStop(1, 'rgba(5, 0, 10, 0.4)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Subtle grid distortion lines
+            ctx.strokeStyle = '#408';
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.1;
+            for (let x = 0; x < canvas.width; x += 100) {
+                ctx.beginPath();
+                ctx.moveTo(x + Math.sin(gameTime + x * 0.01) * 5, 0);
+                ctx.lineTo(x + Math.sin(gameTime + x * 0.01 + 3) * 5, canvas.height);
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+        }
+    }
+};
+
+function getEnvironment() {
+    if (wave <= 5) return environments.forest;
+    if (wave <= 10) return environments.volcanic;
+    if (wave <= 15) return environments.ice;
+    return environments.void;
+}
+
+function drawBackground() {
+    const env = getEnvironment();
+
+    // Base background
+    ctx.fillStyle = env.bg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Tile pattern
+    ctx.fillStyle = env.tile;
+    for (let x = 0; x < canvas.width; x += 40) {
+        for (let y = 0; y < canvas.height; y += 40) {
+            if ((x + y) % 80 === 0) ctx.fillRect(x, y, 40, 40);
+        }
+    }
+
+    // Environment-specific details
+    env.drawDetails();
+}
+
 function draw() {
     // Background
-    ctx.fillStyle = '#1a1a2e'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#1e1e36';
-    for (let x = 0; x < canvas.width; x += 40) for (let y = 0; y < canvas.height; y += 40) if ((x + y) % 80 === 0) ctx.fillRect(x, y, 40, 40);
+    drawBackground();
 
-    // Orbs
+    // Orbs - white energy with sparkle (visual only, hitbox uses orb.size)
     orbs.forEach(orb => {
-        const pulse = Math.sin(orb.pulse) * 2;
-        ctx.fillStyle = '#fff8'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse + 4, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse, 0, Math.PI * 2); ctx.fill();
+        const pulse = Math.sin(orb.pulse) * 1;
+        const sparkle = Math.sin(orb.pulse * 2) * 0.3 + 0.7;
+        const r = orb.size + pulse; // Visual matches hitbox
+
+        // Outer glow
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(orb.x, orb.y, r + 5, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.fillStyle = '#eef'; ctx.beginPath(); ctx.arc(orb.x, orb.y, r + 2, 0, Math.PI * 2); ctx.fill();
+
+        // Core
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = '#def'; ctx.beginPath(); ctx.arc(orb.x, orb.y, r, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(orb.x, orb.y, r * 0.4, 0, Math.PI * 2); ctx.fill();
+
+        // Sparkle cross
+        ctx.globalAlpha = sparkle;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(orb.x - 1, orb.y - r - 3, 2, r * 2 + 6);
+        ctx.fillRect(orb.x - r - 3, orb.y - 1, r * 2 + 6, 2);
+        ctx.globalAlpha = 1;
     });
 
-    // Skill Orbs
+    // Skill Orbs - colored version of normal orbs, bigger (visual only, hitbox uses orb.size)
     skillOrbs.forEach(orb => {
-        const pulse = Math.sin(orb.pulse) * 3;
-        ctx.fillStyle = orb.skill.color + '44'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse + 10, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = orb.skill.color + '88'; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse + 5, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = orb.skill.color; ctx.beginPath(); ctx.arc(orb.x, orb.y, orb.size + pulse, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(orb.x, orb.y, 4, 0, Math.PI * 2); ctx.fill();
+        const pulse = Math.sin(orb.pulse) * 1.5;
+        const sparkle = Math.sin(orb.pulse * 2) * 0.3 + 0.7;
+        const r = orb.size + pulse; // Visual matches hitbox
+        const color = orb.skill.color;
+
+        // Outer glow
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = color; ctx.beginPath(); ctx.arc(orb.x, orb.y, r + 8, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = color; ctx.beginPath(); ctx.arc(orb.x, orb.y, r + 4, 0, Math.PI * 2); ctx.fill();
+
+        // Core
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = color; ctx.beginPath(); ctx.arc(orb.x, orb.y, r, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(orb.x, orb.y, r * 0.4, 0, Math.PI * 2); ctx.fill();
+
+        // Sparkle cross
+        ctx.globalAlpha = sparkle;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(orb.x - 1, orb.y - r - 5, 2, r * 2 + 10);
+        ctx.fillRect(orb.x - r - 5, orb.y - 1, r * 2 + 10, 2);
+        ctx.globalAlpha = 1;
     });
 
     // Enemies
