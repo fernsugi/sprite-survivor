@@ -74,6 +74,7 @@ function checkAllMerges() {
                     createMergeEffect(s1);
                     createMergeEffect(s2);
                     sprites.splice(j, 1);
+                    SFX.mergeSprite();
                     mergeOccurred = true;
                     break;
                 }
@@ -102,6 +103,7 @@ function summonSprite(typeIndex) {
         reflectsProjectiles: type.reflectsProjectiles || false
     };
     sprites.push(newSprite);
+    SFX.summonSprite();
     checkAllMerges();
     updateUI();
 }
@@ -129,6 +131,7 @@ function updateSprites() {
             case 'shooter':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown;
+                    SFX.shoot();
                     const dx = nearestEnemy.x - sprite.x, dy = nearestEnemy.y - sprite.y, dist = Math.sqrt(dx * dx + dy * dy);
                     spriteProjectiles.push({ x: sprite.x, y: sprite.y, vx: (dx / dist) * 6, vy: (dy / dist) * 6, damage: sprite.damage, size: 5 + sprite.level, color: sprite.color });
                 }
@@ -136,22 +139,25 @@ function updateSprites() {
             case 'melee':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown; applyDamage(nearestEnemy, sprite.damage);
+                    SFX.melee();
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: sprite.color, angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
                 }
                 break;
             case 'aoe':
                 if (nearestEnemy && nearestDist < sprite.range * 1.5) {
                     sprite.currentCooldown = sprite.cooldown;
+                    SFX.aoe();
                     targets.forEach(enemy => { const dx = enemy.x - nearestEnemy.x, dy = enemy.y - nearestEnemy.y; if (Math.sqrt(dx * dx + dy * dy) < sprite.range) applyDamage(enemy, sprite.damage); });
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 20, type: 'aoe', color: sprite.color, radius: sprite.range });
                 }
                 break;
             case 'healer':
-                if (player.hp < player.maxHp) { sprite.currentCooldown = sprite.cooldown; player.hp = Math.min(player.maxHp, player.hp + sprite.healAmount); effects.push({ x: player.x, y: player.y, life: 30, type: 'heal' }); }
+                if (player.hp < player.maxHp) { sprite.currentCooldown = sprite.cooldown; player.hp = Math.min(player.maxHp, player.hp + sprite.healAmount); SFX.heal(); effects.push({ x: player.x, y: player.y, life: 30, type: 'heal' }); }
                 break;
             case 'chain':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown;
+                    SFX.lightning();
                     let chainTargets = [nearestEnemy], lastTarget = nearestEnemy;
                     for (let c = 0; c < 5 + sprite.level; c++) {
                         let nextTarget = null, nextDist = Infinity;
@@ -165,6 +171,7 @@ function updateSprites() {
             case 'spin':
                 if (nearestDist < sprite.range * 1.5) {
                     sprite.currentCooldown = sprite.cooldown;
+                    SFX.melee();
                     targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) applyDamage(enemy, sprite.damage); });
                     effects.push({ x: sprite.x, y: sprite.y, life: 20, type: 'spin', color: sprite.color, radius: sprite.range });
                 }
@@ -172,6 +179,7 @@ function updateSprites() {
             case 'slow':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown;
+                    SFX.aoe();
                     targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) { applyDamage(enemy, sprite.damage); if (enemy.slowed !== undefined) enemy.slowed = 180; } });
                     effects.push({ x: sprite.x, y: sprite.y, life: 20, type: 'aoe', color: '#8ef8', radius: sprite.range });
                 }
@@ -179,6 +187,7 @@ function updateSprites() {
             case 'vampire':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown; applyDamage(nearestEnemy, sprite.damage);
+                    SFX.melee();
                     player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.5));
                     for (let j = 0; j < 5; j++) effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, vx: (player.x - nearestEnemy.x) * 0.05 + (Math.random() - 0.5) * 2, vy: (player.y - nearestEnemy.y) * 0.05 + (Math.random() - 0.5) * 2, life: 25, color: '#d4a', type: 'particle' });
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: '#d4a', angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
@@ -187,6 +196,7 @@ function updateSprites() {
             case 'explode':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown;
+                    SFX.shoot();
                     const dx = nearestEnemy.x - sprite.x, dy = nearestEnemy.y - sprite.y, dist = Math.sqrt(dx * dx + dy * dy);
                     spriteProjectiles.push({ x: sprite.x, y: sprite.y, vx: (dx / dist) * 5, vy: (dy / dist) * 5, damage: sprite.damage, size: 8 + sprite.level, color: sprite.color, explosive: true, explosionRadius: 60 + sprite.level * 10 });
                 }
@@ -206,6 +216,7 @@ function updateSpriteProjectiles() {
             const dx = enemy.x - proj.x, dy = enemy.y - proj.y, dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < (enemy.size || boss?.size || 14)/2 + proj.size) {
                 if (proj.explosive) {
+                    SFX.explosion();
                     targets.forEach(e => {
                         const edist = Math.sqrt((e.x - proj.x) ** 2 + (e.y - proj.y) ** 2);
                         if (edist < proj.explosionRadius) {
@@ -223,6 +234,7 @@ function updateSpriteProjectiles() {
                     effects.push({ x: proj.x, y: proj.y, life: 25, type: 'aoe', color: '#fa0', radius: proj.explosionRadius });
                     for (let k = 0; k < 15; k++) effects.push({ x: proj.x, y: proj.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: Math.random() > 0.5 ? '#fa0' : '#ff0', type: 'particle' });
                 } else {
+                    SFX.enemyHit();
                     let dmg = proj.damage;
                     // Check for boss shield
                     if (enemy === boss && boss.shield > 0) {

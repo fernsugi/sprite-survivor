@@ -45,6 +45,7 @@ function spawnBoss() {
     };
     document.getElementById('bossHealth').style.display = 'block';
     document.getElementById('bossName').textContent = t(boss.nameKey);
+    SFX.bossSpawn();
 }
 
 function updateBossMechanics() {
@@ -161,6 +162,7 @@ function bossAttack() {
     if (boss.attackTimer >= attackSpeed) {
         boss.attackTimer = 0;
         boss.attackPattern = (boss.attackPattern + 1) % 5;
+        SFX.bossAttack();
         switch (boss.attackPattern) {
             case 0:
                 for (let i = 0; i < 12; i++) {
@@ -231,6 +233,7 @@ function updateEnemies() {
         } else { enemy.x += (dx / dist) * enemy.speed * speedMult; enemy.y += (dy / dist) * enemy.speed * speedMult; }
 
         if (dist < player.width/2 + enemy.size/2 && player.invincibleTime <= 0) {
+            SFX.playerHit();
             if (enemy.type === 'explode') {
                 player.hp -= enemy.damage; player.invincibleTime = 60;
                 for (let j = 0; j < 20; j++) effects.push({ x: enemy.x, y: enemy.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: '#ff0', type: 'particle' });
@@ -240,6 +243,7 @@ function updateEnemies() {
         }
         if (enemy.hp <= 0) {
             enemies.splice(i, 1); score += 20;
+            SFX.enemyDeath();
             for (let j = 0; j < 8; j++) effects.push({ x: enemy.x, y: enemy.y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, life: 25, color: enemy.color, type: 'particle' });
         }
     }
@@ -301,6 +305,7 @@ function updateProjectiles() {
         const dx = player.x - proj.x, dy = player.y - proj.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < player.width/2 + proj.size && player.invincibleTime <= 0 && !proj.reflected) {
+            SFX.playerHit();
             player.hp -= proj.damage; player.invincibleTime = 30; projectiles.splice(i, 1);
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
         }
@@ -312,8 +317,9 @@ function updateBoss() {
         bossAttack();
         if (boss.hp <= 0) {
             score += 1000;
+            SFX.bossDeath();
             for (let i = 0; i < 50; i++) effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 60, color: boss.color, type: 'particle' });
-            if (wave >= 20) { gameRunning = false; document.getElementById('victory').style.display = 'flex'; document.getElementById('victoryScore').textContent = score; document.getElementById('victoryTime').textContent = formatTime(gameTime); }
+            if (wave >= 20) { gameRunning = false; SFX.victory(); document.getElementById('victory').style.display = 'flex'; document.getElementById('victoryScore').textContent = score; document.getElementById('victoryTime').textContent = formatTime(gameTime); }
             else { boss = null; bossActive = false; wave++; waveTimer = 0; document.getElementById('bossHealth').style.display = 'none'; }
         }
     }

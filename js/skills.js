@@ -20,6 +20,7 @@ function useSkill() {
     if (!currentSkill) return;
     switch (currentSkill.name) {
         case 'skillDash':
+            SFX.skillDash();
             let dx = 0, dy = 0;
             if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
             if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
@@ -74,6 +75,7 @@ function useSkill() {
             }
             break;
         case 'skillHeal':
+            SFX.skillHeal();
             player.hp = player.maxHp;
             for (let i = 0; i < 20; i++) {
                 effects.push({ x: player.x, y: player.y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4 - 2, life: 40, color: '#5f5', type: 'particle' });
@@ -81,6 +83,7 @@ function useSkill() {
             effects.push({ x: player.x, y: player.y, life: 30, type: 'heal' });
             break;
         case 'skillNuke':
+            SFX.skillNuke();
             const nukeDamage = 30 + wave * 5;
             enemies.forEach(enemy => {
                 enemy.hp -= nukeDamage;
@@ -93,6 +96,7 @@ function useSkill() {
             }
             break;
         case 'skillMagnet':
+            SFX.skillMagnet();
             // Collect all orbs instantly
             const collectedOrbs = orbs.length;
             orbs.forEach(orb => {

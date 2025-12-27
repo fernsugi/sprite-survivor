@@ -255,6 +255,7 @@
         </div>
 
         <div id="languagePanel">
+            <button id="soundToggle" class="sound-btn" onclick="toggleSound()" title="Mute">🔊</button>
             <h3 data-i18n="language">LANGUAGE</h3>
             <button class="lang-btn active" onclick="setLanguage('en')">English</button>
             <button class="lang-btn" onclick="setLanguage('ja')">日本語</button>
@@ -270,6 +271,7 @@
 
     <!-- Load order matters: config/i18n first, then state, then systems, then main -->
     <script src="js/config.js"></script>
+    <script src="js/sound.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/state.js"></script>
     <script src="js/ui.js"></script>

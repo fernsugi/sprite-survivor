@@ -16,6 +16,7 @@ const ORB_SPEED_BOOST_DURATION = 180; // 3 seconds at 60fps
 const ORB_SPEED_BOOST_MAX = 1.0;
 
 function collectOrb(orb, effectColor = '#fff') {
+    SFX.collectOrb();
     points++;
     score += ORB_SCORE;
     player.hp = Math.min(player.maxHp, player.hp + ORB_HEAL_AMOUNT);
@@ -56,6 +57,7 @@ function updateOrbs() {
         if (dist < player.width / 2 + orb.size) {
             skillOrbs.splice(i, 1);
             currentSkill = orb.skill;
+            SFX.collectSkillOrb();
             updateSkillDisplay();
             for (let j = 0; j < 10; j++) effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 5, vy: (Math.random() - 0.5) * 5, life: 30, color: orb.skill.color, type: 'particle' });
         }
@@ -111,6 +113,7 @@ function update() {
     waveTimer += 1 / 60;
     if (waveTimer >= WAVE_DURATION && !bossActive) {
         waveTimer = 0; wave++;
+        SFX.waveStart();
         if (wave % BOSS_WAVE_INTERVAL === 0) spawnBoss();
     }
 
@@ -135,6 +138,7 @@ function update() {
     // Check game over
     if (player.hp <= 0) {
         gameRunning = false;
+        SFX.playerDeath();
         document.getElementById('gameOver').style.display = 'flex';
         document.getElementById('finalScore').textContent = score;
         document.getElementById('finalWave').textContent = wave;
@@ -150,12 +154,15 @@ function gameLoop() {
 }
 
 function startGame(cheat = false) {
+    initAudio();
+    loadSoundPreference();
     cheatMode = cheat;
     if (cheatMode) points = Infinity;
     document.getElementById('startScreen').style.display = 'none';
     gameStarted = true;
     gameRunning = true;
     for (let i = 0; i < 8; i++) spawnOrb();
+    SFX.waveStart();
 }
 
 function restartGame() {
@@ -171,6 +178,7 @@ function restartGame() {
     document.getElementById('pauseScreen').style.display = 'none';
     for (let i = 0; i < 8; i++) spawnOrb();
     updateUI();
+    SFX.waveStart();
 }
 
 // Event Listeners
