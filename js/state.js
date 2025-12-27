@@ -30,7 +30,9 @@ const player = {
     invincibleTime: 0,
     color: '#4af',
     speedBoost: 0,
-    speedBoostTimer: 0
+    speedBoostTimer: 0,
+    facingX: 0,
+    facingY: 1
 };
 
 // Current Skill

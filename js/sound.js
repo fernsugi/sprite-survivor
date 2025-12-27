@@ -156,10 +156,10 @@ const SFX = {
     },
 
     summonNinja: () => {
-        // Quick swoosh - fast stealthy sound
-        playNoise(0.06, 0.12);
-        playTone(1200, 0.03, 'sawtooth', 0.15);
-        setTimeout(() => playTone(600, 0.05, 'sawtooth', 0.1), 20);
+        // Quick swoosh - fast stealthy sound (more noticeable)
+        playNoise(0.1, 0.25);
+        playTone(1200, 0.05, 'sawtooth', 0.3);
+        setTimeout(() => playTone(600, 0.08, 'sawtooth', 0.25), 25);
     },
 
     summonWizard: () => {
@@ -213,10 +213,9 @@ const SFX = {
     },
 
     mergeSprite: () => {
-        playTone(400, 0.1, 'sine', 0.3);
-        setTimeout(() => playTone(600, 0.1, 'sine', 0.3), 50);
-        setTimeout(() => playTone(800, 0.1, 'sine', 0.3), 100);
-        setTimeout(() => playTone(1000, 0.2, 'sine', 0.3), 150);
+        // Subtle soft chime - not fancy, just noticeable
+        playTone(600, 0.08, 'sine', 0.12);
+        playTone(800, 0.1, 'sine', 0.1);
     },
 
     shoot: () => {

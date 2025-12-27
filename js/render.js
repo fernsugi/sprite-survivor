@@ -60,7 +60,16 @@ function draw() {
     // Player
     if (player.invincibleTime === 0 || Math.floor(player.invincibleTime / 4) % 2 === 0) {
         ctx.fillStyle = player.color + '44'; ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
-        drawPixelChar(player.x, player.y, player.width, player.color);
+        // Draw player body
+        const size = player.width, s = size / 4;
+        ctx.fillStyle = '#000'; ctx.fillRect(Math.floor(player.x - size/2 - 1), Math.floor(player.y - size/2 - 1), size + 2, size + 2);
+        ctx.fillStyle = player.color; ctx.fillRect(Math.floor(player.x - size/2), Math.floor(player.y - size/2), size, size);
+        // Draw eyes offset by facing direction (dramatic shift to edge)
+        const eyeOffsetX = player.facingX * 5;
+        const eyeOffsetY = player.facingY * 5;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(Math.floor(player.x - s + eyeOffsetX), Math.floor(player.y - s + eyeOffsetY), s, s);
+        ctx.fillRect(Math.floor(player.x + s/2 + eyeOffsetX), Math.floor(player.y - s + eyeOffsetY), s, s);
     }
     if (currentSkill) {
         ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center';

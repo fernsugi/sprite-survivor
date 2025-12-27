@@ -81,6 +81,8 @@ function updatePlayer() {
     if (dx !== 0 || dy !== 0) {
         const len = Math.sqrt(dx * dx + dy * dy);
         dx /= len; dy /= len;
+        player.facingX = dx;
+        player.facingY = dy;
         const currentSpeed = player.speed + player.speedBoost;
         player.x += dx * currentSpeed; player.y += dy * currentSpeed;
     }
@@ -166,7 +168,7 @@ function startGame(cheat = false) {
 }
 
 function restartGame() {
-    player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0;
+    player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
@@ -182,7 +184,7 @@ function restartGame() {
 }
 
 function goToMainMenu() {
-    player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0;
+    player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
