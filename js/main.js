@@ -9,6 +9,18 @@ function spawnOrb() {
     });
 }
 
+const ORB_HEAL_AMOUNT = 2;
+const ORB_SCORE = 10;
+
+function collectOrb(orb, effectColor = '#fff') {
+    points++;
+    score += ORB_SCORE;
+    player.hp = Math.min(player.maxHp, player.hp + ORB_HEAL_AMOUNT);
+    for (let j = 0; j < 5; j++) {
+        effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 20, color: effectColor, type: 'particle' });
+    }
+}
+
 function updateEffects() {
     for (let i = effects.length - 1; i >= 0; i--) {
         const effect = effects[i]; effect.life--;
@@ -25,9 +37,9 @@ function updateOrbs() {
         const orb = orbs[i];
         const dx = player.x - orb.x, dy = player.y - orb.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < player.width/2 + orb.size) {
-            orbs.splice(i, 1); points++; score += 10;
-            for (let j = 0; j < 5; j++) effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 20, color: '#fff', type: 'particle' });
+        if (dist < player.width / 2 + orb.size) {
+            orbs.splice(i, 1);
+            collectOrb(orb, '#fff');
         }
     }
 
@@ -35,7 +47,7 @@ function updateOrbs() {
         const orb = skillOrbs[i];
         const dx = player.x - orb.x, dy = player.y - orb.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < player.width/2 + orb.size) {
+        if (dist < player.width / 2 + orb.size) {
             skillOrbs.splice(i, 1);
             currentSkill = orb.skill;
             updateSkillDisplay();
@@ -55,8 +67,8 @@ function updatePlayer() {
         dx /= len; dy /= len;
         player.x += dx * player.speed; player.y += dy * player.speed;
     }
-    player.x = Math.max(player.width/2, Math.min(canvas.width - player.width/2, player.x));
-    player.y = Math.max(player.height/2, Math.min(canvas.height - player.height/2, player.y));
+    player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
+    player.y = Math.max(player.height / 2, Math.min(canvas.height - player.height / 2, player.y));
     if (player.invincibleTime > 0) player.invincibleTime--;
 }
 
@@ -75,11 +87,13 @@ function togglePause() {
 function update() {
     if (!gameRunning || gamePaused) return;
 
-    // Game timer
-    gameTime += 1/60;
+    // Game timer + passive point generation (1 point per second)
+    const prevSecond = Math.floor(gameTime);
+    gameTime += 1 / 60;
+    if (Math.floor(gameTime) > prevSecond) points++;
 
     // Wave timer
-    waveTimer += 1/60;
+    waveTimer += 1 / 60;
     if (waveTimer >= WAVE_DURATION && !bossActive) {
         waveTimer = 0; wave++;
         if (wave % BOSS_WAVE_INTERVAL === 0) spawnBoss();

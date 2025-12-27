@@ -46,8 +46,7 @@ function useSkill() {
                 const distToLine = Math.sqrt((orb.x - closestX) ** 2 + (orb.y - closestY) ** 2);
                 if (distToLine < dashPickupRadius) {
                     orbs.splice(i, 1);
-                    points++; score += 10;
-                    for (let j = 0; j < 5; j++) effects.push({ x: orb.x, y: orb.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 20, color: '#5ff', type: 'particle' });
+                    collectOrb(orb, '#5ff');
                 }
             }
             // Also collect skill orbs along dash path
@@ -94,10 +93,7 @@ function useSkill() {
             // Collect all orbs instantly
             const collectedOrbs = orbs.length;
             orbs.forEach(orb => {
-                points++; score += 10;
-                for (let j = 0; j < 3; j++) {
-                    effects.push({ x: orb.x, y: orb.y, vx: (player.x - orb.x) * 0.1 + (Math.random() - 0.5) * 2, vy: (player.y - orb.y) * 0.1 + (Math.random() - 0.5) * 2, life: 25, color: '#ff0', type: 'particle' });
-                }
+                collectOrb(orb, '#ff0');
             });
             orbs.length = 0;
             // Also collect skill orbs

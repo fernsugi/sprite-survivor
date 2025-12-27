@@ -54,13 +54,18 @@ function draw() {
         ctx.fillStyle = '#000'; ctx.fillRect(-sprite.size/2 - 1, -sprite.size/2 - 1, sprite.size + 2, sprite.size + 2);
         ctx.fillStyle = sprite.color; ctx.fillRect(-sprite.size/2, -sprite.size/2, sprite.size, sprite.size);
         ctx.restore();
-        if (sprite.level > 1) { ctx.fillStyle = '#ff0'; ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.fillText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); }
+        if (sprite.level > 1) { ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); ctx.fillStyle = '#fff'; ctx.fillText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); }
     });
 
     // Player
     if (player.invincibleTime === 0 || Math.floor(player.invincibleTime / 4) % 2 === 0) {
         ctx.fillStyle = player.color + '44'; ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
         drawPixelChar(player.x, player.y, player.width, player.color);
+    }
+    if (currentSkill) {
+        ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center';
+        ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(t(currentSkill.name), player.x, player.y - player.height - 5);
+        ctx.fillStyle = currentSkill.color; ctx.fillText(t(currentSkill.name), player.x, player.y - player.height - 5);
     }
 
     // Projectiles
