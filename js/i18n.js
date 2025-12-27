@@ -125,6 +125,69 @@ const translations = {
         pauseHint: "ESCで再開",
         resume: "再開",
         instructPause: "- 一時停止"
+    },
+    ko: {
+        spriteFontSize: "8px",
+        costFontSize: "8px",
+        descFontSize: "8px",
+        title: "스프라이트 서바이버",
+        subtitle: "정령을 소환하고 무리에서 살아남아라",
+        startGame: "게임 시작",
+        instructMove: "- 이동",
+        instructSummon: "- 스프라이트 소환",
+        instructSkill: "- 스킬 사용 (보유 시)",
+        instructTip: "오브를 모으고, 스프라이트를 소환하고, 살아남아라!",
+        hp: "HP",
+        points: "포인트",
+        sprites: "스프라이트",
+        skill: "스킬",
+        pressSpace: "[스페이스]",
+        summonSprites: "스프라이트 소환",
+        wave: "웨이브",
+        nextWave: "다음 웨이브",
+        bossBattle: "보스전!",
+        gameOver: "게임 오버",
+        finalScore: "최종 점수",
+        waveReached: "도달 웨이브",
+        restart: "재시작",
+        victory: "승리!",
+        victoryMsg: "최종 보스를 처치했다!",
+        playAgain: "다시 하기",
+        language: "언어",
+        controlsHint: "WASD/방향키 이동 | 1-0 or ZXCVBNM,./ 소환 | 스페이스 스킬 | ESC 일시정지",
+        skillDash: "대시",
+        skillHeal: "전체 회복",
+        skillNuke: "전체 공격",
+        skillMagnet: "오브 흡수",
+        time: "시간",
+        archer: "궁수",
+        knight: "기사",
+        mage: "마법사",
+        cleric: "성직자",
+        ninja: "닌자",
+        wizard: "위자드",
+        berserker: "버서커",
+        frost: "프로스트",
+        vampire: "뱀파이어",
+        bomber: "폭격수",
+        descArcher: "화살 발사",
+        descKnight: "검 베기",
+        descMage: "범위 마법",
+        descCleric: "회복",
+        descNinja: "빠른 공격",
+        descWizard: "번개",
+        descBerserker: "회전 공격",
+        descFrost: "적 감속",
+        descVampire: "HP 흡수",
+        descBomber: "폭발탄",
+        boss1: "마왕",
+        boss2: "그림자 왕",
+        boss3: "허공제",
+        boss4: "죽음의 거인",
+        paused: "일시정지",
+        pauseHint: "ESC로 재개",
+        resume: "재개",
+        instructPause: "- 일시정지"
     }
 };
 
@@ -135,7 +198,8 @@ function setLanguage(lang) {
 
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
-        if (btn.textContent.includes(lang === 'en' ? 'English' : '日本語')) {
+        const langMap = { 'en': 'English', 'ja': '日本語', 'ko': '한국어' };
+        if (btn.textContent.includes(langMap[lang])) {
             btn.classList.add('active');
         }
     });
