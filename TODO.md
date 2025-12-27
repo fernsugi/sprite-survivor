@@ -1,5 +1,4 @@
 # TODO
-- [ ] Sound effects
 
 ## SEO
 - [ ] Add `aggregateRating` to JSON-LD in index.html once you have real reviews/ratings from a game review site or user feedback system

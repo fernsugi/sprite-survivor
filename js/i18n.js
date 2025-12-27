@@ -642,23 +642,127 @@ const translations = {
     }
 };
 
+// SEO metadata for each language (DRY: centralized SEO data)
+const seoData = {
+    en: {
+        title: "Sprite Survivor - Free Browser Survival Game | Play Online",
+        description: "Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. No download required."
+    },
+    ja: {
+        title: "スプライトサバイバー - 無料ブラウザゲーム | オンラインでプレイ",
+        description: "スプライトサバイバーを無料でプレイ！強力なスプライトを召喚し、ボスを倒し、無限のウェーブを生き延びよう。ダウンロード不要。"
+    },
+    ko: {
+        title: "스프라이트 서바이버 - 무료 브라우저 생존 게임 | 온라인 플레이",
+        description: "스프라이트 서바이버를 무료로 플레이하세요! 강력한 스프라이트를 소환하고, 보스를 물리치고, 끝없는 웨이브에서 살아남으세요."
+    },
+    "zh-TW": {
+        title: "精靈生存者 - 免費瀏覽器生存遊戲 | 線上遊玩",
+        description: "免費遊玩精靈生存者！召喚強大的精靈，擊敗史詩級Boss，在無盡的波次中生存。無需下載。"
+    },
+    "zh-CN": {
+        title: "精灵生存者 - 免费浏览器生存游戏 | 在线游玩",
+        description: "免费游玩精灵生存者！召唤强大的精灵，击败史诗级Boss，在无尽的波次中生存。无需下载。"
+    },
+    es: {
+        title: "Sprite Survivor - Juego de Supervivencia Gratis | Jugar Online",
+        description: "¡Juega Sprite Survivor gratis en tu navegador! Invoca sprites poderosos, derrota jefes épicos y sobrevive oleadas infinitas."
+    },
+    pt: {
+        title: "Sprite Survivor - Jogo de Sobrevivência Grátis | Jogar Online",
+        description: "Jogue Sprite Survivor grátis no seu navegador! Invoque sprites poderosos, derrote chefes épicos e sobreviva a ondas infinitas."
+    },
+    ru: {
+        title: "Sprite Survivor - Бесплатная Браузерная Игра | Играть Онлайн",
+        description: "Играйте в Sprite Survivor бесплатно! Призывайте мощных спрайтов, побеждайте эпических боссов и выживайте в бесконечных волнах."
+    },
+    fr: {
+        title: "Sprite Survivor - Jeu de Survie Gratuit | Jouer en Ligne",
+        description: "Jouez à Sprite Survivor gratuitement! Invoquez des sprites puissants, battez des boss épiques et survivez aux vagues infinies."
+    },
+    vi: {
+        title: "Sprite Survivor - Game Sinh Tồn Miễn Phí | Chơi Online",
+        description: "Chơi Sprite Survivor miễn phí! Triệu hồi sprite mạnh mẽ, đánh bại boss và sinh tồn qua các đợt quái vô tận."
+    }
+};
+
+// Language button labels (DRY: single source of truth)
+const langLabels = {
+    'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文',
+    'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский',
+    'fr': 'Français', 'vi': 'T.Viet'
+};
+
 let currentLang = 'en';
 
-function setLanguage(lang) {
+// Update meta tags for SEO
+function updateSEO(lang) {
+    const seo = seoData[lang] || seoData.en;
+
+    // Update title
+    document.title = seo.title;
+
+    // Update meta tags (DRY: helper function)
+    const updateMeta = (selector, attr, value) => {
+        const el = document.querySelector(selector);
+        if (el) el.setAttribute(attr, value);
+    };
+
+    // Primary meta
+    updateMeta('meta[name="title"]', 'content', seo.title);
+    updateMeta('meta[name="description"]', 'content', seo.description);
+
+    // Open Graph
+    updateMeta('meta[property="og:title"]', 'content', seo.title);
+    updateMeta('meta[property="og:description"]', 'content', seo.description);
+    updateMeta('meta[property="og:url"]', 'content', getLanguageURL(lang));
+
+    // Twitter
+    updateMeta('meta[name="twitter:title"]', 'content', seo.title);
+    updateMeta('meta[name="twitter:description"]', 'content', seo.description);
+    updateMeta('meta[name="twitter:url"]', 'content', getLanguageURL(lang));
+
+    // Canonical
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', getLanguageURL(lang));
+}
+
+// Get URL for a specific language
+function getLanguageURL(lang) {
+    const base = 'https://spritesurvivor.com/';
+    return lang === 'en' ? base : `${base}?lang=${lang}`;
+}
+
+// Update browser URL without reload
+function updateURL(lang) {
+    const url = lang === 'en' ? '/' : `?lang=${lang}`;
+    history.replaceState({ lang }, '', url);
+}
+
+// Get language from URL parameter
+function getURLLanguage() {
+    const params = new URLSearchParams(window.location.search);
+    const lang = params.get('lang');
+    return (lang && translations[lang]) ? lang : null;
+}
+
+function setLanguage(lang, updateHistory = true) {
+    if (!translations[lang]) lang = 'en';
     currentLang = lang;
     localStorage.setItem('spriteSurvivorLang', lang);
 
     // Vietnamese needs a different font due to diacritics
     document.body.classList.toggle('lang-vi', lang === 'vi');
 
+    // Update language button active state
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
-        const langMap = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文', 'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский', 'fr': 'Français', 'vi': 'T.Viet' };
-        if (btn.textContent.includes(langMap[lang])) {
+        if (btn.textContent.includes(langLabels[lang])) {
             btn.classList.add('active');
         }
     });
 
+    // Update all translatable elements
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) {
@@ -666,25 +770,35 @@ function setLanguage(lang) {
         }
     });
 
-    initSpriteButtons();
-    updateSkillDisplay();
-    updateUI();
+    // Update SEO and URL
+    updateSEO(lang);
+    if (updateHistory) updateURL(lang);
+
+    // Reinitialize UI components
+    if (typeof initSpriteButtons === 'function') initSpriteButtons();
+    if (typeof updateSkillDisplay === 'function') updateSkillDisplay();
+    if (typeof updateUI === 'function') updateUI();
 }
 
 function t(key) {
     return translations[currentLang][key] || translations['en'][key] || key;
 }
 
-// Load saved language on startup
+// Initialize language on startup (priority: URL > localStorage > default)
 (function initLanguage() {
+    const urlLang = getURLLanguage();
     const savedLang = localStorage.getItem('spriteSurvivorLang');
-    if (savedLang && translations[savedLang]) {
-        currentLang = savedLang;
-        // Defer UI update until DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => setLanguage(savedLang));
-        } else {
-            setLanguage(savedLang);
-        }
+    const lang = urlLang || (savedLang && translations[savedLang] ? savedLang : 'en');
+
+    currentLang = lang;
+
+    const applyLanguage = () => {
+        setLanguage(lang, !urlLang); // Don't update URL if already from URL
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyLanguage);
+    } else {
+        applyLanguage();
     }
 })();
