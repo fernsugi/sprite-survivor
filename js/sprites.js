@@ -1,5 +1,15 @@
 // Sprite System
 
+// Helper function to apply damage with shield support
+function applyDamage(target, damage) {
+    if (target === boss && boss && boss.shield > 0) {
+        const absorbed = Math.min(boss.shield, damage);
+        boss.shield -= absorbed;
+        damage -= absorbed;
+    }
+    target.hp -= damage;
+}
+
 function initSpriteButtons() {
     const container = document.getElementById('spriteButtons');
     container.innerHTML = '';
@@ -125,14 +135,14 @@ function updateSprites() {
                 break;
             case 'melee':
                 if (nearestEnemy && nearestDist < sprite.range) {
-                    sprite.currentCooldown = sprite.cooldown; nearestEnemy.hp -= sprite.damage;
+                    sprite.currentCooldown = sprite.cooldown; applyDamage(nearestEnemy, sprite.damage);
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: sprite.color, angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
                 }
                 break;
             case 'aoe':
                 if (nearestEnemy && nearestDist < sprite.range * 1.5) {
                     sprite.currentCooldown = sprite.cooldown;
-                    targets.forEach(enemy => { const dx = enemy.x - nearestEnemy.x, dy = enemy.y - nearestEnemy.y; if (Math.sqrt(dx * dx + dy * dy) < sprite.range) enemy.hp -= sprite.damage; });
+                    targets.forEach(enemy => { const dx = enemy.x - nearestEnemy.x, dy = enemy.y - nearestEnemy.y; if (Math.sqrt(dx * dx + dy * dy) < sprite.range) applyDamage(enemy, sprite.damage); });
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 20, type: 'aoe', color: sprite.color, radius: sprite.range });
                 }
                 break;
@@ -148,27 +158,27 @@ function updateSprites() {
                         targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 80 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
                         if (nextTarget) { chainTargets.push(nextTarget); lastTarget = nextTarget; }
                     }
-                    chainTargets.forEach((target, idx) => { target.hp -= sprite.damage * (1 - idx * 0.15); if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color }); });
+                    chainTargets.forEach((target, idx) => { applyDamage(target, sprite.damage * (1 - idx * 0.15)); if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color }); });
                     effects.push({ x: sprite.x, y: sprite.y, x2: nearestEnemy.x, y2: nearestEnemy.y, life: 10, type: 'lightning', color: sprite.color });
                 }
                 break;
             case 'spin':
                 if (nearestDist < sprite.range * 1.5) {
                     sprite.currentCooldown = sprite.cooldown;
-                    targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) enemy.hp -= sprite.damage; });
+                    targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) applyDamage(enemy, sprite.damage); });
                     effects.push({ x: sprite.x, y: sprite.y, life: 20, type: 'spin', color: sprite.color, radius: sprite.range });
                 }
                 break;
             case 'slow':
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown;
-                    targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) { enemy.hp -= sprite.damage; if (enemy.slowed !== undefined) enemy.slowed = 180; } });
+                    targets.forEach(enemy => { if (Math.sqrt((enemy.x - sprite.x) ** 2 + (enemy.y - sprite.y) ** 2) < sprite.range) { applyDamage(enemy, sprite.damage); if (enemy.slowed !== undefined) enemy.slowed = 180; } });
                     effects.push({ x: sprite.x, y: sprite.y, life: 20, type: 'aoe', color: '#8ef8', radius: sprite.range });
                 }
                 break;
             case 'vampire':
                 if (nearestEnemy && nearestDist < sprite.range) {
-                    sprite.currentCooldown = sprite.cooldown; nearestEnemy.hp -= sprite.damage;
+                    sprite.currentCooldown = sprite.cooldown; applyDamage(nearestEnemy, sprite.damage);
                     player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.5));
                     for (let j = 0; j < 5; j++) effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, vx: (player.x - nearestEnemy.x) * 0.05 + (Math.random() - 0.5) * 2, vy: (player.y - nearestEnemy.y) * 0.05 + (Math.random() - 0.5) * 2, life: 25, color: '#d4a', type: 'particle' });
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: '#d4a', angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
@@ -196,10 +206,34 @@ function updateSpriteProjectiles() {
             const dx = enemy.x - proj.x, dy = enemy.y - proj.y, dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < (enemy.size || boss?.size || 14)/2 + proj.size) {
                 if (proj.explosive) {
-                    targets.forEach(e => { const edist = Math.sqrt((e.x - proj.x) ** 2 + (e.y - proj.y) ** 2); if (edist < proj.explosionRadius) e.hp -= proj.damage * (1 - edist / proj.explosionRadius * 0.5); });
+                    targets.forEach(e => {
+                        const edist = Math.sqrt((e.x - proj.x) ** 2 + (e.y - proj.y) ** 2);
+                        if (edist < proj.explosionRadius) {
+                            let dmg = proj.damage * (1 - edist / proj.explosionRadius * 0.5);
+                            // Check for boss shield
+                            if (e === boss && boss.shield > 0) {
+                                const absorbed = Math.min(boss.shield, dmg);
+                                boss.shield -= absorbed;
+                                dmg -= absorbed;
+                                if (absorbed > 0) effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: '#888' });
+                            }
+                            e.hp -= dmg;
+                        }
+                    });
                     effects.push({ x: proj.x, y: proj.y, life: 25, type: 'aoe', color: '#fa0', radius: proj.explosionRadius });
                     for (let k = 0; k < 15; k++) effects.push({ x: proj.x, y: proj.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: Math.random() > 0.5 ? '#fa0' : '#ff0', type: 'particle' });
-                } else { enemy.hp -= proj.damage; effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: proj.color }); }
+                } else {
+                    let dmg = proj.damage;
+                    // Check for boss shield
+                    if (enemy === boss && boss.shield > 0) {
+                        const absorbed = Math.min(boss.shield, dmg);
+                        boss.shield -= absorbed;
+                        dmg -= absorbed;
+                        if (absorbed > 0) effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: '#888' });
+                    }
+                    enemy.hp -= dmg;
+                    effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: proj.color });
+                }
                 spriteProjectiles.splice(i, 1); break;
             }
         }

@@ -31,16 +31,134 @@ function spawnBoss() {
         damage: 25 * bossMultiplier, phase: 0, attackTimer: 0, attackPattern: 0,
         moveTimer: 0, targetX: canvas.width / 2,
         nameKey: bossNames[Math.min(bossNum - 1, 3)] || 'boss1',
-        color: ['#f44', '#a4f', '#444', '#f84'][Math.min(bossNum - 1, 3)] || '#fff'
+        color: ['#f44', '#a4f', '#444', '#f84'][Math.min(bossNum - 1, 3)] || '#fff',
+        bossNum: bossNum,
+        // Boss-specific mechanics
+        rageMode: false,              // Boss 1: Demon Lord
+        teleportTimer: 0,             // Boss 2: Shadow King
+        cloneSpawned: false,          // Boss 2: Shadow King
+        gravityTimer: 0,              // Boss 3: Void Emperor
+        shield: 0,                    // Boss 3: Void Emperor
+        shieldTimer: 0,               // Boss 3: Void Emperor
+        enrageTimer: 0,               // Boss 4: Death Titan
+        enraged: false                // Boss 4: Death Titan
     };
     document.getElementById('bossHealth').style.display = 'block';
     document.getElementById('bossName').textContent = t(boss.nameKey);
 }
 
+function updateBossMechanics() {
+    if (!boss) return;
+
+    // ===== BOSS 1: Demon Lord - Rage Mode =====
+    if (boss.bossNum === 1) {
+        if (!boss.rageMode && boss.hp < boss.maxHp * 0.5) {
+            boss.rageMode = true;
+            // Visual feedback: flash effect
+            effects.push({ x: boss.x, y: boss.y, life: 30, type: 'screenFlash', color: '#f44' });
+            for (let i = 0; i < 20; i++) {
+                effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 40, color: '#f80', type: 'particle' });
+            }
+        }
+    }
+
+    // ===== BOSS 2: Shadow King - Teleport =====
+    if (boss.bossNum === 2) {
+        boss.teleportTimer++;
+        if (boss.teleportTimer >= 300) { // Every 5 seconds
+            boss.teleportTimer = 0;
+            // Teleport to random position
+            const oldX = boss.x, oldY = boss.y;
+            boss.x = 100 + Math.random() * (canvas.width - 200);
+            boss.y = 80 + Math.random() * 100;
+            boss.targetX = boss.x;
+            // Teleport effects at old and new positions
+            for (let i = 0; i < 15; i++) {
+                effects.push({ x: oldX, y: oldY, vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6, life: 25, color: '#a4f', type: 'particle' });
+                effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6, life: 25, color: '#a4f', type: 'particle' });
+            }
+        }
+        // Clone at 50% HP
+        if (!boss.cloneSpawned && boss.hp < boss.maxHp * 0.5) {
+            boss.cloneSpawned = true;
+            // Spawn a decoy enemy that looks like the boss but is weaker
+            enemies.push({
+                x: boss.x + (Math.random() - 0.5) * 100,
+                y: boss.y + (Math.random() - 0.5) * 50,
+                name: 'Clone', color: '#a4f8', speed: 0.5,
+                hp: boss.maxHp * 0.2, maxHp: boss.maxHp * 0.2,
+                damage: 5, type: 'melee', size: boss.size - 10,
+                isClone: true
+            });
+            effects.push({ x: boss.x, y: boss.y, life: 20, type: 'screenFlash', color: '#a4f' });
+        }
+    }
+
+    // ===== BOSS 3: Void Emperor - Gravity Well + Shield =====
+    if (boss.bossNum === 3) {
+        boss.gravityTimer++;
+        if (boss.gravityTimer >= 480) { // Every 8 seconds
+            boss.gravityTimer = 0;
+            // Create gravity pull effect for 3 seconds
+            effects.push({ x: boss.x, y: boss.y, life: 180, type: 'gravity', radius: 200 });
+        }
+        // Apply gravity pull if effect exists
+        effects.forEach(effect => {
+            if (effect.type === 'gravity' && effect.life > 0) {
+                const dx = boss.x - player.x, dy = boss.y - player.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 200 && dist > 50) {
+                    player.x += (dx / dist) * 0.8;
+                    player.y += (dy / dist) * 0.8;
+                }
+            }
+        });
+        // Shield regeneration
+        boss.shieldTimer++;
+        if (boss.shieldTimer >= 1200 && boss.shield <= 0) { // Every 20 seconds
+            boss.shieldTimer = 0;
+            boss.shield = 100;
+            effects.push({ x: boss.x, y: boss.y, life: 30, type: 'screenFlash', color: '#444' });
+        }
+    }
+
+    // ===== BOSS 4: Death Titan - Death Aura + Enrage =====
+    if (boss.bossNum === 4) {
+        // Death Aura: damage player if too close
+        const dx = player.x - boss.x, dy = player.y - boss.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150 && player.invincibleTime <= 0) {
+            // 1 damage per second (every 60 frames)
+            if (Math.random() < 1/60) {
+                player.hp -= 1;
+                effects.push({ x: player.x, y: player.y, life: 10, type: 'hit', color: '#f84' });
+            }
+        }
+        // Enrage after 60 seconds
+        boss.enrageTimer++;
+        if (!boss.enraged && boss.enrageTimer >= 3600) { // 60 seconds
+            boss.enraged = true;
+            effects.push({ x: boss.x, y: boss.y, life: 40, type: 'screenFlash', color: '#f84' });
+            for (let i = 0; i < 30; i++) {
+                effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 50, color: '#f84', type: 'particle' });
+            }
+        }
+    }
+}
+
 function bossAttack() {
     if (!boss) return;
+
+    // Boss-specific mechanics
+    updateBossMechanics();
+
+    // Calculate attack speed (affected by rage/enrage)
+    let attackSpeed = 60;
+    if (boss.bossNum === 1 && boss.rageMode) attackSpeed = 45; // 25% faster
+    if (boss.bossNum === 4 && boss.enraged) attackSpeed = 30;  // 50% faster
+
     boss.attackTimer++;
-    if (boss.attackTimer >= 60) {
+    if (boss.attackTimer >= attackSpeed) {
         boss.attackTimer = 0;
         boss.attackPattern = (boss.attackPattern + 1) % 5;
         switch (boss.attackPattern) {

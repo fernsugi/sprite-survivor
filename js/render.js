@@ -85,6 +85,37 @@ function draw() {
             case 'spin': ctx.strokeStyle = effect.color; ctx.lineWidth = 4; ctx.globalAlpha = alpha; ctx.beginPath(); ctx.arc(effect.x, effect.y, effect.radius, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; break;
             case 'laser_warning': ctx.strokeStyle = effect.color; ctx.lineWidth = 10; ctx.globalAlpha = Math.sin(effect.life * 0.5) * 0.5; ctx.beginPath(); ctx.moveTo(effect.x, effect.y); ctx.lineTo(effect.targetX, effect.targetY); ctx.stroke(); ctx.globalAlpha = 1; break;
             case 'screenFlash': ctx.fillStyle = effect.color; ctx.globalAlpha = alpha * 0.3; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.globalAlpha = 1; break;
+            case 'gravity':
+                ctx.strokeStyle = '#448'; ctx.lineWidth = 2; ctx.globalAlpha = alpha * 0.5;
+                for (let r = 50; r <= effect.radius; r += 30) {
+                    ctx.beginPath(); ctx.arc(effect.x, effect.y, r, 0, Math.PI * 2); ctx.stroke();
+                }
+                ctx.globalAlpha = 1; break;
         }
     });
+
+    // Boss-specific visuals
+    if (boss) {
+        // Void Emperor shield
+        if (boss.shield > 0) {
+            ctx.strokeStyle = '#888'; ctx.lineWidth = 4;
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 15, 0, Math.PI * 2); ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+        // Death Titan aura
+        if (boss.bossNum === 4) {
+            ctx.fillStyle = '#f842'; ctx.globalAlpha = 0.15;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, 150, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#f84'; ctx.lineWidth = 2; ctx.globalAlpha = 0.4;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, 150, 0, Math.PI * 2); ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+        // Demon Lord rage indicator
+        if (boss.bossNum === 1 && boss.rageMode) {
+            ctx.strokeStyle = '#f80'; ctx.lineWidth = 3; ctx.globalAlpha = 0.5 + Math.sin(Date.now() * 0.01) * 0.3;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 10, 0, Math.PI * 2); ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+    }
 }
