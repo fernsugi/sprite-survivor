@@ -249,10 +249,10 @@ function update() {
         if (debuffs[key] > 0) debuffs[key]--;
     }
 
-    // Game timer + passive point generation (1 point per second)
+    // Game timer + passive point generation (2 points per second)
     const prevSecond = Math.floor(gameTime);
     gameTime += 1 / 60;
-    if (Math.floor(gameTime) > prevSecond) points++;
+    if (Math.floor(gameTime) > prevSecond) points += 2;
 
     // Wave timer
     waveTimer += 1 / 60;
