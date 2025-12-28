@@ -312,9 +312,9 @@ function updateProjectiles() {
             SFX.playerHit();
             player.hp -= proj.damage; player.invincibleTime = 30; gotHit = true; projectiles.splice(i, 1);
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
-            // Boss projectiles heal boss for 25% of damage dealt
+            // Boss projectiles heal boss for 100% of damage dealt
             if (proj.fromBoss && boss) {
-                boss.hp = Math.min(boss.maxHp, boss.hp + proj.damage * 0.25);
+                boss.hp = Math.min(boss.maxHp, boss.hp + proj.damage);
             }
             // Apply random debuff from boss or hexer projectiles
             if (proj.fromBoss || proj.appliesDebuff) {
