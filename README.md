@@ -48,7 +48,7 @@ Permanent NPC allies summoned via Hero skill orb:
 - **Bouncer** - Bouncing ball projectiles
 
 ### Enemies
-7 enemy types including Hexer (applies debuffs). Bosses have unique mechanics like teleporting, shields, gravity wells, and death auras.
+7 enemy types including Hexer (applies debuffs). Bosses have unique mechanics like teleporting, shields, gravity wells, death auras, and lifesteal (heals when projectiles hit you).
 
 ## Running Locally
 
