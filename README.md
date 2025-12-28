@@ -9,13 +9,14 @@ A comprehensive guide to team compositions, strategies, and tips for clearing th
 ## Table of Contents
 
 1. [Game Basics](#game-basics)
-2. [Boss Guide](#boss-guide)
-3. [Tier List](#tier-list)
-4. [S-Tier Compositions](#s-tier-compositions)
-5. [A-Tier Compositions](#a-tier-compositions)
-6. [Honorable Mentions (Fun Comps)](#honorable-mentions-fun-comps)
-7. [Skill Usage Guide](#skill-usage-guide)
-8. [General Tips](#general-tips)
+2. [New Features](#new-features)
+3. [Boss Guide](#boss-guide)
+4. [Tier List](#tier-list)
+5. [S-Tier Compositions](#s-tier-compositions)
+6. [A-Tier Compositions](#a-tier-compositions)
+7. [Honorable Mentions (Fun Comps)](#honorable-mentions-fun-comps)
+8. [Skill Usage Guide](#skill-usage-guide)
+9. [General Tips](#general-tips)
 
 ---
 
@@ -42,18 +43,58 @@ A single Lv5 sprite massively outperforms five Lv1 sprites. **Focus on merging, 
 
 ---
 
+## New Features
+
+### Hexer Enemy (Wave 6+)
+
+A new purple ranged enemy that shoots **debuff-applying projectiles**. Same debuffs as bosses!
+
+| Stat | Value |
+|------|-------|
+| Color | Purple |
+| HP | 18 (fragile) |
+| Damage | 5 (low) |
+| Special | Projectiles apply random debuff |
+
+**Strategy:** Prioritize killing Hexers before they debuff you. Knight can block their shots.
+
+---
+
+### Autopilot Mode (TAB)
+
+Press TAB to toggle AI control:
+- Automatically collects orbs (prioritizes skill orbs)
+- Avoids enemies, projectiles, and bosses
+- Uses skills when enemies are nearby
+- Great for testing or relaxed gameplay
+
+---
+
+### Achievements (14 Total)
+
+Unlock achievements by completing challenges:
+- **First Win** - Beat the game
+- **Sprite Master** - Win using only one sprite type (10 achievements)
+- **All Sprites** - Use all 10 sprite types in one run
+- **Speedrun** - Win in under 10 minutes
+- **No Hit** - Win without taking damage
+
+View achievements from the main menu. Progress saved in browser.
+
+---
+
 ## Boss Guide
 
 Each boss has unique mechanics that require different strategies.
 
 ### Boss Stats
 
-| Boss | Wave | HP | Damage | Size | Color |
-|------|------|-----|--------|------|-------|
-| Demon Lord | 5 | 750 | 37.5 | 55 | Red |
-| Shadow King | 10 | 1000 | 50 | 60 | Purple |
-| Void Emperor | 15 | 1250 | 62.5 | 65 | Dark |
-| Death Titan | 20 | 1500 | 75 | 70 | Orange |
+| Boss | Wave | HP | Damage | Minions | Color |
+|------|------|-----|--------|---------|-------|
+| Demon Lord | 5 | 1200 | 55 | 3 Chasers | Red |
+| Shadow King | 10 | 1800 | 82 | 5 Speedies | Purple |
+| Void Emperor | 15 | 2400 | 110 | 7 Tanks | Dark |
+| Death Titan | 20 | 3000 | 137 | 9 Bombers | Orange |
 
 ### Boss 1: Demon Lord (Wave 5)
 
@@ -123,11 +164,30 @@ All bosses share these 5 attack patterns, cycling every second:
 |---------|------|-------------|---------|
 | 0 | Circle Burst | 12 projectiles in all directions | Move between gaps |
 | 1 | Aimed Spread | 5 projectiles aimed at player | Dash sideways |
-| 2 | Minion Spawn | Spawns 3 weak Chasers | AOE clears them |
+| 2 | Minion Spawn | Spawns boss-specific minions (see Boss Stats) | AOE clears them |
 | 3 | Laser | Warning line, then beam | Move perpendicular |
 | 4 | Spiral | 8 projectiles in rotating pattern | Stay mobile |
 
 **Pro Tip:** Knight blocks and Berserker reflects work on ALL boss projectiles!
+
+---
+
+### Boss Debuffs (NEW!)
+
+**All boss projectiles apply a random debuff on hit (5 seconds):**
+
+| Debuff | Effect | Visual |
+|--------|--------|--------|
+| No Heal | Cannot recover HP from any source | Red aura |
+| No Block | Knight/Berserker can't block or reflect | Gray aura |
+| Slow | Movement speed reduced 50% | Cyan aura |
+| Weakened | Boss takes 50% less damage | Purple aura |
+
+**Strategy:**
+- Multiple debuffs can stack (e.g., Slow + No Heal)
+- Same debuff refreshes timer instead of stacking
+- Watch for colored screen edge vignette indicating active debuffs
+- Prioritize dodging boss projectiles even more now!
 
 ---
 

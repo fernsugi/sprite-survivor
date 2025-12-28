@@ -20,14 +20,16 @@ index.html      - HTML structure only
 styles.css      - All CSS styling
 js/
 ├── config.js   - Game constants, sprite/enemy/skill type definitions
-├── i18n.js     - 9 languages (en/ja/ko/zh-TW/zh-CN/es/pt/ru/fr), setLanguage(), t()
-├── state.js    - Canvas, player object, entity arrays (enemies, sprites, etc.)
+├── i18n.js     - 10 languages (en/ja/ko/zh-TW/zh-CN/es/pt/ru/fr/vi), setLanguage(), t()
+├── state.js    - Canvas, player object, entity arrays, debuffs
 ├── ui.js       - DOM UI updates (health bars, wave info, sprite buttons)
-├── skills.js   - Skill orbs spawning and skill activation (Dash/Heal/Nuke)
+├── skills.js   - Skill orbs spawning and skill activation (Dash/Heal/Nuke/Magnet)
 ├── sprites.js  - Sprite summoning, merging, combat AI
-├── enemies.js  - Enemy spawning, movement AI, boss attacks
-├── render.js   - All canvas drawing (drawPixelChar, draw)
-└── main.js     - Game loop, input handling, startGame/restartGame
+├── enemies.js  - Enemy spawning, movement AI, boss attacks, debuff application
+├── render.js   - All canvas drawing, environment themes, debuff visuals
+├── sound.js    - Procedural audio with Web Audio API
+├── achievements.js - Achievement system with localStorage persistence
+└── main.js     - Game loop, input handling, autopilot, startGame/restartGame
 ```
 
 **Load order matters** - scripts must load in the order listed in index.html.
@@ -60,19 +62,26 @@ js/
 - Enemy types unlock progressively with wave number
 - Victory at wave 20 after defeating final boss
 
-### 6 Enemy Types (in config.js)
-- Chaser, Shooter, Tank, Speedy, Bomber, Sniper
-- Each has different speed, HP, damage, and behavior
+### 7 Enemy Types (in config.js)
+| Type | Behavior | Special |
+|------|----------|---------|
+| Chaser | Melee | Basic enemy |
+| Shooter | Ranged | Shoots projectiles |
+| Tank | Melee | High HP, slow |
+| Speedy | Melee | Fast movement |
+| Bomber | Melee | Explodes on contact |
+| Sniper | Ranged | Long range, high damage |
+| Hexer | Ranged | Projectiles apply random debuff (wave 6+) |
 
 ### Boss System (in enemies.js)
 Bosses spawn every 5 waves with unique mechanics:
 
-| Wave | Boss | HP | Unique Mechanics |
-|------|------|-----|------------------|
-| 5 | Demon Lord | 500 | Rage mode at 50% HP (25% faster attacks) |
-| 10 | Shadow King | 1000 | Teleport every 5s, Clone decoy at 50% HP |
-| 15 | Void Emperor | 2000 | Gravity well (pulls player), Shield (100 dmg absorb, regenerates) |
-| 20 | Death Titan | 3000 | Death aura (1 dmg/s within 150 range), Enrage after 60s |
+| Wave | Boss | HP | Damage | Minions | Unique Mechanics |
+|------|------|-----|--------|---------|------------------|
+| 5 | Demon Lord | 1200 | 55 | 3 Chasers | Rage mode at 50% HP (25% faster attacks) |
+| 10 | Shadow King | 1800 | 82 | 5 Speedies | Teleport every 5s, Clone decoy at 50% HP |
+| 15 | Void Emperor | 2400 | 110 | 7 Tanks | Gravity well (pulls player), Shield regenerates |
+| 20 | Death Titan | 3000 | 137 | 9 Bombers | Death aura (1 dmg/s), Enrage after 60s |
 
 Boss-specific properties in boss object:
 - `bossNum` - which boss (1-4)
@@ -82,6 +91,28 @@ Boss-specific properties in boss object:
 - `enrageTimer`, `enraged` - Death Titan mechanics
 
 Shield damage absorption handled by `applyDamage()` helper in sprites.js.
+
+### Debuff System (in state.js, enemies.js)
+Boss and Hexer projectiles apply random debuffs on hit (5 seconds each):
+
+| Debuff | Effect | Blocked By |
+|--------|--------|------------|
+| noHeal | Cannot recover HP (orbs, cleric, vampire, skills) | - |
+| noBlock | Knight can't block, Berserker can't reflect | - |
+| slow | Movement speed reduced 50% | - |
+| weakened | Boss takes 50% less damage | - |
+
+Visual feedback: colored aura particles around player + screen edge vignette.
+
+### Autopilot (TAB key)
+- AI-controlled player movement
+- Prioritizes skill orbs, then regular orbs
+- Avoids enemies, projectiles, and boss
+- Auto-uses skills when enemies nearby
+
+### Achievement System (in achievements.js)
+14 achievements stored in localStorage:
+- First Win, 10 sprite-only achievements, All Sprites Used, Speedrun (<10 min), No Hit
 
 ### Skills (in config.js)
 | Skill | Rarity | Effect |
@@ -102,16 +133,18 @@ Shield damage absorption handled by `applyDamage()` helper in sprites.js.
 - Displayed on game over and victory screens in `M:SS` format
 
 ## Key Global Variables (in state.js)
-- `player` - position, hp, invincibility frames, speedBoost, speedBoostTimer
+- `player` - position, hp, invincibility frames, speedBoost, speedBoostTimer, facingX/Y
 - `sprites[]` - active player sprites
 - `enemies[]` - active enemies
 - `projectiles[]` - enemy/boss projectiles
 - `spriteProjectiles[]` - player sprite projectiles
 - `effects[]` - visual particles and indicators
 - `boss` - current boss object (null if no boss)
+- `debuffs` - object with timer for each debuff type (noHeal, noBlock, slow, weakened)
 - `gameTime` - elapsed time in seconds
 - `gamePaused` - pause state (ESC to toggle)
 - `cheatMode` - infinite points mode
+- `autopilot` - AI control state (TAB to toggle)
 
 ## Design Patterns
 - All entities in arrays, removed with `splice()` when dead/expired
