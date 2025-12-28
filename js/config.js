@@ -48,5 +48,6 @@ const enemyTypes = [
     { name: 'Tank', color: '#844', speed: 0.7, hp: 60, damage: 15, type: 'melee', size: 24 },
     { name: 'Speedy', color: '#f4f', speed: 3, hp: 10, damage: 5, type: 'melee', size: 12 },
     { name: 'Bomber', color: '#ff4', speed: 1.2, hp: 25, damage: 20, type: 'explode', size: 16 },
-    { name: 'Sniper', color: '#4ff', speed: 0.5, hp: 12, damage: 15, type: 'sniper', size: 14, shootCooldown: 150 }
+    { name: 'Sniper', color: '#4ff', speed: 0.5, hp: 12, damage: 15, type: 'sniper', size: 14, shootCooldown: 150 },
+    { name: 'Hexer', color: '#a4f', speed: 0.8, hp: 18, damage: 5, type: 'hexer', size: 16, shootCooldown: 120, appliesDebuff: true }
 ];

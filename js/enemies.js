@@ -224,14 +224,14 @@ function updateEnemies() {
         const dx = player.x - enemy.x, dy = player.y - enemy.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (enemy.type === 'ranged' || enemy.type === 'sniper') {
-            const preferredDist = enemy.type === 'sniper' ? 200 : 120;
+        if (enemy.type === 'ranged' || enemy.type === 'sniper' || enemy.type === 'hexer') {
+            const preferredDist = enemy.type === 'sniper' ? 200 : (enemy.type === 'hexer' ? 150 : 120);
             if (dist > preferredDist) { enemy.x += (dx / dist) * enemy.speed * speedMult; enemy.y += (dy / dist) * enemy.speed * speedMult; }
             else if (dist < preferredDist - 30) { enemy.x -= (dx / dist) * enemy.speed * speedMult * 0.5; enemy.y -= (dy / dist) * enemy.speed * speedMult * 0.5; }
             if (enemy.currentShootCooldown <= 0) {
                 enemy.currentShootCooldown = enemy.shootCooldown;
-                const speed = enemy.type === 'sniper' ? 6 : 4;
-                projectiles.push({ x: enemy.x, y: enemy.y, vx: (dx / dist) * speed, vy: (dy / dist) * speed, damage: enemy.damage, size: 6, color: enemy.color });
+                const speed = enemy.type === 'sniper' ? 6 : (enemy.type === 'hexer' ? 3.5 : 4);
+                projectiles.push({ x: enemy.x, y: enemy.y, vx: (dx / dist) * speed, vy: (dy / dist) * speed, damage: enemy.damage, size: 6, color: enemy.color, appliesDebuff: enemy.appliesDebuff });
             }
             enemy.currentShootCooldown--;
         } else { enemy.x += (dx / dist) * enemy.speed * speedMult; enemy.y += (dy / dist) * enemy.speed * speedMult; }
@@ -312,8 +312,8 @@ function updateProjectiles() {
             SFX.playerHit();
             player.hp -= proj.damage; player.invincibleTime = 30; gotHit = true; projectiles.splice(i, 1);
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
-            // Apply random debuff from boss projectiles
-            if (proj.fromBoss) {
+            // Apply random debuff from boss or hexer projectiles
+            if (proj.fromBoss || proj.appliesDebuff) {
                 const debuffTypes = ['noHeal', 'noBlock', 'slow', 'weakened'];
                 const randomDebuff = debuffTypes[Math.floor(Math.random() * debuffTypes.length)];
                 debuffs[randomDebuff] = DEBUFF_DURATION;
