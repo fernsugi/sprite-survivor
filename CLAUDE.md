@@ -93,6 +93,8 @@ Boss-specific properties in boss object:
 
 Shield damage absorption handled by `applyDamage()` helper in sprites.js.
 
+Boss projectile lifesteal: Boss heals for 25% of damage dealt when projectiles hit the player.
+
 ### Debuff System (in state.js, enemies.js)
 Boss and Hexer projectiles apply random debuffs on hit (5 seconds each):
 
