@@ -5,10 +5,11 @@ const POINTS_FOR_SPRITE = 10;
 
 // Skill Types
 const skillTypes = [
-    { name: 'skillDash', color: '#5ff', rarity: 0.5 },
+    { name: 'skillDash', color: '#5ff', rarity: 0.6 },
     { name: 'skillHeal', color: '#5f5', rarity: 0.1 },
-    { name: 'skillNuke', color: '#f55', rarity: 0.4 },
-    { name: 'skillMagnet', color: '#ff0', rarity: 0.05 }
+    { name: 'skillNuke', color: '#f55', rarity: 0.25 },
+    { name: 'skillMagnet', color: '#ff0', rarity: 0.05 },
+    { name: 'skillHero', color: '#a0f', rarity: 0.025 } // Rarest - summons a permanent hero
 ];
 
 // Sprite Types
@@ -39,6 +40,47 @@ const achievementDefs = [
     { id: 'allSprites', nameKey: 'achvAllSprites', descKey: 'achvAllSpritesDesc' },
     { id: 'speedrun', nameKey: 'achvSpeedrun', descKey: 'achvSpeedrunDesc' },
     { id: 'noHit', nameKey: 'achvNoHit', descKey: 'achvNoHitDesc' }
+];
+
+// Hero Types (summoned via Hero skill orb - easily expandable)
+const heroTypes = [
+    {
+        id: 'laser',
+        nameKey: 'heroLaser',
+        color: '#f0f',       // Magenta
+        actionCooldown: 120, // 2 seconds
+        damage: 25,
+        range: 800,          // Full screen laser
+        laserWidth: 60       // 2x wider
+    },
+    {
+        id: 'warrior',
+        nameKey: 'heroWarrior',
+        color: '#fa0',       // Orange
+        actionCooldown: 60,  // 1 second
+        damage: 20,
+        range: 60,           // Melee range
+        coneAngle: Math.PI * 4 / 3, // 240 degree cone (4x bigger)
+        speedMult: 4         // 4x faster movement
+    },
+    {
+        id: 'angel',
+        nameKey: 'heroAngel',
+        color: '#fff',       // White/holy
+        actionCooldown: 90,  // 1.5 seconds
+        eraseRadius: 120,    // AOE to erase projectiles
+        speedMult: 1.5       // 1.5x faster movement
+    },
+    {
+        id: 'bouncer',
+        nameKey: 'heroBouncer',
+        color: '#0ff',       // Cyan
+        actionCooldown: 100, // ~1.7 seconds
+        damage: 15,
+        ballSpeed: 6,
+        ballLifetime: 300,   // 5 seconds
+        ballSize: 24         // 3x bigger (was 8)
+    }
 ];
 
 // Enemy Types

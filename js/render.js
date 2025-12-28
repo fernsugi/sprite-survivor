@@ -392,21 +392,22 @@ function draw() {
         if (sprite.level > 1) { ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); ctx.fillStyle = '#fff'; ctx.fillText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); }
     });
 
-    // Player
+    // Player - slightly enhanced visibility
     if (player.invincibleTime === 0 || Math.floor(player.invincibleTime / 4) % 2 === 0) {
-        // Subtle animated aura - pulsing ring + soft glow with white
         const playerPulse = Math.sin(gameTime * 3) * 2;
-        ctx.globalAlpha = 0.25;
+
+        // Outer glow
+        ctx.globalAlpha = 0.3;
         ctx.fillStyle = '#fff';
-        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = player.color;
-        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.15 + Math.sin(gameTime * 4) * 0.05;
-        ctx.strokeStyle = player.color;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 4 + playerPulse, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 8 + playerPulse, 0, Math.PI * 2); ctx.fill();
+
+        // Pulsing ring
+        ctx.globalAlpha = 0.4 + Math.sin(gameTime * 4) * 0.1;
+        ctx.strokeStyle = '#4af';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(player.x, player.y, player.width + 6 + playerPulse, 0, Math.PI * 2); ctx.stroke();
         ctx.globalAlpha = 1;
+
         // Draw player body
         const size = player.width, s = size / 4;
         ctx.fillStyle = '#000'; ctx.fillRect(Math.floor(player.x - size/2 - 1), Math.floor(player.y - size/2 - 1), size + 2, size + 2);
@@ -468,6 +469,134 @@ function draw() {
         ctx.globalAlpha = 1;
     }
 
+    // Heroes - unique appearance per type (semi-transparent)
+    heroes.forEach(hero => {
+        const s = hero.size;
+        const pulse = Math.sin(gameTime * 4) * 2;
+
+        // Purple glowing aura (reduced)
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = '#a0f';
+        ctx.beginPath(); ctx.arc(hero.x, hero.y, s + 8 + pulse, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 0.2;
+        ctx.strokeStyle = hero.color;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(hero.x, hero.y, s + 5 + pulse, 0, Math.PI * 2); ctx.stroke();
+
+        // Draw unique shape per hero type (50% opacity)
+        ctx.globalAlpha = 0.5;
+        ctx.save();
+        ctx.translate(hero.x, hero.y);
+
+        switch (hero.type.id) {
+            case 'laser':
+                // Triangle/arrow shape (laser cannon)
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.moveTo(0, -s/2 - 2);
+                ctx.lineTo(-s/2 - 2, s/2 + 2);
+                ctx.lineTo(s/2 + 2, s/2 + 2);
+                ctx.closePath(); ctx.fill();
+                ctx.fillStyle = hero.color;
+                ctx.beginPath();
+                ctx.moveTo(0, -s/2);
+                ctx.lineTo(-s/2, s/2);
+                ctx.lineTo(s/2, s/2);
+                ctx.closePath(); ctx.fill();
+                // Cannon detail
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(-2, -s/3, 4, s/3);
+                break;
+
+            case 'warrior':
+                // Square with sword
+                ctx.fillStyle = '#000';
+                ctx.fillRect(-s/2 - 1, -s/2 - 1, s + 2, s + 2);
+                ctx.fillStyle = hero.color;
+                ctx.fillRect(-s/2, -s/2, s, s);
+                // Sword detail
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(-1, -s/2 - 6, 2, s + 6);
+                ctx.fillRect(-4, -s/2 + 2, 8, 3);
+                break;
+
+            case 'angel':
+                // Circle with wings
+                ctx.fillStyle = '#000';
+                ctx.beginPath(); ctx.arc(0, 0, s/2 + 2, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = hero.color;
+                ctx.beginPath(); ctx.arc(0, 0, s/2, 0, Math.PI * 2); ctx.fill();
+                // Wings
+                ctx.fillStyle = '#fff';
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath();
+                ctx.moveTo(-s/2, 0);
+                ctx.lineTo(-s - 5, -s/3);
+                ctx.lineTo(-s - 5, s/3);
+                ctx.closePath(); ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(s/2, 0);
+                ctx.lineTo(s + 5, -s/3);
+                ctx.lineTo(s + 5, s/3);
+                ctx.closePath(); ctx.fill();
+                ctx.globalAlpha = 1;
+                // Halo
+                ctx.strokeStyle = '#ff0';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.arc(0, -s/2 - 4, 6, 0, Math.PI * 2); ctx.stroke();
+                break;
+
+            case 'bouncer':
+                // Diamond shape
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.moveTo(0, -s/2 - 2);
+                ctx.lineTo(-s/2 - 2, 0);
+                ctx.lineTo(0, s/2 + 2);
+                ctx.lineTo(s/2 + 2, 0);
+                ctx.closePath(); ctx.fill();
+                ctx.fillStyle = hero.color;
+                ctx.beginPath();
+                ctx.moveTo(0, -s/2);
+                ctx.lineTo(-s/2, 0);
+                ctx.lineTo(0, s/2);
+                ctx.lineTo(s/2, 0);
+                ctx.closePath(); ctx.fill();
+                // Ball detail in center
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(0, 0, 4, 0, Math.PI * 2); ctx.fill();
+                break;
+        }
+
+        ctx.restore();
+        ctx.globalAlpha = 1;
+
+        // Hero name label (also semi-transparent)
+        ctx.globalAlpha = 0.6;
+        ctx.font = '6px "Press Start 2P"';
+        ctx.textAlign = 'center';
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.strokeText(t(hero.type.nameKey), hero.x, hero.y - hero.size - 5);
+        ctx.fillStyle = hero.color;
+        ctx.fillText(t(hero.type.nameKey), hero.x, hero.y - hero.size - 5);
+        ctx.globalAlpha = 1;
+    });
+
+    // Hero bouncing balls (more transparent)
+    heroBalls.forEach(ball => {
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.size + 2, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = ball.color;
+        ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2); ctx.fill();
+        // Trail effect
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = ball.color;
+        ctx.beginPath(); ctx.arc(ball.x - ball.vx * 2, ball.y - ball.vy * 2, ball.size * 0.7, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 1;
+    });
+
     // Projectiles
     projectiles.forEach(proj => { ctx.fillStyle = proj.color; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.size, 0, Math.PI * 2); ctx.fill(); });
     spriteProjectiles.forEach(proj => { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.size + 1, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = proj.color; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.size, 0, Math.PI * 2); ctx.fill(); });
@@ -490,6 +619,52 @@ function draw() {
                 for (let r = 50; r <= effect.radius; r += 30) {
                     ctx.beginPath(); ctx.arc(effect.x, effect.y, r, 0, Math.PI * 2); ctx.stroke();
                 }
+                ctx.globalAlpha = 1; break;
+            case 'heroLaser':
+                // Wide laser beam
+                ctx.strokeStyle = effect.color;
+                ctx.lineWidth = effect.width * alpha;
+                ctx.globalAlpha = alpha * 0.8;
+                ctx.beginPath();
+                ctx.moveTo(effect.x, effect.y);
+                ctx.lineTo(effect.x2, effect.y2);
+                ctx.stroke();
+                // Core bright line
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 4 * alpha;
+                ctx.beginPath();
+                ctx.moveTo(effect.x, effect.y);
+                ctx.lineTo(effect.x2, effect.y2);
+                ctx.stroke();
+                ctx.globalAlpha = 1; break;
+            case 'heroCone':
+                // Cone/slash attack
+                ctx.fillStyle = effect.color;
+                ctx.globalAlpha = alpha * 0.5;
+                ctx.beginPath();
+                ctx.moveTo(effect.x, effect.y);
+                ctx.arc(effect.x, effect.y, effect.radius, effect.angle - effect.coneAngle/2, effect.angle + effect.coneAngle/2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = effect.color;
+                ctx.lineWidth = 3;
+                ctx.globalAlpha = alpha;
+                ctx.stroke();
+                ctx.globalAlpha = 1; break;
+            case 'heroAngel':
+                // Expanding holy ring
+                ctx.strokeStyle = effect.color;
+                ctx.lineWidth = 4;
+                ctx.globalAlpha = alpha * 0.6;
+                ctx.beginPath();
+                ctx.arc(effect.x, effect.y, effect.radius * (1 - alpha * 0.3), 0, Math.PI * 2);
+                ctx.stroke();
+                // Inner glow
+                ctx.fillStyle = '#fff';
+                ctx.globalAlpha = alpha * 0.2;
+                ctx.beginPath();
+                ctx.arc(effect.x, effect.y, effect.radius * 0.6, 0, Math.PI * 2);
+                ctx.fill();
                 ctx.globalAlpha = 1; break;
         }
     });

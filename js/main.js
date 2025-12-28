@@ -175,6 +175,9 @@ function updatePlayer() {
                 case 'skillMagnet':
                     shouldUseSkill = true; // Always use immediately
                     break;
+                case 'skillHero':
+                    shouldUseSkill = true; // Always use immediately - permanent ally!
+                    break;
                 case 'skillHeal':
                     if (player.hp < player.maxHp * 0.5) shouldUseSkill = true; // Use when HP < 50%
                     break;
@@ -274,6 +277,7 @@ function update() {
     updateProjectiles();
     updateSprites();
     updateSpriteProjectiles();
+    updateHeroes();
     updateEffects();
     updateBoss();
 
@@ -311,7 +315,7 @@ function startGame(cheat = false) {
 
 function restartGame() {
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
-    enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
+    enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; displayScore = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     // Reset debuffs
@@ -331,7 +335,7 @@ function restartGame() {
 
 function goToMainMenu() {
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
-    enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
+    enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; displayScore = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     // Reset debuffs

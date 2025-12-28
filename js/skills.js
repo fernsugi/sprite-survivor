@@ -104,6 +104,38 @@ function useSkill() {
             skillOrbs.forEach(orb => { orb.magnetized = true; });
             effects.push({ x: player.x, y: player.y, life: 30, type: 'aoe', color: '#ff0', radius: 300 });
             break;
+        case 'skillHero':
+            SFX.skillHero();
+            // Summon a random hero type
+            const heroType = heroTypes[Math.floor(Math.random() * heroTypes.length)];
+            const hero = {
+                x: player.x + (Math.random() - 0.5) * 60,
+                y: player.y + (Math.random() - 0.5) * 60,
+                size: 20, // Same size as player
+                type: heroType,
+                color: heroType.color,
+                cooldown: 0,
+                angle: Math.random() * Math.PI * 2,
+                targetX: player.x,
+                targetY: player.y,
+                vx: 0,
+                vy: 0
+            };
+            // Keep within bounds
+            hero.x = Math.max(hero.size, Math.min(canvas.width - hero.size, hero.x));
+            hero.y = Math.max(hero.size, Math.min(canvas.height - hero.size, hero.y));
+            heroes.push(hero);
+            // Spawn particles
+            for (let i = 0; i < 20; i++) {
+                effects.push({
+                    x: hero.x, y: hero.y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    life: 30, color: heroType.color, type: 'particle'
+                });
+            }
+            effects.push({ x: hero.x, y: hero.y, life: 25, type: 'aoe', color: heroType.color, radius: 60 });
+            break;
     }
     currentSkill = null;
     updateSkillDisplay();

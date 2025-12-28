@@ -48,6 +48,8 @@ let orbs = [];
 let skillOrbs = [];
 let effects = [];
 let spriteProjectiles = [];
+let heroes = [];       // Summoned heroes (permanent allies)
+let heroBalls = [];    // Bouncing balls from Bouncer hero
 
 // Achievement Tracking (reset each game)
 let usedSpriteTypes = new Set();

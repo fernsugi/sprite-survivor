@@ -93,8 +93,8 @@ const SFX = {
     // Player sounds
     collectOrb: () => {
         if (!canPlaySound('collectOrb')) return;
-        playTone(600, 0.1, 'sine', 0.15);
-        setTimeout(() => playTone(900, 0.1, 'sine', 0.15), 50);
+        playTone(600, 0.1, 'sine', 0.02);
+        setTimeout(() => playTone(900, 0.1, 'sine', 0.02), 50);
     },
 
     collectSkillOrb: () => {
@@ -105,8 +105,8 @@ const SFX = {
     },
 
     playerHit: () => {
-        playTone(150, 0.2, 'square', 0.4);
-        playNoise(0.1, 0.2);
+        playTone(150, 0.2, 'square', 0.03);
+        playNoise(0.1, 0.015);
     },
 
     playerDeath: () => {
@@ -264,9 +264,9 @@ const SFX = {
 
     enemyDeath: () => {
         if (!canPlaySound('enemyDeath')) return;
-        playTone(300, 0.1, 'square', 0.12);
-        setTimeout(() => playTone(150, 0.15, 'square', 0.12), 50);
-        playNoise(0.1, 0.1);
+        playTone(300, 0.1, 'square', 0.01);
+        setTimeout(() => playTone(150, 0.15, 'square', 0.01), 50);
+        playNoise(0.1, 0.008);
     },
 
     // Boss sounds
@@ -326,6 +326,50 @@ const SFX = {
         for (let i = 0; i < 6; i++) {
             setTimeout(() => playTone(300 + i * 100, 0.08, 'sine', 0.2), i * 40);
         }
+    },
+
+    skillHero: () => {
+        // Epic hero summon (barely noticeable)
+        playTone(400, 0.15, 'square', 0.008);
+        playTone(500, 0.15, 'square', 0.006);
+        setTimeout(() => {
+            playTone(600, 0.15, 'square', 0.008);
+            playTone(800, 0.2, 'sine', 0.006);
+        }, 100);
+        setTimeout(() => playTone(1000, 0.3, 'sine', 0.006), 200);
+    },
+
+    // Hero action sounds (barely noticeable)
+    heroLaser: () => {
+        if (!canPlaySound('heroLaser')) return;
+        playNoise(0.15, 0.005);
+        playTone(200, 0.3, 'sawtooth', 0.008);
+        playTone(180, 0.25, 'square', 0.005);
+    },
+
+    heroWarrior: () => {
+        if (!canPlaySound('heroWarrior')) return;
+        playNoise(0.1, 0.006);
+        playTone(300, 0.08, 'sawtooth', 0.008);
+        setTimeout(() => playTone(200, 0.1, 'sawtooth', 0.005), 40);
+    },
+
+    heroAngel: () => {
+        if (!canPlaySound('heroAngel')) return;
+        playTone(800, 0.15, 'sine', 0.008);
+        playTone(1200, 0.2, 'sine', 0.005);
+        setTimeout(() => playTone(1000, 0.15, 'sine', 0.006), 80);
+    },
+
+    heroBouncer: () => {
+        if (!canPlaySound('heroBouncer')) return;
+        playTone(500, 0.08, 'square', 0.008);
+        playTone(700, 0.1, 'sine', 0.005);
+    },
+
+    heroBallBounce: () => {
+        if (!canPlaySound('heroBallBounce')) return;
+        playTone(400, 0.05, 'square', 0.004);
     },
 
     // Wave sounds
