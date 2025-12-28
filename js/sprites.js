@@ -208,7 +208,7 @@ function updateSprites() {
                     sprite.currentCooldown = sprite.cooldown; applyDamage(nearestEnemy, sprite.damage);
                     SFX.melee();
                     if (debuffs.noHeal <= 0) {
-                        const healAmount = Math.floor(sprite.damage * 0.2);
+                        const healAmount = Math.floor(sprite.damage * 0.1);
                         const hpToMax = player.maxHp - player.hp;
                         if (healAmount <= hpToMax) {
                             player.hp += healAmount;

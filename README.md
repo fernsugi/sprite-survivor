@@ -28,7 +28,7 @@ Summon sprites using points collected from orbs. Two sprites of the same type AN
 | **A** | Wizard | 25 | Chain Lightning | Hits 3+level targets. Great crowd control. |
 | **B** | Archer | 10 | Ranged DPS | Cheapest. Best range (250). Easy to merge early. |
 | **B** | Mage | 15 | Targeted AOE | Cheap AOE option. Good mid-game. |
-| **B** | Vampire | 30 | Lifesteal + Overheal | 20% lifesteal. Grants grey HP shield (max 50). |
+| **B** | Vampire | 30 | Lifesteal + Overheal | 10% lifesteal. Grants grey HP shield (max 50). |
 | **B** | Ninja | 15 | Fast Attacker | Fastest cooldown (20). Higher DPS than Archer. |
 | **B** | Frost | 25 | Slow Utility | 50% enemy slow. Essential for boss fights. |
 | **B** | Knight | 15 | Tank + Block | Blocks projectiles. Good vs ranged enemies. |
