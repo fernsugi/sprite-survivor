@@ -179,9 +179,12 @@ function bossAttack() {
                 break;
             case 2:
                 const minionCount = 1 + boss.bossNum * 2; // Boss 1: 3, Boss 2: 5, Boss 3: 7, Boss 4: 9
+                // Different minion types per boss
+                const minionTypes = [0, 3, 2, 4]; // Chaser, Speedy, Tank, Bomber
+                const minionType = enemyTypes[minionTypes[boss.bossNum - 1] || 0];
                 for (let i = 0; i < minionCount; i++) {
                     const angle = Math.random() * Math.PI * 2;
-                    enemies.push({ x: boss.x + Math.cos(angle) * 30, y: boss.y + Math.sin(angle) * 30, ...enemyTypes[0], hp: enemyTypes[0].hp * 0.5, maxHp: enemyTypes[0].hp * 0.5 });
+                    enemies.push({ x: boss.x + Math.cos(angle) * 30, y: boss.y + Math.sin(angle) * 30, ...minionType, hp: minionType.hp * 0.5, maxHp: minionType.hp * 0.5, slowed: 0 });
                 }
                 break;
             case 3:
