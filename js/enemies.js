@@ -188,15 +188,16 @@ function bossAttack() {
                 }
                 break;
             case 3:
-                // Save aim direction when warning appears (so projectiles fire where warning aimed)
-                const laserDx = player.x - boss.x, laserDy = player.y - boss.y;
+                // Save boss position and aim direction when warning appears
+                const laserX = boss.x, laserY = boss.y;
+                const laserDx = player.x - laserX, laserDy = player.y - laserY;
                 const laserDist = Math.sqrt(laserDx * laserDx + laserDy * laserDy);
                 const laserVx = laserDx / laserDist, laserVy = laserDy / laserDist;
-                effects.push({ x: boss.x, y: boss.y, targetX: player.x, targetY: player.y, life: 30, type: 'laser_warning', color: '#f008' });
+                effects.push({ x: laserX, y: laserY, targetX: player.x, targetY: player.y, life: 30, type: 'laser_warning', color: '#f008' });
                 setTimeout(() => {
                     if (!boss) return;
                     for (let i = 0; i < 20; i++) {
-                        projectiles.push({ x: boss.x + laserVx * i * 30, y: boss.y + laserVy * i * 30, vx: laserVx * 8, vy: laserVy * 8, damage: boss.damage * 0.3, size: 12, color: '#f44', fromBoss: true, life: 20 });
+                        projectiles.push({ x: laserX + laserVx * i * 30, y: laserY + laserVy * i * 30, vx: laserVx * 8, vy: laserVy * 8, damage: boss.damage * 0.3, size: 12, color: '#f44', fromBoss: true, life: 20 });
                     }
                 }, 500);
                 break;
