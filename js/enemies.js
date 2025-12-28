@@ -27,8 +27,8 @@ function spawnBoss() {
     const bossNames = ['boss1', 'boss2', 'boss3', 'boss4'];
     boss = {
         x: canvas.width / 2, y: -50, targetY: 120,
-        size: 50 + bossNum * 5, hp: 800 * bossMultiplier, maxHp: 800 * bossMultiplier,
-        damage: 40 * bossMultiplier, phase: 0, attackTimer: 0, attackPattern: 0,
+        size: 50 + bossNum * 5, hp: 1200 * bossMultiplier, maxHp: 1200 * bossMultiplier,
+        damage: 55 * bossMultiplier, phase: 0, attackTimer: 0, attackPattern: 0,
         moveTimer: 0, targetX: canvas.width / 2,
         nameKey: bossNames[Math.min(bossNum - 1, 3)] || 'boss1',
         color: ['#f44', '#a4f', '#444', '#f84'][Math.min(bossNum - 1, 3)] || '#fff',
@@ -178,7 +178,8 @@ function bossAttack() {
                 }
                 break;
             case 2:
-                for (let i = 0; i < 3; i++) {
+                const minionCount = 1 + boss.bossNum * 2; // Boss 1: 3, Boss 2: 5, Boss 3: 7, Boss 4: 9
+                for (let i = 0; i < minionCount; i++) {
                     const angle = Math.random() * Math.PI * 2;
                     enemies.push({ x: boss.x + Math.cos(angle) * 30, y: boss.y + Math.sin(angle) * 30, ...enemyTypes[0], hp: enemyTypes[0].hp * 0.5, maxHp: enemyTypes[0].hp * 0.5 });
                 }
@@ -263,7 +264,7 @@ function updateProjectiles() {
             const sdist = Math.sqrt(sdx * sdx + sdy * sdy);
             const blockRadius = sprite.size + 10;
 
-            if (sdist < blockRadius) {
+            if (sdist < blockRadius && debuffs.noBlock <= 0) {
                 if (sprite.blocksProjectiles) {
                     // Knight blocks: destroy projectile
                     projectiles.splice(i, 1);
@@ -308,6 +309,12 @@ function updateProjectiles() {
             SFX.playerHit();
             player.hp -= proj.damage; player.invincibleTime = 30; gotHit = true; projectiles.splice(i, 1);
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
+            // Apply random debuff from boss projectiles
+            if (proj.fromBoss) {
+                const debuffTypes = ['noHeal', 'noBlock', 'slow', 'weakened'];
+                const randomDebuff = debuffTypes[Math.floor(Math.random() * debuffTypes.length)];
+                debuffs[randomDebuff] = DEBUFF_DURATION;
+            }
         }
     }
 }

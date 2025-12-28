@@ -19,7 +19,7 @@ function collectOrb(orb, effectColor = '#fff') {
     SFX.collectOrb();
     points++;
     score += ORB_SCORE;
-    player.hp = Math.min(player.maxHp, player.hp + ORB_HEAL_AMOUNT);
+    if (debuffs.noHeal <= 0) player.hp = Math.min(player.maxHp, player.hp + ORB_HEAL_AMOUNT);
     // Add speed boost (stacks up to max)
     player.speedBoost = Math.min(ORB_SPEED_BOOST_MAX, player.speedBoost + ORB_SPEED_BOOST);
     player.speedBoostTimer = ORB_SPEED_BOOST_DURATION;
@@ -180,7 +180,7 @@ function updatePlayer() {
         dx /= len; dy /= len;
         player.facingX = dx;
         player.facingY = dy;
-        const currentSpeed = player.speed + player.speedBoost;
+        const currentSpeed = (player.speed + player.speedBoost) * (debuffs.slow > 0 ? 0.5 : 1);
         player.x += dx * currentSpeed; player.y += dy * currentSpeed;
     }
     player.x = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, player.x));
@@ -202,6 +202,11 @@ function togglePause() {
 
 function update() {
     if (!gameRunning || gamePaused) return;
+
+    // Update debuff timers
+    for (const key in debuffs) {
+        if (debuffs[key] > 0) debuffs[key]--;
+    }
 
     // Game timer + passive point generation (1 point per second)
     const prevSecond = Math.floor(gameTime);
@@ -270,6 +275,8 @@ function restartGame() {
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    // Reset debuffs
+    for (const key in debuffs) debuffs[key] = 0;
     usedSpriteTypes = new Set(); gotHit = false; // Reset achievement tracking
     gameRunning = true;
     gamePaused = false;
@@ -288,6 +295,8 @@ function goToMainMenu() {
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    // Reset debuffs
+    for (const key in debuffs) debuffs[key] = 0;
     gameStarted = false;
     gameRunning = false;
     gamePaused = false;

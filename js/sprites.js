@@ -1,7 +1,11 @@
 // Sprite System
 
-// Helper function to apply damage with shield support
+// Helper function to apply damage with shield support and weakened debuff
 function applyDamage(target, damage) {
+    // Weakened debuff: boss takes 50% less damage
+    if (target === boss && debuffs.weakened > 0) {
+        damage *= 0.5;
+    }
     if (target === boss && boss && boss.shield > 0) {
         const absorbed = Math.min(boss.shield, damage);
         boss.shield -= absorbed;
@@ -166,7 +170,7 @@ function updateSprites() {
                 }
                 break;
             case 'healer':
-                if (player.hp < player.maxHp) { sprite.currentCooldown = sprite.cooldown; player.hp = Math.min(player.maxHp, player.hp + sprite.healAmount); SFX.heal(); effects.push({ x: player.x, y: player.y, life: 30, type: 'heal' }); }
+                if (player.hp < player.maxHp && debuffs.noHeal <= 0) { sprite.currentCooldown = sprite.cooldown; player.hp = Math.min(player.maxHp, player.hp + sprite.healAmount); SFX.heal(); effects.push({ x: player.x, y: player.y, life: 30, type: 'heal' }); }
                 break;
             case 'chain':
                 if (nearestEnemy && nearestDist < sprite.range) {
@@ -202,7 +206,7 @@ function updateSprites() {
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown; applyDamage(nearestEnemy, sprite.damage);
                     SFX.melee();
-                    player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.5));
+                    if (debuffs.noHeal <= 0) player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.5));
                     for (let j = 0; j < 5; j++) effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, vx: (player.x - nearestEnemy.x) * 0.05 + (Math.random() - 0.5) * 2, vy: (player.y - nearestEnemy.y) * 0.05 + (Math.random() - 0.5) * 2, life: 25, color: '#d4a', type: 'particle' });
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: '#d4a', angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
                 }
@@ -235,6 +239,8 @@ function updateSpriteProjectiles() {
                         const edist = Math.sqrt((e.x - proj.x) ** 2 + (e.y - proj.y) ** 2);
                         if (edist < proj.explosionRadius) {
                             let dmg = proj.damage * (1 - edist / proj.explosionRadius * 0.5);
+                            // Weakened debuff: boss takes 50% less damage
+                            if (e === boss && debuffs.weakened > 0) dmg *= 0.5;
                             // Check for boss shield
                             if (e === boss && boss.shield > 0) {
                                 const absorbed = Math.min(boss.shield, dmg);
@@ -250,6 +256,8 @@ function updateSpriteProjectiles() {
                 } else {
                     SFX.enemyHit();
                     let dmg = proj.damage;
+                    // Weakened debuff: boss takes 50% less damage
+                    if (enemy === boss && debuffs.weakened > 0) dmg *= 0.5;
                     // Check for boss shield
                     if (enemy === boss && boss.shield > 0) {
                         const absorbed = Math.min(boss.shield, dmg);

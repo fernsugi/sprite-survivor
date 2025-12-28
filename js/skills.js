@@ -78,7 +78,7 @@ function useSkill() {
             break;
         case 'skillHeal':
             SFX.skillHeal();
-            player.hp = player.maxHp;
+            if (debuffs.noHeal <= 0) player.hp = player.maxHp;
             for (let i = 0; i < 20; i++) {
                 effects.push({ x: player.x, y: player.y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4 - 2, life: 40, color: '#5f5', type: 'particle' });
             }
@@ -91,7 +91,7 @@ function useSkill() {
                 enemy.hp -= nukeDamage;
                 effects.push({ x: enemy.x, y: enemy.y, life: 15, type: 'hit', color: '#f55' });
             });
-            if (boss) boss.hp -= nukeDamage * 0.5;
+            if (boss) boss.hp -= nukeDamage * 0.5 * (debuffs.weakened > 0 ? 0.5 : 1);
             effects.push({ x: canvas.width / 2, y: canvas.height / 2, life: 20, type: 'screenFlash', color: '#f55' });
             for (let i = 0; i < 30; i++) {
                 effects.push({ x: canvas.width / 2, y: canvas.height / 2, vx: (Math.random() - 0.5) * 20, vy: (Math.random() - 0.5) * 20, life: 40, color: Math.random() > 0.5 ? '#f55' : '#fa0', type: 'particle' });

@@ -1,5 +1,13 @@
 // Rendering System
 
+// Debuff visual colors
+const debuffColors = {
+    noHeal: '#f44',    // Red - can't recover
+    noBlock: '#888',   // Gray - shields disabled
+    slow: '#4ff',      // Cyan - ice/frozen
+    weakened: '#a4f'   // Purple - curse
+};
+
 function drawPixelChar(x, y, size, color, outline = '#000') {
     const s = size / 4;
     ctx.fillStyle = outline; ctx.fillRect(Math.floor(x - size/2 - 1), Math.floor(y - size/2 - 1), size + 2, size + 2);
@@ -410,6 +418,28 @@ function draw() {
         ctx.fillRect(Math.floor(player.x - s + eyeOffsetX), Math.floor(player.y - s + eyeOffsetY), s, s);
         ctx.fillRect(Math.floor(player.x + s/2 + eyeOffsetX), Math.floor(player.y - s + eyeOffsetY), s, s);
     }
+
+    // Debuff aura particles around player
+    const activeDebuffs = Object.keys(debuffs).filter(key => debuffs[key] > 0);
+    if (activeDebuffs.length > 0) {
+        activeDebuffs.forEach((debuffKey, idx) => {
+            const color = debuffColors[debuffKey];
+            const particleCount = 6;
+            for (let i = 0; i < particleCount; i++) {
+                const angle = (gameTime * 2 + i * (Math.PI * 2 / particleCount) + idx * 0.5) % (Math.PI * 2);
+                const radius = player.width + 8 + Math.sin(gameTime * 4 + i) * 3;
+                const px = player.x + Math.cos(angle) * radius;
+                const py = player.y + Math.sin(angle) * radius;
+                ctx.globalAlpha = 0.6 + Math.sin(gameTime * 5 + i) * 0.3;
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(px, py, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        });
+        ctx.globalAlpha = 1;
+    }
+
     if (currentSkill) {
         ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center';
         ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(t(currentSkill.name), player.x, player.y - player.height - 5);
@@ -480,5 +510,48 @@ function draw() {
             ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 10, 0, Math.PI * 2); ctx.stroke();
             ctx.globalAlpha = 1;
         }
+    }
+
+    // Debuff screen edge vignette
+    const activeDebuffsList = Object.keys(debuffs).filter(key => debuffs[key] > 0);
+    if (activeDebuffsList.length > 0) {
+        const vignetteSize = 60;
+        const pulse = 0.15 + Math.sin(gameTime * 4) * 0.05;
+
+        activeDebuffsList.forEach((debuffKey, idx) => {
+            const color = debuffColors[debuffKey];
+            ctx.globalAlpha = pulse;
+
+            // Create edge gradients for each side
+            // Top edge
+            const topGrad = ctx.createLinearGradient(0, 0, 0, vignetteSize);
+            topGrad.addColorStop(0, color);
+            topGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = topGrad;
+            ctx.fillRect(0, 0, canvas.width, vignetteSize);
+
+            // Bottom edge
+            const bottomGrad = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - vignetteSize);
+            bottomGrad.addColorStop(0, color);
+            bottomGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = bottomGrad;
+            ctx.fillRect(0, canvas.height - vignetteSize, canvas.width, vignetteSize);
+
+            // Left edge
+            const leftGrad = ctx.createLinearGradient(0, 0, vignetteSize, 0);
+            leftGrad.addColorStop(0, color);
+            leftGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = leftGrad;
+            ctx.fillRect(0, 0, vignetteSize, canvas.height);
+
+            // Right edge
+            const rightGrad = ctx.createLinearGradient(canvas.width, 0, canvas.width - vignetteSize, 0);
+            rightGrad.addColorStop(0, color);
+            rightGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = rightGrad;
+            ctx.fillRect(canvas.width - vignetteSize, 0, vignetteSize, canvas.height);
+        });
+
+        ctx.globalAlpha = 1;
     }
 }
