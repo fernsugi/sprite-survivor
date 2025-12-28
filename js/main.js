@@ -234,6 +234,13 @@ function togglePause() {
 function update() {
     if (!gameRunning || gamePaused) return;
 
+    // Animate display score towards actual score
+    if (displayScore < score) {
+        const diff = score - displayScore;
+        const increment = Math.max(1, Math.ceil(diff * 0.15)); // Fast catch-up
+        displayScore = Math.min(score, displayScore + increment);
+    }
+
     // Update debuff timers
     for (const key in debuffs) {
         if (debuffs[key] > 0) debuffs[key]--;
@@ -306,7 +313,7 @@ function restartGame() {
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
-    score = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    score = 0; displayScore = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     // Reset debuffs
     for (const key in debuffs) debuffs[key] = 0;
     usedSpriteTypes = new Set(); gotHit = false; // Reset achievement tracking
@@ -326,7 +333,7 @@ function goToMainMenu() {
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
-    score = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    score = 0; displayScore = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     // Reset debuffs
     for (const key in debuffs) debuffs[key] = 0;
     gameStarted = false;

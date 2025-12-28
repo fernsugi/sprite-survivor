@@ -9,6 +9,7 @@ let gamePaused = false;
 let cheatMode = false;
 let autopilot = false;
 let score = 0;
+let displayScore = 0; // Animated display value that counts up to score
 let points = 0;
 let wave = 1;
 let waveTimer = 0;
