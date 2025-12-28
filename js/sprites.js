@@ -46,8 +46,9 @@ function updateSpriteButtons() {
 
 function upgradeSpriteStats(sprite) {
     const type = spriteTypes[sprite.typeIndex];
-    sprite.damage = Math.floor((type.damage || 0) * (1 + sprite.level * 0.5));
-    sprite.healAmount = Math.floor((type.healAmount || 0) * (1 + sprite.level * 0.3));
+    // Exponential scaling: 1.5^level (Lv1=1.5x, Lv2=2.25x, Lv3=3.38x, Lv4=5.06x, Lv5=7.59x)
+    sprite.damage = Math.floor((type.damage || 0) * Math.pow(1.5, sprite.level));
+    sprite.healAmount = Math.floor((type.healAmount || 0) * Math.pow(1.4, sprite.level));
     sprite.range = (type.range || 50) * (1 + sprite.level * 0.2);
     sprite.size = 12 + sprite.level * 3;
     sprite.cooldown = Math.max(10, type.cooldown - sprite.level * 5);
