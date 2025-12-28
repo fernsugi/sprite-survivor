@@ -50,6 +50,26 @@ Permanent NPC allies summoned via Hero skill orb:
 ### Enemies
 7 enemy types including Hexer (applies debuffs). Bosses have unique mechanics like teleporting, shields, gravity wells, death auras, and lifesteal (heals when projectiles hit you).
 
+## Beginner Meta Stacks
+
+**1. Ninja / Cleric / Frost** (The Classic)
+- Ninja: Cheap (15), fast attacks, shreds everything
+- Cleric: Keeps you alive
+- Frost: Slows enemies = more hits, easier dodging
+
+**2. Archer / Cleric / Frost** (Budget King)
+- Archer: Cheapest DPS (10 cost), longest range (250)
+- You level up faster because Archer is cheap. Stay far, stay safe.
+
+**3. Knight / Cleric / Frost** (Aggressive)
+- Knight: Blocks boss projectiles (huge!)
+- Position Knights between you and boss.
+
+**Tips:**
+- Focus 1-2 sprite types - merging > diversity
+- Main DPS to Lv3 before adding support
+- Don't summon Lv1 sprites after wave 15 - they die instantly
+
 ## Running Locally
 
 Just open `index.html` in a browser, or:
