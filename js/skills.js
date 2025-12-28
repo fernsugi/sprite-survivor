@@ -26,7 +26,9 @@ function useSkill() {
             if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
             if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
             if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
-            if (dx === 0 && dy === 0) dx = 1;
+            // Use player facing direction as fallback (for autopilot or no keys pressed)
+            if (dx === 0 && dy === 0) { dx = player.facingX; dy = player.facingY; }
+            if (dx === 0 && dy === 0) dy = 1; // Final fallback: down
             const len = Math.sqrt(dx * dx + dy * dy);
             dx /= len; dy /= len;
             const dashDist = 150;

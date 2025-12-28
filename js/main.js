@@ -84,10 +84,97 @@ function updatePlayer() {
     }
 
     let dx = 0, dy = 0;
-    if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
-    if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
-    if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
-    if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+
+    if (autopilot) {
+        // Autopilot AI
+        let targetX = player.x, targetY = player.y;
+        let hasTarget = false;
+
+        // Find nearest skill orb (priority)
+        let nearestDist = Infinity;
+        skillOrbs.forEach(orb => {
+            const dist = Math.sqrt((orb.x - player.x) ** 2 + (orb.y - player.y) ** 2);
+            if (dist < nearestDist) {
+                nearestDist = dist;
+                targetX = orb.x;
+                targetY = orb.y;
+                hasTarget = true;
+            }
+        });
+
+        // If no skill orb, find nearest regular orb
+        if (!hasTarget || nearestDist > 200) {
+            orbs.forEach(orb => {
+                const dist = Math.sqrt((orb.x - player.x) ** 2 + (orb.y - player.y) ** 2);
+                if (dist < nearestDist) {
+                    nearestDist = dist;
+                    targetX = orb.x;
+                    targetY = orb.y;
+                    hasTarget = true;
+                }
+            });
+        }
+
+        // Calculate direction to target
+        if (hasTarget) {
+            dx = targetX - player.x;
+            dy = targetY - player.y;
+        }
+
+        // Avoid nearby enemies and projectiles
+        let avoidX = 0, avoidY = 0;
+        const dangerRadius = 80;
+        enemies.forEach(enemy => {
+            const ex = enemy.x - player.x, ey = enemy.y - player.y;
+            const dist = Math.sqrt(ex * ex + ey * ey);
+            if (dist < dangerRadius && dist > 0) {
+                const force = (dangerRadius - dist) / dangerRadius;
+                avoidX -= (ex / dist) * force * 3;
+                avoidY -= (ey / dist) * force * 3;
+            }
+        });
+        projectiles.forEach(proj => {
+            const px = proj.x - player.x, py = proj.y - player.y;
+            const dist = Math.sqrt(px * px + py * py);
+            if (dist < 60 && dist > 0) {
+                const force = (60 - dist) / 60;
+                avoidX -= (px / dist) * force * 4;
+                avoidY -= (py / dist) * force * 4;
+            }
+        });
+        // Avoid boss
+        if (boss) {
+            const bx = boss.x - player.x, by = boss.y - player.y;
+            const dist = Math.sqrt(bx * bx + by * by);
+            if (dist < 120 && dist > 0) {
+                const force = (120 - dist) / 120;
+                avoidX -= (bx / dist) * force * 3;
+                avoidY -= (by / dist) * force * 3;
+            }
+        }
+
+        // Combine target direction with avoidance
+        dx += avoidX;
+        dy += avoidY;
+
+        // Use skill when available and enemies nearby
+        if (currentSkill && enemies.length > 0) {
+            const nearestEnemy = enemies.reduce((nearest, e) => {
+                const d = Math.sqrt((e.x - player.x) ** 2 + (e.y - player.y) ** 2);
+                return d < nearest.dist ? { enemy: e, dist: d } : nearest;
+            }, { enemy: null, dist: Infinity });
+            if (nearestEnemy.dist < 150 || currentSkill.name === 'skillMagnet') {
+                useSkill();
+            }
+        }
+    } else {
+        // Manual control
+        if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
+        if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
+        if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
+        if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+    }
+
     if (dx !== 0 || dy !== 0) {
         const len = Math.sqrt(dx * dx + dy * dy);
         dx /= len; dy /= len;
@@ -184,6 +271,7 @@ function restartGame() {
     score = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     gameRunning = true;
     gamePaused = false;
+    autopilot = false;
     document.getElementById('gameOver').style.display = 'none';
     document.getElementById('victory').style.display = 'none';
     document.getElementById('bossHealth').style.display = 'none';
@@ -202,6 +290,7 @@ function goToMainMenu() {
     gameRunning = false;
     gamePaused = false;
     cheatMode = false;
+    autopilot = false;
     document.getElementById('gameOver').style.display = 'none';
     document.getElementById('victory').style.display = 'none';
     document.getElementById('bossHealth').style.display = 'none';
@@ -216,6 +305,7 @@ document.addEventListener('keydown', e => {
     keys[e.key] = true;
     if (e.key === 'Escape') { togglePause(); return; }
     if (!gameStarted || !gameRunning || gamePaused) return;
+    if (e.key === 'Tab') { e.preventDefault(); autopilot = !autopilot; return; }
     if (e.key >= '1' && e.key <= '9') { const index = parseInt(e.key) - 1; if (index < spriteTypes.length) summonSprite(index); }
     else if (e.key === '0') { if (spriteTypes.length >= 10) summonSprite(9); }
     else if (altSummonKeys.hasOwnProperty(e.key.toLowerCase())) {

@@ -7,6 +7,7 @@ let gameStarted = false;
 let gameRunning = false;
 let gamePaused = false;
 let cheatMode = false;
+let autopilot = false;
 let score = 0;
 let points = 0;
 let wave = 1;

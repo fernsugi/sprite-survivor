@@ -61,6 +61,7 @@ const translations = {
         pauseHint: "Press ESC to resume",
         resume: "RESUME",
         instructPause: "- Pause",
+        instructAutopilot: "- Toggle autopilot",
         cheatMode: "CHEAT MODE",
         mainMenu: "MAIN MENU"
     },
@@ -125,6 +126,7 @@ const translations = {
         pauseHint: "ESCで再開",
         resume: "再開",
         instructPause: "- 一時停止",
+        instructAutopilot: "- オート切替",
         cheatMode: "チートモード",
         mainMenu: "メインメニュー"
     },
@@ -189,6 +191,7 @@ const translations = {
         pauseHint: "ESC로 재개",
         resume: "재개",
         instructPause: "- 일시정지",
+        instructAutopilot: "- 자동 전환",
         cheatMode: "치트 모드",
         mainMenu: "메인 메뉴"
     },
@@ -253,6 +256,7 @@ const translations = {
         pauseHint: "按ESC繼續",
         resume: "繼續",
         instructPause: "- 暫停",
+        instructAutopilot: "- 自動模式",
         cheatMode: "作弊模式",
         mainMenu: "主選單"
     },
@@ -317,6 +321,7 @@ const translations = {
         pauseHint: "按ESC继续",
         resume: "继续",
         instructPause: "- 暂停",
+        instructAutopilot: "- 自动模式",
         cheatMode: "作弊模式",
         mainMenu: "主菜单"
     },
@@ -381,6 +386,7 @@ const translations = {
         pauseHint: "Presiona ESC para continuar",
         resume: "CONTINUAR",
         instructPause: "- Pausar",
+        instructAutopilot: "- Auto piloto",
         cheatMode: "MODO TRAMPA",
         mainMenu: "MENU PRINCIPAL"
     },
@@ -445,6 +451,7 @@ const translations = {
         pauseHint: "Pressione ESC para continuar",
         resume: "CONTINUAR",
         instructPause: "- Pausar",
+        instructAutopilot: "- Auto piloto",
         cheatMode: "MODO TRAPAÇA",
         mainMenu: "MENU PRINCIPAL"
     },
@@ -509,6 +516,7 @@ const translations = {
         pauseHint: "Нажмите ESC для продолжения",
         resume: "ПРОДОЛЖИТЬ",
         instructPause: "- Пауза",
+        instructAutopilot: "- Автопилот",
         cheatMode: "ЧИТ-РЕЖИМ",
         mainMenu: "ГЛАВНОЕ МЕНЮ"
     },
@@ -573,6 +581,7 @@ const translations = {
         pauseHint: "Appuyez sur ESC pour reprendre",
         resume: "REPRENDRE",
         instructPause: "- Pause",
+        instructAutopilot: "- Auto pilote",
         cheatMode: "MODE TRICHE",
         mainMenu: "MENU PRINCIPAL"
     },
@@ -637,6 +646,7 @@ const translations = {
         pauseHint: "Nhấn ESC để tiếp tục",
         resume: "TIẾP TỤC",
         instructPause: "- Tạm dừng",
+        instructAutopilot: "- Tự động",
         cheatMode: "CHẾ ĐỘ ĂN GIAN",
         mainMenu: "MENU CHÍNH"
     }

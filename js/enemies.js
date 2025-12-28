@@ -27,8 +27,8 @@ function spawnBoss() {
     const bossNames = ['boss1', 'boss2', 'boss3', 'boss4'];
     boss = {
         x: canvas.width / 2, y: -50, targetY: 120,
-        size: 50 + bossNum * 5, hp: 500 * bossMultiplier, maxHp: 500 * bossMultiplier,
-        damage: 25 * bossMultiplier, phase: 0, attackTimer: 0, attackPattern: 0,
+        size: 50 + bossNum * 5, hp: 800 * bossMultiplier, maxHp: 800 * bossMultiplier,
+        damage: 40 * bossMultiplier, phase: 0, attackTimer: 0, attackPattern: 0,
         moveTimer: 0, targetX: canvas.width / 2,
         nameKey: bossNames[Math.min(bossNum - 1, 3)] || 'boss1',
         color: ['#f44', '#a4f', '#444', '#f84'][Math.min(bossNum - 1, 3)] || '#fff',

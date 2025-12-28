@@ -415,6 +415,13 @@ function draw() {
         ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(t(currentSkill.name), player.x, player.y - player.height - 5);
         ctx.fillStyle = currentSkill.color; ctx.fillText(t(currentSkill.name), player.x, player.y - player.height - 5);
     }
+    // Autopilot indicator - top-left corner, blinks when ON, static when OFF
+    ctx.globalAlpha = autopilot ? 0.6 + Math.sin(gameTime * 8) * 0.4 : 0.5;
+    ctx.font = currentLang === 'vi' ? '14px VT323, monospace' : '10px "Press Start 2P"'; ctx.textAlign = 'left';
+    const autopilotText = 'TAB ' + t('instructAutopilot');
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(autopilotText, 10, 25);
+    ctx.fillStyle = autopilot ? '#fff' : '#888'; ctx.fillText(autopilotText, 10, 25);
+    ctx.globalAlpha = 1;
 
     // Projectiles
     projectiles.forEach(proj => { ctx.fillStyle = proj.color; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.size, 0, Math.PI * 2); ctx.fill(); });
