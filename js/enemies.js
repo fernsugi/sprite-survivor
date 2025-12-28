@@ -334,6 +334,7 @@ function updateBoss() {
             for (let i = 0; i < 50; i++) effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 60, color: boss.color, type: 'particle' });
             if (wave >= 20) {
                 gameRunning = false; SFX.victory();
+                if (!cheatMode) saveHighScore(score);
                 const newAchievements = checkAchievements();
                 displayVictoryAchievements(newAchievements);
                 document.getElementById('victory').style.display = 'flex';

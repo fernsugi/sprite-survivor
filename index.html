@@ -217,6 +217,9 @@
                     <span>ESC</span> <span data-i18n="instructPause">- Pause</span><br><br>
                     <span data-i18n="instructTip">Collect orbs, summon sprites, survive!</span>
                 </div>
+                <div id="highScoreDisplay">
+                    <span data-i18n="highScore">HIGH SCORE</span>: <span id="highScore">0</span>
+                </div>
             </div>
 
             <div id="waveInfo">
@@ -241,6 +244,7 @@
                 <p><span data-i18n="waveReached">Wave Reached</span>: <span id="finalWave">1</span></p>
                 <p><span data-i18n="time">Time</span>: <span id="finalTime">0:00</span></p>
                 <button class="restart-btn" onclick="restartGame()" data-i18n="restart">RESTART</button>
+                <button class="restart-btn menu-btn" onclick="goToMainMenu()" data-i18n="mainMenu">MAIN MENU</button>
             </div>
 
             <div id="victory">
@@ -250,6 +254,7 @@
                 <p><span data-i18n="time">Time</span>: <span id="victoryTime">0:00</span></p>
                 <div id="victoryAchievements"></div>
                 <button class="restart-btn" onclick="restartGame()" data-i18n="playAgain">PLAY AGAIN</button>
+                <button class="restart-btn menu-btn" onclick="goToMainMenu()" data-i18n="mainMenu">MAIN MENU</button>
             </div>
 
             <div id="achievementsModal">

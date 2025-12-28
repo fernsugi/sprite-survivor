@@ -274,6 +274,7 @@ function update() {
     if (player.hp <= 0) {
         gameRunning = false;
         SFX.playerDeath();
+        if (!cheatMode) saveHighScore(score);
         document.getElementById('gameOver').style.display = 'flex';
         document.getElementById('finalScore').textContent = score;
         document.getElementById('finalWave').textContent = wave;
@@ -339,6 +340,7 @@ function goToMainMenu() {
     document.getElementById('pauseScreen').style.display = 'none';
     document.getElementById('startScreen').style.display = 'flex';
     updateUI();
+    updateHighScoreDisplay();
 }
 
 // Event Listeners
@@ -361,4 +363,5 @@ document.addEventListener('keyup', e => { keys[e.key] = false; });
 // Initialize
 initSpriteButtons();
 updateUI();
+updateHighScoreDisplay();
 gameLoop();

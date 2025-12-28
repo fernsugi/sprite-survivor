@@ -452,6 +452,13 @@ function draw() {
     ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(autopilotText, 10, 25);
     ctx.fillStyle = autopilot ? '#fff' : '#888'; ctx.fillText(autopilotText, 10, 25);
     ctx.globalAlpha = 1;
+
+    // Score display - top-right corner
+    ctx.font = currentLang === 'vi' ? '14px VT323, monospace' : '10px "Press Start 2P"'; ctx.textAlign = 'right';
+    const scoreText = t('score') + ': ' + score;
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(scoreText, canvas.width - 10, 25);
+    ctx.fillStyle = '#ff0'; ctx.fillText(scoreText, canvas.width - 10, 25);
+
     // AUTO text below player when autopilot is on
     if (autopilot) {
         ctx.globalAlpha = 0.6 + Math.sin(gameTime * 8) * 0.4;
