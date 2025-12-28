@@ -1,5 +1,7 @@
 # Sprite Survivor
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A browser-based survival game where you summon and merge sprites to fight waves of enemies.
 
 **Play now:** https://spritesurvivor.com/
