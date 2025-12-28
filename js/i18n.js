@@ -81,6 +81,10 @@ const translations = {
         achvSpeedrunDesc: "Win in under 10 minutes",
         achvNoHit: "Untouchable",
         achvNoHitDesc: "Win without getting hit",
+        achvFirstHero: "Hero Summoner",
+        achvFirstHeroDesc: "Summon a hero for the first time",
+        achvNoSprites: "Solo Run",
+        achvNoSpritesDesc: "Win without summoning any sprites",
         achvUnlocked: "Achievements Unlocked"
     },
     ja: {
@@ -164,6 +168,10 @@ const translations = {
         achvSpeedrunDesc: "10分以内にクリア",
         achvNoHit: "無傷",
         achvNoHitDesc: "ノーダメージでクリア",
+        achvFirstHero: "ヒーロー召喚者",
+        achvFirstHeroDesc: "初めてヒーローを召喚",
+        achvNoSprites: "ソロラン",
+        achvNoSpritesDesc: "スプライトなしでクリア",
         achvUnlocked: "獲得した実績"
     },
     ko: {
@@ -247,6 +255,10 @@ const translations = {
         achvSpeedrunDesc: "10분 이내 클리어",
         achvNoHit: "무적",
         achvNoHitDesc: "피해 없이 클리어",
+        achvFirstHero: "영웅 소환사",
+        achvFirstHeroDesc: "처음으로 영웅 소환",
+        achvNoSprites: "솔로 런",
+        achvNoSpritesDesc: "스프라이트 없이 클리어",
         achvUnlocked: "획득한 업적"
     },
     "zh-TW": {
@@ -330,6 +342,10 @@ const translations = {
         achvSpeedrunDesc: "10分鐘內通關",
         achvNoHit: "無傷通關",
         achvNoHitDesc: "不受傷害通關",
+        achvFirstHero: "英雄召喚師",
+        achvFirstHeroDesc: "首次召喚英雄",
+        achvNoSprites: "單人挑戰",
+        achvNoSpritesDesc: "不召喚精靈通關",
         achvUnlocked: "獲得的成就"
     },
     "zh-CN": {
@@ -413,6 +429,10 @@ const translations = {
         achvSpeedrunDesc: "10分钟内通关",
         achvNoHit: "无伤通关",
         achvNoHitDesc: "不受伤害通关",
+        achvFirstHero: "英雄召唤师",
+        achvFirstHeroDesc: "首次召唤英雄",
+        achvNoSprites: "单人挑战",
+        achvNoSpritesDesc: "不召唤精灵通关",
         achvUnlocked: "获得的成就"
     },
     es: {
@@ -496,6 +516,10 @@ const translations = {
         achvSpeedrunDesc: "Gana en menos de 10 minutos",
         achvNoHit: "Intocable",
         achvNoHitDesc: "Gana sin recibir daño",
+        achvFirstHero: "Invocador de Héroes",
+        achvFirstHeroDesc: "Invoca un héroe por primera vez",
+        achvNoSprites: "Carrera en Solitario",
+        achvNoSpritesDesc: "Gana sin invocar sprites",
         achvUnlocked: "Logros Desbloqueados"
     },
     pt: {
@@ -579,6 +603,10 @@ const translations = {
         achvSpeedrunDesc: "Vença em menos de 10 minutos",
         achvNoHit: "Intocável",
         achvNoHitDesc: "Vença sem receber dano",
+        achvFirstHero: "Invocador de Heróis",
+        achvFirstHeroDesc: "Invoque um herói pela primeira vez",
+        achvNoSprites: "Corrida Solo",
+        achvNoSpritesDesc: "Vença sem invocar sprites",
         achvUnlocked: "Conquistas Desbloqueadas"
     },
     ru: {
@@ -662,6 +690,10 @@ const translations = {
         achvSpeedrunDesc: "Выиграть менее чем за 10 минут",
         achvNoHit: "Неуязвимый",
         achvNoHitDesc: "Выиграть без получения урона",
+        achvFirstHero: "Призыватель Героев",
+        achvFirstHeroDesc: "Призвать героя впервые",
+        achvNoSprites: "Соло Забег",
+        achvNoSpritesDesc: "Выиграть без призыва спрайтов",
         achvUnlocked: "Разблокированные Достижения"
     },
     fr: {
@@ -745,6 +777,10 @@ const translations = {
         achvSpeedrunDesc: "Gagner en moins de 10 minutes",
         achvNoHit: "Intouchable",
         achvNoHitDesc: "Gagner sans prendre de dégâts",
+        achvFirstHero: "Invocateur de Héros",
+        achvFirstHeroDesc: "Invoquer un héros pour la première fois",
+        achvNoSprites: "Course en Solo",
+        achvNoSpritesDesc: "Gagner sans invoquer de sprites",
         achvUnlocked: "Succès Débloqués"
     },
     vi: {
@@ -828,6 +864,10 @@ const translations = {
         achvSpeedrunDesc: "Thắng dưới 10 phút",
         achvNoHit: "Bất Bại",
         achvNoHitDesc: "Thắng không bị trúng đòn",
+        achvFirstHero: "Triệu Hồi Anh Hùng",
+        achvFirstHeroDesc: "Triệu hồi anh hùng lần đầu",
+        achvNoSprites: "Chạy Đơn",
+        achvNoSpritesDesc: "Thắng không triệu hồi sprite",
         achvUnlocked: "Thành Tích Đạt Được"
     }
 };

@@ -65,6 +65,22 @@ function checkAchievements() {
         }
     }
 
+    // First Hero achievement
+    if (heroSummoned) {
+        if (!achievements.firstHero) {
+            achievements.firstHero = true;
+            newlyUnlocked.push('firstHero');
+        }
+    }
+
+    // No Sprites achievement (win without summoning any sprites)
+    if (usedSpriteTypes.size === 0) {
+        if (!achievements.noSprites) {
+            achievements.noSprites = true;
+            newlyUnlocked.push('noSprites');
+        }
+    }
+
     saveAchievements(achievements);
     return newlyUnlocked;
 }

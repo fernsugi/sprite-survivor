@@ -54,6 +54,7 @@ let heroBalls = [];    // Bouncing balls from Bouncer hero
 // Achievement Tracking (reset each game)
 let usedSpriteTypes = new Set();
 let gotHit = false;
+let heroSummoned = false;
 
 // Player Debuffs (from boss projectiles, timers in frames, 5 sec = 300 frames)
 const DEBUFF_DURATION = 300;

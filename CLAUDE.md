@@ -112,8 +112,8 @@ Visual feedback: colored aura particles around player + screen edge vignette.
 - Auto-uses skills when enemies nearby
 
 ### Achievement System (in achievements.js)
-14 achievements stored in localStorage:
-- First Win, 10 sprite-only achievements, All Sprites Used, Speedrun (<10 min), No Hit
+16 achievements stored in localStorage:
+- First Win, 10 sprite-only achievements, All Sprites Used, Speedrun (<10 min), No Hit, First Hero, No Sprites
 
 ### Skills (in config.js)
 | Skill | Rarity | Effect |

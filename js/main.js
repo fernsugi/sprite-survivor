@@ -305,7 +305,7 @@ function startGame(cheat = false) {
     loadSoundPreference();
     cheatMode = cheat;
     if (cheatMode) points = Infinity;
-    usedSpriteTypes = new Set(); gotHit = false; // Reset achievement tracking
+    usedSpriteTypes = new Set(); gotHit = false; heroSummoned = false; // Reset achievement tracking
     document.getElementById('startScreen').style.display = 'none';
     gameStarted = true;
     gameRunning = true;
@@ -320,7 +320,7 @@ function restartGame() {
     score = 0; displayScore = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     // Reset debuffs
     for (const key in debuffs) debuffs[key] = 0;
-    usedSpriteTypes = new Set(); gotHit = false; // Reset achievement tracking
+    usedSpriteTypes = new Set(); gotHit = false; heroSummoned = false; // Reset achievement tracking
     gameRunning = true;
     gamePaused = false;
     autopilot = false;

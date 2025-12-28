@@ -5,11 +5,11 @@ const POINTS_FOR_SPRITE = 10;
 
 // Skill Types
 const skillTypes = [
-    { name: 'skillDash', color: '#5ff', rarity: 0.6 },
-    { name: 'skillHeal', color: '#5f5', rarity: 0.1 },
-    { name: 'skillNuke', color: '#f55', rarity: 0.25 },
+    { name: 'skillDash', color: '#5ff', rarity: 0.60 },
+    { name: 'skillHeal', color: '#5f5', rarity: 0.10 },
+    { name: 'skillNuke', color: '#f55', rarity: 0.24 },
     { name: 'skillMagnet', color: '#ff0', rarity: 0.05 },
-    { name: 'skillHero', color: '#a0f', rarity: 0.025 } // Rarest - summons a permanent hero
+    { name: 'skillHero', color: '#a0f', rarity: 0.01 } // Rarest - summons a permanent hero
 ];
 
 // Sprite Types
@@ -27,7 +27,7 @@ const spriteTypes = [
 ];
 
 // Achievement Definitions
-// IDs: firstWin, onlyArcher, onlyKnight, onlyMage, onlyCleric, onlyNinja, onlyWizard, onlyBerserker, onlyFrost, onlyVampire, onlyBomber, allSprites, speedrun, noHit
+// IDs: firstWin, onlyArcher...onlyBomber, allSprites, speedrun, noHit, firstHero, noSprites
 const achievementDefs = [
     { id: 'firstWin', nameKey: 'achvFirstWin', descKey: 'achvFirstWinDesc' },
     // "Only X sprite" achievements - generated from spriteTypes (indices 1-10)
@@ -39,7 +39,9 @@ const achievementDefs = [
     })),
     { id: 'allSprites', nameKey: 'achvAllSprites', descKey: 'achvAllSpritesDesc' },
     { id: 'speedrun', nameKey: 'achvSpeedrun', descKey: 'achvSpeedrunDesc' },
-    { id: 'noHit', nameKey: 'achvNoHit', descKey: 'achvNoHitDesc' }
+    { id: 'noHit', nameKey: 'achvNoHit', descKey: 'achvNoHitDesc' },
+    { id: 'firstHero', nameKey: 'achvFirstHero', descKey: 'achvFirstHeroDesc' },
+    { id: 'noSprites', nameKey: 'achvNoSprites', descKey: 'achvNoSpritesDesc' }
 ];
 
 // Hero Types (summoned via Hero skill orb - easily expandable)

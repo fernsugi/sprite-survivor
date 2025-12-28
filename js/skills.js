@@ -106,6 +106,7 @@ function useSkill() {
             break;
         case 'skillHero':
             SFX.skillHero();
+            heroSummoned = true; // Achievement tracking
             // Summon a random hero type
             const heroType = heroTypes[Math.floor(Math.random() * heroTypes.length)];
             const hero = {
