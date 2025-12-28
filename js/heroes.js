@@ -12,10 +12,12 @@ function updateHeroes() {
         const slowMult = debuffs.slow > 0 ? 0.5 : 1;
         const heroSpeed = baseSpeed * speedMult * slowMult;
 
-        // Find nearest enemy for targeting
+        // Find nearest enemy for targeting (only enemies within game bounds)
         let nearestEnemy = null;
         let nearestDist = Infinity;
         enemies.forEach(enemy => {
+            // Skip enemies outside the game screen
+            if (enemy.x < 0 || enemy.x > canvas.width || enemy.y < 0 || enemy.y > canvas.height) return;
             const dx = enemy.x - hero.x;
             const dy = enemy.y - hero.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
@@ -65,13 +67,17 @@ function updateHeroes() {
                     if (enemies.length > 0 || boss) {
                         // Pick a new target only occasionally (not every frame)
                         if (!hero.angelTarget || Math.random() < 0.02) {
-                            const allTargets = [...enemies];
+                            // Only consider enemies within game bounds
+                            const allTargets = enemies.filter(e => e.x >= 0 && e.x <= canvas.width && e.y >= 0 && e.y <= canvas.height);
                             if (boss) allTargets.push(boss);
-                            hero.angelTarget = allTargets[Math.floor(Math.random() * allTargets.length)];
+                            if (allTargets.length > 0) {
+                                hero.angelTarget = allTargets[Math.floor(Math.random() * allTargets.length)];
+                            }
                         }
-                        // Check if target still exists
+                        // Check if target still exists and is within bounds
                         const targetExists = hero.angelTarget && (enemies.includes(hero.angelTarget) || hero.angelTarget === boss);
-                        if (targetExists) {
+                        const targetInBounds = hero.angelTarget && hero.angelTarget.x >= 0 && hero.angelTarget.x <= canvas.width && hero.angelTarget.y >= 0 && hero.angelTarget.y <= canvas.height;
+                        if (targetExists && targetInBounds) {
                             const dxTarget = hero.angelTarget.x - hero.x;
                             const dyTarget = hero.angelTarget.y - hero.y;
                             const targetDist = Math.sqrt(dxTarget * dxTarget + dyTarget * dyTarget);
