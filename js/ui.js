@@ -1,7 +1,11 @@
 // UI System
 
 function updateUI() {
-    document.getElementById('healthFill').style.width = (player.hp / player.maxHp * 100) + '%';
+    const hpPercent = player.hp / player.maxHp * 100;
+    document.getElementById('healthFill').style.width = hpPercent + '%';
+    // Overheal bar overlays on top of HP bar (grey shield in front of green HP)
+    const overhealPercent = player.overHeal / player.maxHp * 100;
+    document.getElementById('overhealFill').style.width = overhealPercent + '%';
     document.getElementById('pointsDisplay').textContent = points;
     document.getElementById('pointsFill').style.width = Math.min(100, (points / POINTS_FOR_SPRITE * 100)) + '%';
     document.getElementById('spriteCount').textContent = sprites.length;

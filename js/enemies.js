@@ -1,5 +1,19 @@
 // Enemy and Boss System
 
+// Helper to damage player (overHeal absorbs damage first)
+function damagePlayer(amount) {
+    if (player.overHeal > 0) {
+        if (amount <= player.overHeal) {
+            player.overHeal -= amount;
+            return;
+        } else {
+            amount -= player.overHeal;
+            player.overHeal = 0;
+        }
+    }
+    player.hp -= amount;
+}
+
 function spawnEnemy() {
     if (bossActive) return;
     const availableTypes = enemyTypes.slice(0, Math.min(wave + 1, enemyTypes.length));
@@ -131,7 +145,7 @@ function updateBossMechanics() {
         if (dist < 150 && player.invincibleTime <= 0) {
             // 1 damage per second (every 60 frames)
             if (Math.random() < 1/60) {
-                player.hp -= 1; gotHit = true;
+                damagePlayer(1); gotHit = true;
                 effects.push({ x: player.x, y: player.y, life: 10, type: 'hit', color: '#f84' });
             }
         }
@@ -223,7 +237,7 @@ function updateEnemies() {
     for (let i = enemies.length - 1; i >= 0; i--) {
         const enemy = enemies[i];
         if (enemy.slowed > 0) enemy.slowed--;
-        const speedMult = enemy.slowed > 0 ? 0.3 : 1;
+        const speedMult = enemy.slowed > 0 ? 0.5 : 1;
         const dx = player.x - enemy.x, dy = player.y - enemy.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
@@ -242,10 +256,10 @@ function updateEnemies() {
         if (dist < player.width/2 + enemy.size/2 && player.invincibleTime <= 0) {
             SFX.playerHit();
             if (enemy.type === 'explode') {
-                player.hp -= enemy.damage; player.invincibleTime = 60; gotHit = true;
+                damagePlayer(enemy.damage); player.invincibleTime = 60; gotHit = true;
                 for (let j = 0; j < 20; j++) effects.push({ x: enemy.x, y: enemy.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: '#ff0', type: 'particle' });
                 enemies.splice(i, 1);
-            } else { player.hp -= enemy.damage; player.invincibleTime = 30; gotHit = true; player.x += (dx / dist) * -20; player.y += (dy / dist) * -20; }
+            } else { damagePlayer(enemy.damage); player.invincibleTime = 30; gotHit = true; player.x += (dx / dist) * -20; player.y += (dy / dist) * -20; }
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
         }
         if (enemy.hp <= 0) {
@@ -313,7 +327,7 @@ function updateProjectiles() {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < player.width/2 + proj.size && player.invincibleTime <= 0 && !proj.reflected) {
             SFX.playerHit();
-            player.hp -= proj.damage; player.invincibleTime = 30; gotHit = true; projectiles.splice(i, 1);
+            damagePlayer(proj.damage); player.invincibleTime = 30; gotHit = true; projectiles.splice(i, 1);
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
             // Boss projectiles heal boss for 100% of damage dealt
             if (proj.fromBoss && boss) {

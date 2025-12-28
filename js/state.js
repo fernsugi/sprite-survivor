@@ -29,6 +29,7 @@ const player = {
     speed: 3.5,
     maxHp: 100,
     hp: 100,
+    overHeal: 0, // Grey HP from Vampire lifesteal (absorbs damage first)
     invincibleTime: 0,
     color: '#4af',
     speedBoost: 0,

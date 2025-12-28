@@ -178,12 +178,12 @@ function updateSprites() {
                     sprite.currentCooldown = sprite.cooldown;
                     SFX.lightning();
                     let chainTargets = [nearestEnemy], lastTarget = nearestEnemy;
-                    for (let c = 0; c < 5 + sprite.level; c++) {
+                    for (let c = 0; c < 3 + sprite.level; c++) {
                         let nextTarget = null, nextDist = Infinity;
                         targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 80 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
                         if (nextTarget) { chainTargets.push(nextTarget); lastTarget = nextTarget; }
                     }
-                    chainTargets.forEach((target, idx) => { applyDamage(target, sprite.damage * (1 - idx * 0.15)); if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color }); });
+                    chainTargets.forEach((target, idx) => { applyDamage(target, sprite.damage * Math.max(0.1, 1 - idx * 0.15)); if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color }); });
                     effects.push({ x: sprite.x, y: sprite.y, x2: nearestEnemy.x, y2: nearestEnemy.y, life: 10, type: 'lightning', color: sprite.color });
                 }
                 break;
@@ -207,7 +207,16 @@ function updateSprites() {
                 if (nearestEnemy && nearestDist < sprite.range) {
                     sprite.currentCooldown = sprite.cooldown; applyDamage(nearestEnemy, sprite.damage);
                     SFX.melee();
-                    if (debuffs.noHeal <= 0) player.hp = Math.min(player.maxHp, player.hp + Math.floor(sprite.damage * 0.5));
+                    if (debuffs.noHeal <= 0) {
+                        const healAmount = Math.floor(sprite.damage * 0.2);
+                        const hpToMax = player.maxHp - player.hp;
+                        if (healAmount <= hpToMax) {
+                            player.hp += healAmount;
+                        } else {
+                            player.hp = player.maxHp;
+                            player.overHeal = Math.min(50, player.overHeal + (healAmount - hpToMax)); // Overheal caps at 50
+                        }
+                    }
                     for (let j = 0; j < 5; j++) effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, vx: (player.x - nearestEnemy.x) * 0.05 + (Math.random() - 0.5) * 2, vy: (player.y - nearestEnemy.y) * 0.05 + (Math.random() - 0.5) * 2, life: 25, color: '#d4a', type: 'particle' });
                     effects.push({ x: nearestEnemy.x, y: nearestEnemy.y, life: 15, type: 'slash', color: '#d4a', angle: Math.atan2(nearestEnemy.y - sprite.y, nearestEnemy.x - sprite.x) });
                 }
