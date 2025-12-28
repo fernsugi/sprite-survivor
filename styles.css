@@ -534,3 +534,125 @@ body.lang-vi .sprite-btn .desc {
 #bossHealth .health-fill {
     background: linear-gradient(180deg, #f44, #a00);
 }
+
+/* Achievement Button */
+.achv-btn {
+    background: linear-gradient(180deg, #448, #226);
+    border: 3px solid #55a;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 30px;
+}
+
+.achv-btn:hover {
+    background: linear-gradient(180deg, #559, #337);
+    border-color: #77c;
+    transform: scale(1.05);
+}
+
+/* Achievements Modal */
+#achievementsModal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000c;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.achv-content {
+    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+    border: 4px solid #448;
+    padding: 20px 30px;
+    text-align: center;
+    min-width: 600px;
+}
+
+.achv-content h2 {
+    color: #5af;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0 #000;
+}
+
+#achievementsList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.achv-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 8px;
+    padding: 8px;
+    border: 2px solid #333;
+    background: #1118;
+}
+
+.achv-item.unlocked {
+    border-color: #5a5;
+    background: #1a2a1a88;
+}
+
+.achv-item.locked {
+    border-color: #555;
+    opacity: 0.5;
+}
+
+.achv-icon {
+    font-size: 16px;
+    width: 24px;
+    text-align: center;
+}
+
+.achv-item.unlocked .achv-icon {
+    color: #fd0;
+}
+
+.achv-item.locked .achv-icon {
+    color: #555;
+}
+
+.achv-name {
+    color: #fff;
+    font-size: 11px;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.achv-desc {
+    color: #888;
+    font-size: 10px;
+    flex-grow: 1;
+}
+
+/* Victory Achievements */
+#victoryAchievements {
+    margin: 15px 0;
+}
+
+.victory-achv-header {
+    color: #fd0;
+    font-size: 10px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0 #000;
+}
+
+.victory-achv-item {
+    color: #5f5;
+    font-size: 9px;
+    margin: 5px 0;
+    text-shadow: 1px 1px 0 #000;
+}

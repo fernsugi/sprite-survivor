@@ -25,6 +25,22 @@ const spriteTypes = [
     { nameKey: 'bomber', cost: 30, color: '#fa0', descKey: 'descBomber', type: 'explode', damage: 25, range: 180, cooldown: 90 }
 ];
 
+// Achievement Definitions
+// IDs: firstWin, onlyArcher, onlyKnight, onlyMage, onlyCleric, onlyNinja, onlyWizard, onlyBerserker, onlyFrost, onlyVampire, onlyBomber, allSprites, speedrun, noHit
+const achievementDefs = [
+    { id: 'firstWin', nameKey: 'achvFirstWin', descKey: 'achvFirstWinDesc' },
+    // "Only X sprite" achievements - generated from spriteTypes (indices 1-10)
+    ...['archer', 'knight', 'mage', 'cleric', 'ninja', 'wizard', 'berserker', 'frost', 'vampire', 'bomber'].map(s => ({
+        id: 'only' + s.charAt(0).toUpperCase() + s.slice(1),
+        nameKey: s, // Use sprite name directly, will be formatted in UI
+        descKey: 'achvOnlySpriteDesc', // Generic desc key
+        isSpriteOnly: true
+    })),
+    { id: 'allSprites', nameKey: 'achvAllSprites', descKey: 'achvAllSpritesDesc' },
+    { id: 'speedrun', nameKey: 'achvSpeedrun', descKey: 'achvSpeedrunDesc' },
+    { id: 'noHit', nameKey: 'achvNoHit', descKey: 'achvNoHitDesc' }
+];
+
 // Enemy Types
 const enemyTypes = [
     { name: 'Chaser', color: '#f44', speed: 1.5, hp: 20, damage: 10, type: 'melee', size: 14 },

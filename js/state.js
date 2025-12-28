@@ -47,3 +47,7 @@ let orbs = [];
 let skillOrbs = [];
 let effects = [];
 let spriteProjectiles = [];
+
+// Achievement Tracking (reset each game)
+let usedSpriteTypes = new Set();
+let gotHit = false;

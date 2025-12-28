@@ -131,7 +131,7 @@ function updateBossMechanics() {
         if (dist < 150 && player.invincibleTime <= 0) {
             // 1 damage per second (every 60 frames)
             if (Math.random() < 1/60) {
-                player.hp -= 1;
+                player.hp -= 1; gotHit = true;
                 effects.push({ x: player.x, y: player.y, life: 10, type: 'hit', color: '#f84' });
             }
         }
@@ -235,10 +235,10 @@ function updateEnemies() {
         if (dist < player.width/2 + enemy.size/2 && player.invincibleTime <= 0) {
             SFX.playerHit();
             if (enemy.type === 'explode') {
-                player.hp -= enemy.damage; player.invincibleTime = 60;
+                player.hp -= enemy.damage; player.invincibleTime = 60; gotHit = true;
                 for (let j = 0; j < 20; j++) effects.push({ x: enemy.x, y: enemy.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: '#ff0', type: 'particle' });
                 enemies.splice(i, 1);
-            } else { player.hp -= enemy.damage; player.invincibleTime = 30; player.x += (dx / dist) * -20; player.y += (dy / dist) * -20; }
+            } else { player.hp -= enemy.damage; player.invincibleTime = 30; gotHit = true; player.x += (dx / dist) * -20; player.y += (dy / dist) * -20; }
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
         }
         if (enemy.hp <= 0) {
@@ -306,7 +306,7 @@ function updateProjectiles() {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < player.width/2 + proj.size && player.invincibleTime <= 0 && !proj.reflected) {
             SFX.playerHit();
-            player.hp -= proj.damage; player.invincibleTime = 30; projectiles.splice(i, 1);
+            player.hp -= proj.damage; player.invincibleTime = 30; gotHit = true; projectiles.splice(i, 1);
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
         }
     }
@@ -319,7 +319,14 @@ function updateBoss() {
             score += 1000;
             SFX.bossDeath();
             for (let i = 0; i < 50; i++) effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 60, color: boss.color, type: 'particle' });
-            if (wave >= 20) { gameRunning = false; SFX.victory(); document.getElementById('victory').style.display = 'flex'; document.getElementById('victoryScore').textContent = score; document.getElementById('victoryTime').textContent = formatTime(gameTime); }
+            if (wave >= 20) {
+                gameRunning = false; SFX.victory();
+                const newAchievements = checkAchievements();
+                displayVictoryAchievements(newAchievements);
+                document.getElementById('victory').style.display = 'flex';
+                document.getElementById('victoryScore').textContent = score;
+                document.getElementById('victoryTime').textContent = formatTime(gameTime);
+            }
             else { boss = null; bossActive = false; wave++; waveTimer = 0; document.getElementById('bossHealth').style.display = 'none'; }
         }
     }

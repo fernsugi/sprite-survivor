@@ -89,6 +89,7 @@ function summonSprite(typeIndex) {
     const type = spriteTypes[typeIndex];
     if (points < type.cost) return;
     points -= type.cost;
+    usedSpriteTypes.add(typeIndex); // Track for achievements
     const angle = Math.random() * Math.PI * 2;
     const dist = 50 + Math.random() * 30;
     const newSprite = {

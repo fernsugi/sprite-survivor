@@ -63,7 +63,18 @@ const translations = {
         instructPause: "- Pause",
         instructAutopilot: "- Toggle autopilot",
         cheatMode: "CHEAT MODE",
-        mainMenu: "MAIN MENU"
+        mainMenu: "MAIN MENU",
+        achievements: "ACHIEVEMENTS",
+        achvFirstWin: "First Victory",
+        achvFirstWinDesc: "Win the game for the first time",
+        achvOnlySpriteDesc: "Win using only",
+        achvAllSprites: "Full Arsenal",
+        achvAllSpritesDesc: "Win with all 10 sprite types",
+        achvSpeedrun: "Speedrunner",
+        achvSpeedrunDesc: "Win in under 10 minutes",
+        achvNoHit: "Untouchable",
+        achvNoHitDesc: "Win without getting hit",
+        achvUnlocked: "Achievements Unlocked"
     },
     ja: {
         spriteFontSize: "9px",
@@ -128,7 +139,18 @@ const translations = {
         instructPause: "- 一時停止",
         instructAutopilot: "- オート切替",
         cheatMode: "チートモード",
-        mainMenu: "メインメニュー"
+        mainMenu: "メインメニュー",
+        achievements: "実績",
+        achvFirstWin: "初勝利",
+        achvFirstWinDesc: "初めてゲームをクリア",
+        achvOnlySpriteDesc: "のみでクリア",
+        achvAllSprites: "フルアーセナル",
+        achvAllSpritesDesc: "全10種のスプライトでクリア",
+        achvSpeedrun: "スピードランナー",
+        achvSpeedrunDesc: "10分以内にクリア",
+        achvNoHit: "無傷",
+        achvNoHitDesc: "ノーダメージでクリア",
+        achvUnlocked: "獲得した実績"
     },
     ko: {
         spriteFontSize: "8px",
@@ -193,7 +215,18 @@ const translations = {
         instructPause: "- 일시정지",
         instructAutopilot: "- 자동 전환",
         cheatMode: "치트 모드",
-        mainMenu: "메인 메뉴"
+        mainMenu: "메인 메뉴",
+        achievements: "업적",
+        achvFirstWin: "첫 승리",
+        achvFirstWinDesc: "처음으로 게임 클리어",
+        achvOnlySpriteDesc: "만으로 클리어",
+        achvAllSprites: "풀 아스날",
+        achvAllSpritesDesc: "10종 스프라이트 모두 사용하여 클리어",
+        achvSpeedrun: "스피드러너",
+        achvSpeedrunDesc: "10분 이내 클리어",
+        achvNoHit: "무적",
+        achvNoHitDesc: "피해 없이 클리어",
+        achvUnlocked: "획득한 업적"
     },
     "zh-TW": {
         spriteFontSize: "9px",
@@ -258,7 +291,18 @@ const translations = {
         instructPause: "- 暫停",
         instructAutopilot: "- 自動模式",
         cheatMode: "作弊模式",
-        mainMenu: "主選單"
+        mainMenu: "主選單",
+        achievements: "成就",
+        achvFirstWin: "首次勝利",
+        achvFirstWinDesc: "首次通關遊戲",
+        achvOnlySpriteDesc: "僅使用通關",
+        achvAllSprites: "全員集合",
+        achvAllSpritesDesc: "使用全部10種精靈通關",
+        achvSpeedrun: "速通達人",
+        achvSpeedrunDesc: "10分鐘內通關",
+        achvNoHit: "無傷通關",
+        achvNoHitDesc: "不受傷害通關",
+        achvUnlocked: "獲得的成就"
     },
     "zh-CN": {
         spriteFontSize: "9px",
@@ -323,7 +367,18 @@ const translations = {
         instructPause: "- 暂停",
         instructAutopilot: "- 自动模式",
         cheatMode: "作弊模式",
-        mainMenu: "主菜单"
+        mainMenu: "主菜单",
+        achievements: "成就",
+        achvFirstWin: "首次胜利",
+        achvFirstWinDesc: "首次通关游戏",
+        achvOnlySpriteDesc: "仅使用通关",
+        achvAllSprites: "全员集合",
+        achvAllSpritesDesc: "使用全部10种精灵通关",
+        achvSpeedrun: "速通达人",
+        achvSpeedrunDesc: "10分钟内通关",
+        achvNoHit: "无伤通关",
+        achvNoHitDesc: "不受伤害通关",
+        achvUnlocked: "获得的成就"
     },
     es: {
         spriteFontSize: "7px",
@@ -388,7 +443,18 @@ const translations = {
         instructPause: "- Pausar",
         instructAutopilot: "- Auto piloto",
         cheatMode: "MODO TRAMPA",
-        mainMenu: "MENU PRINCIPAL"
+        mainMenu: "MENU PRINCIPAL",
+        achievements: "LOGROS",
+        achvFirstWin: "Primera Victoria",
+        achvFirstWinDesc: "Gana el juego por primera vez",
+        achvOnlySpriteDesc: "Gana usando solo",
+        achvAllSprites: "Arsenal Completo",
+        achvAllSpritesDesc: "Gana con los 10 tipos de sprites",
+        achvSpeedrun: "Velocista",
+        achvSpeedrunDesc: "Gana en menos de 10 minutos",
+        achvNoHit: "Intocable",
+        achvNoHitDesc: "Gana sin recibir daño",
+        achvUnlocked: "Logros Desbloqueados"
     },
     pt: {
         spriteFontSize: "6px",
@@ -453,7 +519,18 @@ const translations = {
         instructPause: "- Pausar",
         instructAutopilot: "- Auto piloto",
         cheatMode: "MODO TRAPAÇA",
-        mainMenu: "MENU PRINCIPAL"
+        mainMenu: "MENU PRINCIPAL",
+        achievements: "CONQUISTAS",
+        achvFirstWin: "Primeira Vitória",
+        achvFirstWinDesc: "Vença o jogo pela primeira vez",
+        achvOnlySpriteDesc: "Vença usando apenas",
+        achvAllSprites: "Arsenal Completo",
+        achvAllSpritesDesc: "Vença com todos os 10 tipos de sprites",
+        achvSpeedrun: "Velocista",
+        achvSpeedrunDesc: "Vença em menos de 10 minutos",
+        achvNoHit: "Intocável",
+        achvNoHitDesc: "Vença sem receber dano",
+        achvUnlocked: "Conquistas Desbloqueadas"
     },
     ru: {
         spriteFontSize: "7px",
@@ -518,7 +595,18 @@ const translations = {
         instructPause: "- Пауза",
         instructAutopilot: "- Автопилот",
         cheatMode: "ЧИТ-РЕЖИМ",
-        mainMenu: "ГЛАВНОЕ МЕНЮ"
+        mainMenu: "ГЛАВНОЕ МЕНЮ",
+        achievements: "ДОСТИЖЕНИЯ",
+        achvFirstWin: "Первая Победа",
+        achvFirstWinDesc: "Выиграть игру впервые",
+        achvOnlySpriteDesc: "Выиграть только с",
+        achvAllSprites: "Полный Арсенал",
+        achvAllSpritesDesc: "Выиграть со всеми 10 типами спрайтов",
+        achvSpeedrun: "Спидраннер",
+        achvSpeedrunDesc: "Выиграть менее чем за 10 минут",
+        achvNoHit: "Неуязвимый",
+        achvNoHitDesc: "Выиграть без получения урона",
+        achvUnlocked: "Разблокированные Достижения"
     },
     fr: {
         spriteFontSize: "7px",
@@ -583,7 +671,18 @@ const translations = {
         instructPause: "- Pause",
         instructAutopilot: "- Auto pilote",
         cheatMode: "MODE TRICHE",
-        mainMenu: "MENU PRINCIPAL"
+        mainMenu: "MENU PRINCIPAL",
+        achievements: "SUCCÈS",
+        achvFirstWin: "Première Victoire",
+        achvFirstWinDesc: "Gagner le jeu pour la première fois",
+        achvOnlySpriteDesc: "Gagner en utilisant seulement",
+        achvAllSprites: "Arsenal Complet",
+        achvAllSpritesDesc: "Gagner avec les 10 types de sprites",
+        achvSpeedrun: "Speedrunner",
+        achvSpeedrunDesc: "Gagner en moins de 10 minutes",
+        achvNoHit: "Intouchable",
+        achvNoHitDesc: "Gagner sans prendre de dégâts",
+        achvUnlocked: "Succès Débloqués"
     },
     vi: {
         spriteFontSize: "10px",
@@ -648,7 +747,18 @@ const translations = {
         instructPause: "- Tạm dừng",
         instructAutopilot: "- Tự động",
         cheatMode: "CHẾ ĐỘ ĂN GIAN",
-        mainMenu: "MENU CHÍNH"
+        mainMenu: "MENU CHÍNH",
+        achievements: "THÀNH TÍCH",
+        achvFirstWin: "Chiến Thắng Đầu",
+        achvFirstWinDesc: "Thắng game lần đầu",
+        achvOnlySpriteDesc: "Thắng chỉ dùng",
+        achvAllSprites: "Đủ Bộ Sưu Tập",
+        achvAllSpritesDesc: "Thắng với đủ 10 loại sprite",
+        achvSpeedrun: "Tốc Độ",
+        achvSpeedrunDesc: "Thắng dưới 10 phút",
+        achvNoHit: "Bất Bại",
+        achvNoHitDesc: "Thắng không bị trúng đòn",
+        achvUnlocked: "Thành Tích Đạt Được"
     }
 };
 
@@ -745,7 +855,8 @@ function getLanguageURL(lang) {
 
 // Update browser URL without reload
 function updateURL(lang) {
-    const url = lang === 'en' ? '/' : `?lang=${lang}`;
+    const pathname = window.location.pathname;
+    const url = lang === 'en' ? pathname : `${pathname}?lang=${lang}`;
     history.replaceState({ lang }, '', url);
 }
 
@@ -788,6 +899,10 @@ function setLanguage(lang, updateHistory = true) {
     if (typeof initSpriteButtons === 'function') initSpriteButtons();
     if (typeof updateSkillDisplay === 'function') updateSkillDisplay();
     if (typeof updateUI === 'function') updateUI();
+    // Refresh achievements list content (always regenerate when language changes)
+    if (typeof refreshAchievementsList === 'function') {
+        refreshAchievementsList();
+    }
 }
 
 function t(key) {

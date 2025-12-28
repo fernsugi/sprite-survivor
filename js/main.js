@@ -257,6 +257,7 @@ function startGame(cheat = false) {
     loadSoundPreference();
     cheatMode = cheat;
     if (cheatMode) points = Infinity;
+    usedSpriteTypes = new Set(); gotHit = false; // Reset achievement tracking
     document.getElementById('startScreen').style.display = 'none';
     gameStarted = true;
     gameRunning = true;
@@ -269,6 +270,7 @@ function restartGame() {
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = [];
     currentSkill = null; updateSkillDisplay();
     score = 0; points = cheatMode ? Infinity : 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    usedSpriteTypes = new Set(); gotHit = false; // Reset achievement tracking
     gameRunning = true;
     gamePaused = false;
     autopilot = false;
