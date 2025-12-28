@@ -23,8 +23,9 @@ js/
 ├── i18n.js     - 10 languages (en/ja/ko/zh-TW/zh-CN/es/pt/ru/fr/vi), setLanguage(), t()
 ├── state.js    - Canvas, player object, entity arrays, debuffs
 ├── ui.js       - DOM UI updates (health bars, wave info, sprite buttons)
-├── skills.js   - Skill orbs spawning and skill activation (Dash/Heal/Nuke/Magnet)
+├── skills.js   - Skill orbs spawning and skill activation (Dash/Heal/Nuke/Magnet/Hero)
 ├── sprites.js  - Sprite summoning, merging, combat AI
+├── heroes.js   - Hero NPC AI, actions, bouncing balls
 ├── enemies.js  - Enemy spawning, movement AI, boss attacks, debuff application
 ├── render.js   - All canvas drawing, environment themes, debuff visuals
 ├── sound.js    - Procedural audio with Web Audio API
@@ -117,10 +118,26 @@ Visual feedback: colored aura particles around player + screen edge vignette.
 ### Skills (in config.js)
 | Skill | Rarity | Effect |
 |-------|--------|--------|
-| Dash | Common (0.5) | Teleport in movement direction, brief invincibility, collects orbs along path |
-| Screen Blast | Common (0.4) | Damage all enemies on screen |
+| Dash | Common (0.6) | Teleport in movement direction, brief invincibility, collects orbs along path |
+| Screen Blast | Common (0.25) | Damage all enemies on screen |
 | Full Heal | Rare (0.1) | Restore HP to max |
 | Orb Magnet | Very Rare (0.05) | Instantly collect all orbs and skill orbs on map |
+| Hero | Rarest (0.025) | Summon a permanent hero NPC ally |
+
+### Hero System (in config.js, heroes.js)
+Heroes are permanent NPC allies summoned via the Hero skill orb. They cannot die and are not targeted by enemies.
+
+| Hero | Color | Ability | Special |
+|------|-------|---------|---------|
+| Laser | Magenta | Wide beam (60px) hitting all enemies in path | 800 range |
+| Warrior | Orange | 240° cone melee attack | 4x movement speed |
+| Angel | White | Erases enemy projectiles in AOE | Follows random enemies |
+| Bouncer | Cyan | Launches bouncing balls | Balls last 5 seconds |
+
+Heroes are affected by debuffs:
+- Slow: Hero movement reduced 50%
+- NoBlock: Angel cannot erase projectiles
+- Weakened: Hero damage vs boss reduced 50%
 
 ### Orb Mechanics (in main.js)
 - Collecting orbs gives: +1 point, +10 score, +2 HP heal
@@ -135,6 +152,8 @@ Visual feedback: colored aura particles around player + screen edge vignette.
 ## Key Global Variables (in state.js)
 - `player` - position, hp, invincibility frames, speedBoost, speedBoostTimer, facingX/Y
 - `sprites[]` - active player sprites
+- `heroes[]` - permanent hero NPCs
+- `heroBalls[]` - bouncing balls from Bouncer hero
 - `enemies[]` - active enemies
 - `projectiles[]` - enemy/boss projectiles
 - `spriteProjectiles[]` - player sprite projectiles
