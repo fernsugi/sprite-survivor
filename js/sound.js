@@ -293,8 +293,8 @@ const SFX = {
 
     bossAttack: () => {
         if (!canPlaySound('bossAttack')) return;
-        playTone(80, 0.15, 'sawtooth', 0.2);
-        playNoise(0.1, 0.12);
+        playTone(80, 0.15, 'sawtooth', 0.1);
+        playNoise(0.1, 0.06);
     },
 
     // Skill sounds
