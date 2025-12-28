@@ -314,10 +314,10 @@ function updateProjectiles() {
             effects.push({ x: player.x, y: player.y, life: 10, type: 'hit' });
             // Apply random debuff from boss or hexer projectiles
             if (proj.fromBoss || proj.appliesDebuff) {
-                // Hexer only applies 3 debuffs; weakened is boss-exclusive
+                // Hexer only applies 2 debuffs; slow and weakened are boss-exclusive
                 const debuffTypes = proj.fromBoss
                     ? ['noHeal', 'noBlock', 'slow', 'weakened']
-                    : ['noHeal', 'noBlock', 'slow'];
+                    : ['noHeal', 'noBlock'];
                 const randomDebuff = debuffTypes[Math.floor(Math.random() * debuffTypes.length)];
                 debuffs[randomDebuff] = DEBUFF_DURATION;
             }
