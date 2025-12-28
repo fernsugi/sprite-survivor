@@ -157,15 +157,46 @@ function updatePlayer() {
         dx += avoidX;
         dy += avoidY;
 
-        // Use skill when available and enemies nearby
-        if (currentSkill && enemies.length > 0) {
-            const nearestEnemy = enemies.reduce((nearest, e) => {
-                const d = Math.sqrt((e.x - player.x) ** 2 + (e.y - player.y) ** 2);
-                return d < nearest.dist ? { enemy: e, dist: d } : nearest;
-            }, { enemy: null, dist: Infinity });
-            if (nearestEnemy.dist < 150 || currentSkill.name === 'skillMagnet') {
-                useSkill();
+        // Smart skill usage
+        if (currentSkill) {
+            let shouldUseSkill = false;
+
+            // Check if approaching a skill orb - use current skill before picking up new one
+            const nearestSkillOrb = skillOrbs.reduce((nearest, orb) => {
+                const d = Math.sqrt((orb.x - player.x) ** 2 + (orb.y - player.y) ** 2);
+                return d < nearest.dist ? { orb, dist: d } : nearest;
+            }, { orb: null, dist: Infinity });
+            if (nearestSkillOrb.dist < 40) {
+                shouldUseSkill = true; // About to pick up new skill, use current one
             }
+
+            // Skill-specific logic
+            switch (currentSkill.name) {
+                case 'skillMagnet':
+                    shouldUseSkill = true; // Always use immediately
+                    break;
+                case 'skillHeal':
+                    if (player.hp < player.maxHp * 0.5) shouldUseSkill = true; // Use when HP < 50%
+                    break;
+                case 'skillNuke':
+                    if (enemies.length >= 5) shouldUseSkill = true; // Use when 5+ enemies
+                    break;
+                case 'skillDash':
+                    // Emergency escape when enemy very close
+                    const dangerousEnemy = enemies.some(e => {
+                        const d = Math.sqrt((e.x - player.x) ** 2 + (e.y - player.y) ** 2);
+                        return d < 50;
+                    });
+                    if (dangerousEnemy) shouldUseSkill = true;
+                    // Also use near boss
+                    if (boss) {
+                        const bossDist = Math.sqrt((boss.x - player.x) ** 2 + (boss.y - player.y) ** 2);
+                        if (bossDist < 80) shouldUseSkill = true;
+                    }
+                    break;
+            }
+
+            if (shouldUseSkill) useSkill();
         }
     } else {
         // Manual control
