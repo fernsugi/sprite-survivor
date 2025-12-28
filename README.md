@@ -32,7 +32,7 @@ Summon sprites using points collected from orbs. Two sprites of the same type AN
 | **B** | Ninja | 15 | Fast Attacker | Fastest cooldown (20). Higher DPS than Archer. |
 | **B** | Frost | 25 | Slow Utility | 50% enemy slow. Essential for boss fights. |
 | **B** | Knight | 15 | Tank + Block | Blocks projectiles. Good vs ranged enemies. |
-| **C** | Cleric | 25 | Healer | Pure healing. Outclassed by Vampire for sustain. |
+| **B** | Cleric | 25 | Healer | Best pure healing (13 HP/s at Lv5). Cheaper than Vampire. |
 
 **Debuff Counters:** *noHeal* shuts down Vampire/Cleric, *noBlock* shuts down Knight/Berserker.
 
