@@ -13,3 +13,4 @@
 
 ## Features
 - [ ] Add more languages based on traffic data
+- [ ] Story mode
