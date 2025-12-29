@@ -38,6 +38,13 @@ function updateSpriteButtons() {
     spriteTypes.forEach((type, index) => {
         const btn = document.getElementById(`sprite-btn-${index}`);
         if (btn) {
+            // Disable all buttons if game is not running
+            if (!gameRunning) {
+                btn.disabled = true;
+                btn.classList.remove('affordable');
+                btn.classList.remove('locked');
+                return;
+            }
             // Check story mode availability
             const available = !storyMode || (typeof isSpriteAvailable === 'function' && isSpriteAvailable(type.nameKey));
             btn.disabled = !available || points < type.cost;
@@ -188,7 +195,7 @@ function updateSprites() {
                     let chainTargets = [nearestEnemy], lastTarget = nearestEnemy;
                     for (let c = 0; c < 3 + sprite.level; c++) {
                         let nextTarget = null, nextDist = Infinity;
-                        targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 80 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
+                        targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 120 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
                         if (nextTarget) { chainTargets.push(nextTarget); lastTarget = nextTarget; }
                     }
                     chainTargets.forEach((target, idx) => {

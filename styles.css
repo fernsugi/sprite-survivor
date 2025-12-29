@@ -73,15 +73,21 @@ body.lang-vi input {
     font-weight: bold;
 }
 
-body.lang-vi #startScreen .subtitle {
+/* lang-cjk is Chinese Japanese Korean */
+
+body.lang-vi #startScreen .subtitle, body.lang-cjk #startScreen .subtitle {
     font-size: 12px;
 }
 
-body.lang-vi #startScreen .instructions {
+body.lang-vi #startScreen .instructions, body.lang-cjk #startScreen .instructions {
     font-size: 10px;
 }
 
-body.lang-vi .sprite-btn .desc {
+body.lang-vi .sprite-btn .desc, body.lang-cjk .sprite-btn .desc {
+    font-size: 10px;
+}
+
+body.lang-vi .menu-btn-secondary, body.lang-cjk .menu-btn-secondary {
     font-size: 10px;
 }
 /* End Vietnamese font override */

@@ -619,7 +619,7 @@ function draw() {
 
         // Hero name label (also semi-transparent)
         ctx.globalAlpha = 0.6;
-        ctx.font = '6px "Press Start 2P"';
+        ctx.font = 'bold 10px Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;

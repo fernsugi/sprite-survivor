@@ -329,6 +329,7 @@ function startGame(cheat = false) {
     cheatMode = cheat;
     if (cheatMode) points = Infinity;
     usedSpriteTypes = new Set(); gotHit = false; heroSummoned = false; // Reset achievement tracking
+    autopilot = false;
     document.getElementById('startScreen').style.display = 'none';
     gameStarted = true;
     gameRunning = true;

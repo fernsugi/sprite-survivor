@@ -162,6 +162,7 @@ function initStoryGame() {
     gameStarted = true;
     gameRunning = true;
     gamePaused = false;
+    autopilot = false;
     score = 0;
     displayScore = 0;
     points = 0; // Start with 0 points - need to collect sprite first
@@ -851,8 +852,8 @@ function spawnRemnantBoss() {
     const remnantConfigs = {
         1: { name: 'Remnant of Rex', hp: 2000, damage: 40, color: '#ff6600', size: 50, speed: 7.5 },
         2: { name: 'Remnant of Beth', hp: 1000, damage: 35, color: '#00ffff', size: 45, speed: 2.0 },
-        3: { name: 'Remnant of Milia', hp: 1200, damage: 45, color: '#ffffff', size: 55, speed: 1.2 },
-        4: { name: 'Remnant of Troy', hp: 1500, damage: 80, color: '#ff00ff', size: 60, speed: 1.0 }
+        3: { name: 'Remnant of Milia', hp: 1500, damage: 45, color: '#ffffff', size: 55, speed: 1.2 },
+        4: { name: 'Remnant of Troy', hp: 1750, damage: 80, color: '#ff00ff', size: 60, speed: 1.0 }
     };
 
     const config = remnantConfigs[storyChapter];
@@ -1113,6 +1114,8 @@ function showChapterCompleteDialogue() {
 function showStoryVictory() {
     gameRunning = false;
     storyMode = false;
+    points = 0;
+    updateUI(); // Update sprite buttons (disabled when not running)
     document.getElementById('storyModeScreen').style.display = 'flex';
     updateChapterButtons();
 }
@@ -1120,6 +1123,8 @@ function showStoryVictory() {
 function showStoryEnding() {
     gameRunning = false;
     storyMode = false;
+    points = 0;
+    updateUI(); // Update sprite buttons (disabled when not running)
     document.getElementById('startScreen').style.display = 'flex';
 }
 

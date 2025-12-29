@@ -19,7 +19,7 @@ const spriteTypes = [
     { nameKey: 'mage', cost: 15, color: '#a5f', descKey: 'descMage', type: 'aoe', damage: 12, range: 100, cooldown: 60 },
     { nameKey: 'cleric', cost: 25, color: '#ff5', descKey: 'descCleric', type: 'healer', healAmount: 5, cooldown: 120 },
     { nameKey: 'ninja', cost: 15, color: '#555', descKey: 'descNinja', type: 'shooter', damage: 5, range: 150, cooldown: 20 },
-    { nameKey: 'wizard', cost: 25, color: '#5ff', descKey: 'descWizard', type: 'chain', damage: 10, range: 120, cooldown: 65 },
+    { nameKey: 'wizard', cost: 25, color: '#5ff', descKey: 'descWizard', type: 'chain', damage: 20, range: 120, cooldown: 65 },
     { nameKey: 'berserker', cost: 20, color: '#f80', descKey: 'descBerserker', type: 'spin', damage: 20, range: 50, cooldown: 75, reflectsProjectiles: true },
     { nameKey: 'frost', cost: 25, color: '#8ef', descKey: 'descFrost', type: 'slow', damage: 5, range: 100, cooldown: 70 },
     { nameKey: 'vampire', cost: 30, color: '#d4a', descKey: 'descVampire', type: 'vampire', damage: 12, range: 60, cooldown: 50 },

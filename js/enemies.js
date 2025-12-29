@@ -344,10 +344,24 @@ function remnantBossAttack() {
                         }, ring * 400);
                     }
                     break;
-                case 1: // Divine Shield - invulnerable briefly
-                    boss.shield = 500; // Temporary shield
-                    effects.push({ x: boss.x, y: boss.y, life: 180, type: 'shield', color: '#fff8' });
-                    setTimeout(() => { if (boss) boss.shield = 0; }, 3000);
+                case 1: // Divine Burst - massive proximity damage (punishes melee)
+                    effects.push({ x: boss.x, y: boss.y, life: 30, type: 'aoe', radius: 0, maxRadius: 100, color: '#fff', speed: 8 });
+                    setTimeout(() => {
+                        if (!boss) return;
+                        const dx = player.x - boss.x, dy = player.y - boss.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 100 && player.invincibleTime <= 0) {
+                            damagePlayer(boss.damage * 1.5); // 67.5 damage - very punishing
+                            player.invincibleTime = 60;
+                            gotHit = true;
+                            effects.push({ x: player.x, y: player.y, life: 20, type: 'hit', color: '#fff' });
+                        }
+                        // Visual explosion
+                        for (let k = 0; k < 12; k++) {
+                            const angle = (Math.PI * 2 / 12) * k;
+                            effects.push({ x: boss.x + Math.cos(angle) * 50, y: boss.y + Math.sin(angle) * 50, vx: Math.cos(angle) * 4, vy: Math.sin(angle) * 4, life: 20, color: '#fff', type: 'particle' });
+                        }
+                    }, 400);
                     break;
                 case 2: // Feather Storm - rains feathers in area
                     for (let i = 0; i < 8; i++) {
