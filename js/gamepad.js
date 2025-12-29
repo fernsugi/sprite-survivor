@@ -72,19 +72,24 @@ function updateGamepad() {
         return;
     }
 
-    // Left stick - Movement
+    // Left stick - Movement (set based on current stick position)
     const lx = gp.axes[0];
     const ly = gp.axes[1];
-    if (lx < -deadzone) keys['ArrowLeft'] = true;
-    if (lx > deadzone) keys['ArrowRight'] = true;
-    if (ly < -deadzone) keys['ArrowUp'] = true;
-    if (ly > deadzone) keys['ArrowDown'] = true;
 
-    // D-pad - Alternative movement
-    if (currButtons[12]) keys['ArrowUp'] = true;
-    if (currButtons[13]) keys['ArrowDown'] = true;
-    if (currButtons[14]) keys['ArrowLeft'] = true;
-    if (currButtons[15]) keys['ArrowRight'] = true;
+    // Only override keys if gamepad is being used for movement
+    const gpLeft = lx < -deadzone || currButtons[14];
+    const gpRight = lx > deadzone || currButtons[15];
+    const gpUp = ly < -deadzone || currButtons[12];
+    const gpDown = ly > deadzone || currButtons[13];
+
+    // Track if gamepad was used for movement last frame
+    if (gpLeft || gpRight || gpUp || gpDown || gpPrevButtons['gpMoving']) {
+        keys['ArrowLeft'] = gpLeft;
+        keys['ArrowRight'] = gpRight;
+        keys['ArrowUp'] = gpUp;
+        keys['ArrowDown'] = gpDown;
+        gpPrevButtons['gpMoving'] = gpLeft || gpRight || gpUp || gpDown;
+    }
 
     // Right stick - Use Skill
     const rx = gp.axes[2];
@@ -105,6 +110,10 @@ function updateGamepad() {
     if (heldOrRepeat(6)) summonSprite(8); // L2: Vampire
     if (heldOrRepeat(7)) summonSprite(9); // R2: Bomber
 
-    // Save state for next frame
+    // Save state for next frame (preserve custom flags)
+    const gpMoving = gpPrevButtons['gpMoving'];
+    const rs = gpPrevButtons['rs'];
     gpPrevButtons = currButtons;
+    gpPrevButtons['gpMoving'] = gpMoving;
+    gpPrevButtons['rs'] = rs;
 }
