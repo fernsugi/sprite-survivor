@@ -47,27 +47,35 @@ function updateGamepad() {
 
     // === ALWAYS AVAILABLE ===
 
-    // Options = Pause (not during dialogue)
-    if (justPressed(9) && !dialogueActive) {
-        togglePause();
+    // Options = Pause toggle (always, unless in dialogue without pause)
+    if (justPressed(9)) {
+        if (gamePaused) {
+            togglePause(); // Always unpause
+        } else if (!dialogueActive) {
+            togglePause(); // Pause only if no dialogue
+        }
     }
 
     // L1 = Toggle autopilot (in game, not during dialogue)
-    if (justPressed(4) && gameRunning && !dialogueActive) {
+    if (justPressed(4) && gameRunning && !dialogueActive && !gamePaused) {
         autopilot = !autopilot;
     }
 
     // === DIALOGUE MODE ===
     if (dialogueActive) {
-        if (justPressed(0) || justPressed(9)) { // X or Options
+        if (justPressed(0)) { // Only X advances dialogue (not Options)
             advanceDialogue();
         }
+        // Clear hold timers during dialogue to prevent sprite summon on exit
+        gpHoldTimers = [];
         gpPrevButtons = currButtons;
         return;
     }
 
     // === GAME INPUT (only when running and not paused) ===
     if (!gameRunning || gamePaused) {
+        // Clear hold timers during pause to prevent sprite summon on unpause
+        gpHoldTimers = [];
         gpPrevButtons = currButtons;
         return;
     }
