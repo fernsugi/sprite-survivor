@@ -1,963 +1,1125 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background: #0a0a0f;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Press Start 2P', cursive;
-    overflow: hidden;
-    user-select: none;
-    -webkit-user-select: none;
+  background: #0a0a0f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Press Start 2P", cursive;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* ===== SEASONAL SNOW EFFECT (remove this section to disable) ===== */
 .snowfall {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 }
 
 .snowfall .snow {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: #fff;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall linear infinite;
-    will-change: transform; /* GPU acceleration hint */
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+  will-change: transform; /* GPU acceleration hint */
 }
 
 @keyframes fall {
-    0% { transform: translateY(-10px) rotate(0deg); }
-    100% { transform: translateY(100vh) rotate(360deg); }
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
 }
 
 /* Snowflake variations - staggered positions and speeds */
-.snowfall .snow:nth-child(1) { left: 5%; animation-duration: 8s; animation-delay: 0s; width: 4px; height: 4px; opacity: 0.6; }
-.snowfall .snow:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: -2s; width: 6px; height: 6px; }
-.snowfall .snow:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: -4s; width: 3px; height: 3px; opacity: 0.5; }
-.snowfall .snow:nth-child(4) { left: 35%; animation-duration: 14s; animation-delay: -1s; width: 5px; height: 5px; }
-.snowfall .snow:nth-child(5) { left: 45%; animation-duration: 9s; animation-delay: -3s; width: 4px; height: 4px; opacity: 0.7; }
-.snowfall .snow:nth-child(6) { left: 55%; animation-duration: 11s; animation-delay: -5s; width: 6px; height: 6px; }
-.snowfall .snow:nth-child(7) { left: 65%; animation-duration: 13s; animation-delay: -2s; width: 3px; height: 3px; opacity: 0.5; }
-.snowfall .snow:nth-child(8) { left: 75%; animation-duration: 8s; animation-delay: -4s; width: 5px; height: 5px; }
-.snowfall .snow:nth-child(9) { left: 85%; animation-duration: 10s; animation-delay: -1s; width: 4px; height: 4px; opacity: 0.6; }
-.snowfall .snow:nth-child(10) { left: 95%; animation-duration: 12s; animation-delay: -3s; width: 6px; height: 6px; }
-.snowfall .snow:nth-child(11) { left: 10%; animation-duration: 15s; animation-delay: -6s; width: 3px; height: 3px; opacity: 0.4; }
-.snowfall .snow:nth-child(12) { left: 30%; animation-duration: 9s; animation-delay: -7s; width: 5px; height: 5px; }
-.snowfall .snow:nth-child(13) { left: 50%; animation-duration: 11s; animation-delay: -8s; width: 4px; height: 4px; opacity: 0.7; }
-.snowfall .snow:nth-child(14) { left: 70%; animation-duration: 14s; animation-delay: -5s; width: 6px; height: 6px; }
-.snowfall .snow:nth-child(15) { left: 90%; animation-duration: 10s; animation-delay: -9s; width: 3px; height: 3px; opacity: 0.5; }
+.snowfall .snow:nth-child(1) {
+  left: 5%;
+  animation-duration: 8s;
+  animation-delay: 0s;
+  width: 4px;
+  height: 4px;
+  opacity: 0.6;
+}
+.snowfall .snow:nth-child(2) {
+  left: 15%;
+  animation-duration: 12s;
+  animation-delay: -2s;
+  width: 6px;
+  height: 6px;
+}
+.snowfall .snow:nth-child(3) {
+  left: 25%;
+  animation-duration: 10s;
+  animation-delay: -4s;
+  width: 3px;
+  height: 3px;
+  opacity: 0.5;
+}
+.snowfall .snow:nth-child(4) {
+  left: 35%;
+  animation-duration: 14s;
+  animation-delay: -1s;
+  width: 5px;
+  height: 5px;
+}
+.snowfall .snow:nth-child(5) {
+  left: 45%;
+  animation-duration: 9s;
+  animation-delay: -3s;
+  width: 4px;
+  height: 4px;
+  opacity: 0.7;
+}
+.snowfall .snow:nth-child(6) {
+  left: 55%;
+  animation-duration: 11s;
+  animation-delay: -5s;
+  width: 6px;
+  height: 6px;
+}
+.snowfall .snow:nth-child(7) {
+  left: 65%;
+  animation-duration: 13s;
+  animation-delay: -2s;
+  width: 3px;
+  height: 3px;
+  opacity: 0.5;
+}
+.snowfall .snow:nth-child(8) {
+  left: 75%;
+  animation-duration: 8s;
+  animation-delay: -4s;
+  width: 5px;
+  height: 5px;
+}
+.snowfall .snow:nth-child(9) {
+  left: 85%;
+  animation-duration: 10s;
+  animation-delay: -1s;
+  width: 4px;
+  height: 4px;
+  opacity: 0.6;
+}
+.snowfall .snow:nth-child(10) {
+  left: 95%;
+  animation-duration: 12s;
+  animation-delay: -3s;
+  width: 6px;
+  height: 6px;
+}
+.snowfall .snow:nth-child(11) {
+  left: 10%;
+  animation-duration: 15s;
+  animation-delay: -6s;
+  width: 3px;
+  height: 3px;
+  opacity: 0.4;
+}
+.snowfall .snow:nth-child(12) {
+  left: 30%;
+  animation-duration: 9s;
+  animation-delay: -7s;
+  width: 5px;
+  height: 5px;
+}
+.snowfall .snow:nth-child(13) {
+  left: 50%;
+  animation-duration: 11s;
+  animation-delay: -8s;
+  width: 4px;
+  height: 4px;
+  opacity: 0.7;
+}
+.snowfall .snow:nth-child(14) {
+  left: 70%;
+  animation-duration: 14s;
+  animation-delay: -5s;
+  width: 6px;
+  height: 6px;
+}
+.snowfall .snow:nth-child(15) {
+  left: 90%;
+  animation-duration: 10s;
+  animation-delay: -9s;
+  width: 3px;
+  height: 3px;
+  opacity: 0.5;
+}
 /* ===== END SEASONAL SNOW EFFECT ===== */
 
 /* Vietnamese font override - VT323 supports Vietnamese diacritics */
 body.lang-vi,
 body.lang-vi button,
 body.lang-vi input {
-    font-family: 'VT323', monospace;
-    font-weight: bold;
+  font-family: "VT323", monospace;
+  font-weight: bold;
 }
 
 /* lang-cjk is Chinese Japanese Korean */
 
-body.lang-vi #startScreen .subtitle, body.lang-cjk #startScreen .subtitle {
-    font-size: 12px;
+body.lang-vi #startScreen .subtitle,
+body.lang-cjk #startScreen .subtitle {
+  font-size: 12px;
 }
 
-body.lang-vi #startScreen .instructions, body.lang-cjk #startScreen .instructions {
-    font-size: 10px;
+body.lang-vi #startScreen .instructions,
+body.lang-cjk #startScreen .instructions {
+  font-size: 10px;
 }
 
-body.lang-vi .sprite-btn .desc, body.lang-cjk .sprite-btn .desc {
-    font-size: 10px;
+body.lang-vi .sprite-btn .desc,
+body.lang-cjk .sprite-btn .desc {
+  font-size: 10px;
 }
 
-body.lang-vi .menu-btn-secondary, body.lang-cjk .menu-btn-secondary {
-    font-size: 10px;
+body.lang-vi .menu-btn-secondary,
+body.lang-cjk .menu-btn-secondary {
+  font-size: 10px;
 }
 /* End Vietnamese font override */
 
 /* Responsive scaling for different screen sizes */
 @media (max-width: 1400px), (max-height: 850px) {
-    #gameWrapper {
-        transform: scale(0.9);
-        transform-origin: center center;
-    }
+  #gameWrapper {
+    transform: scale(0.9);
+    transform-origin: center center;
+  }
 }
 
 @media (max-width: 1280px), (max-height: 780px) {
-    #gameWrapper {
-        transform: scale(0.8);
-        transform-origin: center center;
-    }
+  #gameWrapper {
+    transform: scale(0.8);
+    transform-origin: center center;
+  }
 }
 
 @media (max-width: 1150px), (max-height: 700px) {
-    #gameWrapper {
-        transform: scale(0.7);
-        transform-origin: center center;
-    }
+  #gameWrapper {
+    transform: scale(0.7);
+    transform-origin: center center;
+  }
 }
 
 @media (max-width: 1000px), (max-height: 620px) {
-    #gameWrapper {
-        transform: scale(0.6);
-        transform-origin: center center;
-    }
+  #gameWrapper {
+    transform: scale(0.6);
+    transform-origin: center center;
+  }
 }
 
 @media (max-width: 850px), (max-height: 540px) {
-    #gameWrapper {
-        transform: scale(0.5);
-        transform-origin: center center;
-    }
+  #gameWrapper {
+    transform: scale(0.5);
+    transform-origin: center center;
+  }
 }
 
 #gameWrapper {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    position: relative;
-    z-index: 1;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 #languagePanel {
-    background: #1a1a2e;
-    border: 2px solid #2a2a3a;
-    padding: 10px;
-    color: #fff;
-    font-size: 8px;
-    width: 100px;
-    height: 758px;
-    flex-shrink: 0;
+  background: #1a1a2e;
+  border: 2px solid #2a2a3a;
+  padding: 10px;
+  color: #fff;
+  font-size: 8px;
+  width: 100px;
+  height: 758px;
+  flex-shrink: 0;
 }
 
 #languagePanel h3 {
-    margin-bottom: 10px;
-    font-size: 8px !important;
-    color: #aaa;
-    font-family: 'Press Start 2P', cursive !important;
-    line-height: 1.2;
+  margin-bottom: 10px;
+  font-size: 8px !important;
+  color: #aaa;
+  font-family: "Press Start 2P", cursive !important;
+  line-height: 1.2;
 }
 
 .lang-btn {
-    display: block;
-    width: 100%;
-    background: linear-gradient(180deg, #333, #222);
-    border: 2px solid #444;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive !important;
-    font-size: 8px;
-    padding: 8px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    transition: all 0.1s;
+  display: block;
+  width: 100%;
+  background: linear-gradient(180deg, #333, #222);
+  border: 2px solid #444;
+  color: #fff;
+  font-family: "Press Start 2P", cursive !important;
+  font-size: 8px;
+  padding: 8px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: all 0.1s;
 }
 
 .lang-btn:hover {
-    background: linear-gradient(180deg, #444, #333);
-    border-color: #666;
+  background: linear-gradient(180deg, #444, #333);
+  border-color: #666;
 }
 
 .lang-btn.active {
-    border-color: #5f5;
-    background: linear-gradient(180deg, #353, #232);
+  border-color: #5f5;
+  background: linear-gradient(180deg, #353, #232);
 }
 
 .sound-btn {
-    display: block;
-    width: 100%;
-    background: linear-gradient(180deg, #333, #222);
-    border: 2px solid #444;
-    color: #fff;
-    font-size: 20px;
-    padding: 8px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
+  display: block;
+  width: 100%;
+  background: linear-gradient(180deg, #333, #222);
+  border: 2px solid #444;
+  color: #fff;
+  font-size: 20px;
+  padding: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .sound-btn:hover {
-    background: linear-gradient(180deg, #444, #333);
-    border-color: #666;
+  background: linear-gradient(180deg, #444, #333);
+  border-color: #666;
 }
 
 #gameContainer {
-    position: relative;
-    border: 4px solid #2a2a3a;
-    box-shadow: 0 0 40px rgba(100, 200, 255, 0.2), inset 0 0 60px rgba(0, 0, 0, 0.5);
-    image-rendering: pixelated;
+  position: relative;
+  border: 4px solid #2a2a3a;
+  box-shadow: 0 0 40px rgba(100, 200, 255, 0.2),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
+  image-rendering: pixelated;
 }
 
 #gameCanvas {
-    display: block;
-    background: #1a1a2e;
-    image-rendering: pixelated;
+  display: block;
+  background: #1a1a2e;
+  image-rendering: pixelated;
 }
 
 #leftPanel {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 200px;
-    height: 758px;
-    flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 200px;
+  height: 758px;
+  flex-shrink: 0;
 }
 
 #ui {
-    background: #1a1a2e;
-    border: 2px solid #2a2a3a;
-    padding: 10px;
-    color: #fff;
-    font-size: 10px;
-    flex-shrink: 0;
+  background: #1a1a2e;
+  border: 2px solid #2a2a3a;
+  padding: 10px;
+  color: #fff;
+  font-size: 10px;
+  flex-shrink: 0;
 }
 
 #ui div {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 .health-bar {
-    width: 150px;
-    height: 14px;
-    background: #333;
-    border: 2px solid #555;
-    position: relative;
+  width: 150px;
+  height: 14px;
+  background: #333;
+  border: 2px solid #555;
+  position: relative;
 }
 
 .health-fill {
-    height: 100%;
-    background: linear-gradient(180deg, #5f5, #2a2);
-    transition: width 0.2s;
+  height: 100%;
+  background: linear-gradient(180deg, #5f5, #2a2);
+  transition: width 0.2s;
 }
 
 .overheal-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: linear-gradient(180deg, #999, #666);
-    transition: width 0.2s;
-    z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(180deg, #999, #666);
+  transition: width 0.2s;
+  z-index: 1;
 }
 
 .points-bar {
-    width: 150px;
-    height: 10px;
-    background: #333;
-    border: 2px solid #555;
-    margin-top: 2px;
+  width: 150px;
+  height: 10px;
+  background: #333;
+  border: 2px solid #555;
+  margin-top: 2px;
 }
 
 .points-fill {
-    height: 100%;
-    background: linear-gradient(180deg, #ff0, #aa0);
-    transition: width 0.2s;
+  height: 100%;
+  background: linear-gradient(180deg, #ff0, #aa0);
+  transition: width 0.2s;
 }
 
 #skillDisplay {
-    background: #1a1a2e;
-    border: 2px solid #2a2a3a;
-    padding: 10px;
-    color: #fff;
-    font-size: 10px;
-    flex-shrink: 0;
+  background: #1a1a2e;
+  border: 2px solid #2a2a3a;
+  padding: 10px;
+  color: #fff;
+  font-size: 10px;
+  flex-shrink: 0;
 }
 
 #skillDisplay.has-skill {
-    border-color: #5ff;
-    animation: skillPulse 1s infinite;
+  border-color: #5ff;
+  animation: skillPulse 1s infinite;
 }
 
 @keyframes skillPulse {
-    0%, 100% { box-shadow: 0 0 5px #5ff; }
-    50% { box-shadow: 0 0 15px #5ff; }
+  0%,
+  100% {
+    box-shadow: 0 0 5px #5ff;
+  }
+  50% {
+    box-shadow: 0 0 15px #5ff;
+  }
 }
 
 #skillName {
-    color: #5ff;
-    font-size: 10px;
+  color: #5ff;
+  font-size: 10px;
 }
 
 #skillHint {
-    color: #888;
-    font-size: 8px;
-    margin-top: 4px;
+  color: #888;
+  font-size: 8px;
+  margin-top: 4px;
 }
 
 #spritePanel {
-    background: #1a1a2e;
-    border: 2px solid #2a2a3a;
-    padding: 12px;
-    color: #fff;
-    font-size: 10px;
-    flex: 1;
-    overflow-y: auto;
+  background: #1a1a2e;
+  border: 2px solid #2a2a3a;
+  padding: 12px;
+  color: #fff;
+  font-size: 10px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 #spritePanel h3 {
-    margin-bottom: 10px;
-    font-size: 10px;
-    color: #aaa;
+  margin-bottom: 10px;
+  font-size: 10px;
+  color: #aaa;
 }
 
 #skillDisplay > div:first-child {
-    color: #aaa;
-    font-size: 10px;
-    margin-bottom: 8px;
+  color: #aaa;
+  font-size: 10px;
+  margin-bottom: 8px;
 }
 
 #spriteButtons {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .sprite-btn {
-    position: relative;
-    background: linear-gradient(180deg, #444, #222);
-    border: 2px solid #666;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 8px;
-    padding: 6px 8px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.1s;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.4;
-    height: 42px;
-    box-sizing: border-box;
+  position: relative;
+  background: linear-gradient(180deg, #444, #222);
+  border: 2px solid #666;
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.1s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  height: 42px;
+  box-sizing: border-box;
 }
 
 .sprite-btn .cost {
-    color: #ff0;
+  color: #ff0;
 }
 
 .sprite-btn .desc {
-    color: #aaa;
-    font-size: 6px;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    line-height: 1.2;
+  color: #aaa;
+  font-size: 6px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .sprite-btn:hover:not(:disabled) {
-    background: linear-gradient(180deg, #555, #333);
-    border-color: #888;
+  background: linear-gradient(180deg, #555, #333);
+  border-color: #888;
 }
 
 .sprite-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .sprite-btn.locked {
-    opacity: 0.3;
-    border-color: #333;
-    background: #111;
+  opacity: 0.3;
+  border-color: #333;
+  background: #111;
 }
 
 .sprite-btn.locked::after {
-    content: '🔒';
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 10px;
+  content: "🔒";
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
 }
 
 .sprite-btn.affordable {
-    border-color: #5f5;
-    animation: pulse 1s infinite;
+  border-color: #5f5;
+  animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 5px #5f5; }
-    50% { box-shadow: 0 0 15px #5f5; }
+  0%,
+  100% {
+    box-shadow: 0 0 5px #5f5;
+  }
+  50% {
+    box-shadow: 0 0 15px #5f5;
+  }
 }
 
 #waveInfo {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    font-size: 10px;
-    text-shadow: 2px 2px 0 #000;
-    text-align: center;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 10px;
+  text-shadow: 2px 2px 0 #000;
+  text-align: center;
 }
 
 #startScreen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #1a1a2e 0%, #0a0a1a 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    text-align: center;
-    z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a2e 0%, #0a0a1a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  z-index: 100;
 }
 
 #startScreen h1 {
-    font-size: 36px;
-    color: #4af;
-    text-shadow: 0 0 20px #4af, 0 4px 0 #248;
-    margin-bottom: 10px;
+  font-size: 36px;
+  color: #4af;
+  text-shadow: 0 0 20px #4af, 0 4px 0 #248;
+  margin-bottom: 10px;
 }
 
 #startScreen .subtitle {
-    font-size: 10px;
-    color: #888;
-    margin-bottom: 40px;
+  font-size: 10px;
+  color: #888;
+  margin-bottom: 40px;
 }
 
 /* Menu Button Layout */
 .menu-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .main-buttons {
-    display: flex;
-    gap: 15px;
+  display: flex;
+  gap: 15px;
 }
 
 .secondary-buttons {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 /* Main Menu Buttons (Story Mode & Survival) */
 .menu-btn-main {
-    background: linear-gradient(180deg, #4a4, #282);
-    border: 3px solid #5c5;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 12px;
-    padding: 18px 25px;
-    cursor: pointer;
-    transition: all 0.2s;
-    min-width: 160px;
+  background: linear-gradient(180deg, #4a4, #282);
+  border: 3px solid #5c5;
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 12px;
+  padding: 18px 25px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 160px;
 }
 
 .menu-btn-main.story {
-    background: linear-gradient(180deg, #a48, #626);
-    border-color: #c5a;
+  background: linear-gradient(180deg, #a48, #626);
+  border-color: #c5a;
 }
 
 .menu-btn-main.survival {
-    background: linear-gradient(180deg, #4a4, #282);
-    border-color: #5c5;
-    animation: survivalPulse 2s infinite;
+  background: linear-gradient(180deg, #4a4, #282);
+  border-color: #5c5;
+  animation: survivalPulse 2s infinite;
 }
 
 @keyframes survivalPulse {
-    0%, 100% { box-shadow: 0 0 8px #4a4; }
-    50% { box-shadow: 0 0 20px #4a4; }
+  0%,
+  100% {
+    box-shadow: 0 0 8px #4a4;
+  }
+  50% {
+    box-shadow: 0 0 20px #4a4;
+  }
 }
 
 .menu-btn-main:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
+  transform: scale(1.05);
+  filter: brightness(1.2);
 }
 
 .menu-btn-main.story:hover {
-    border-color: #d7c;
+  border-color: #d7c;
 }
 
 .menu-btn-main.survival:hover {
-    border-color: #7d7;
+  border-color: #7d7;
 }
 
 /* Secondary Menu Buttons (Cheat Mode & Achievements) */
 .menu-btn-secondary {
-    background: linear-gradient(180deg, #444, #222);
-    border: 2px solid #666;
-    color: #aaa;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 8px;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: all 0.2s;
+  background: linear-gradient(180deg, #444, #222);
+  border: 2px solid #666;
+  color: #aaa;
+  font-family: "Press Start 2P", cursive;
+  font-size: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .menu-btn-secondary:hover {
-    background: linear-gradient(180deg, #555, #333);
-    border-color: #888;
-    color: #fff;
-    transform: scale(1.05);
+  background: linear-gradient(180deg, #555, #333);
+  border-color: #888;
+  color: #fff;
+  transform: scale(1.05);
 }
 
 #startScreen .instructions {
-    font-size: 8px;
-    color: #666;
-    line-height: 2;
-    max-width: 600px;
+  font-size: 8px;
+  color: #666;
+  line-height: 2;
+  max-width: 600px;
 }
 
 #startScreen .instructions span {
-    color: #aaa;
+  color: #aaa;
 }
 
-#gameOver, #victory, #pauseScreen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    text-align: center;
-    z-index: 250;
+#gameOver,
+#victory,
+#pauseScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  z-index: 250;
 }
 
 #pauseScreen h1 {
-    color: #4af;
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px #4af;
+  color: #4af;
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #4af;
 }
 
 #pauseScreen p {
-    font-size: 10px;
-    color: #888;
-    margin-bottom: 30px;
+  font-size: 10px;
+  color: #888;
+  margin-bottom: 30px;
 }
 
 #gameOver h1 {
-    color: #f44;
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px #f44;
+  color: #f44;
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #f44;
 }
 
 #victory h1 {
-    color: #4f4;
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px #4f4;
+  color: #4f4;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #4f4;
 }
 
-#gameOver p, #victory p {
-    font-size: 10px;
-    margin-bottom: 30px;
+#gameOver p,
+#victory p {
+  font-size: 10px;
+  margin-bottom: 30px;
 }
 
 .restart-btn {
-    background: linear-gradient(180deg, #555, #333);
-    border: 3px solid #777;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 12px;
-    padding: 15px 30px;
-    cursor: pointer;
-    transition: all 0.2s;
+  background: linear-gradient(180deg, #555, #333);
+  border: 3px solid #777;
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 12px;
+  padding: 15px 30px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .restart-btn:hover {
-    background: linear-gradient(180deg, #666, #444);
-    border-color: #999;
-    transform: scale(1.05);
+  background: linear-gradient(180deg, #666, #444);
+  border-color: #999;
+  transform: scale(1.05);
 }
 
 .menu-btn {
-    margin-top: 10px;
-    padding: 8px 15px;
-    font-size: 8px;
-    border-width: 2px;
-    background: linear-gradient(180deg, #433, #322);
-    border-color: #644;
+  margin-top: 10px;
+  padding: 8px 15px;
+  font-size: 8px;
+  border-width: 2px;
+  background: linear-gradient(180deg, #433, #322);
+  border-color: #644;
 }
 
 .menu-btn:hover {
-    background: linear-gradient(180deg, #544, #433);
-    border-color: #866;
+  background: linear-gradient(180deg, #544, #433);
+  border-color: #866;
 }
 
 #controls {
-    margin-top: 20px;
-    color: #666;
-    font-size: 8px;
-    text-align: center;
-    height: 24px;
-    line-height: 24px;
-    overflow: hidden;
+  margin-top: 20px;
+  color: #666;
+  font-size: 8px;
+  text-align: center;
+  height: 24px;
+  line-height: 24px;
+  overflow: hidden;
 }
 
 #bossHealth {
-    position: absolute;
-    bottom: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 400px;
-    display: none;
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  display: none;
 }
 
 #gameTimerDisplay {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    font-size: 10px;
-    text-shadow: 2px 2px 0 #000;
-    background: #0008;
-    padding: 6px 12px;
-    border: 2px solid #555;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 10px;
+  text-shadow: 2px 2px 0 #000;
+  background: #0008;
+  padding: 6px 12px;
+  border: 2px solid #555;
 }
 
 #highScoreDisplay {
-    color: #fff;
-    font-size: 6px;
-    margin-top: 4px;
-    text-shadow: 1px 1px 0 #000;
+  color: #fff;
+  font-size: 6px;
+  margin-top: 4px;
+  text-shadow: 1px 1px 0 #000;
 }
 
 #bossHealth .boss-name {
-    color: #f44;
-    font-size: 10px;
-    text-align: center;
-    margin-bottom: 4px;
-    text-shadow: 2px 2px 0 #000;
+  color: #f44;
+  font-size: 10px;
+  text-align: center;
+  margin-bottom: 4px;
+  text-shadow: 2px 2px 0 #000;
 }
 
 #bossHealth .health-bar {
-    width: 100%;
-    height: 18px;
-    border-color: #f44;
+  width: 100%;
+  height: 18px;
+  border-color: #f44;
 }
 
 #bossHealth .health-fill {
-    background: linear-gradient(180deg, #f44, #a00);
+  background: linear-gradient(180deg, #f44, #a00);
 }
 
 /* Achievements Modal */
 #achievementsModal {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000c;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000c;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
 }
 
 .achv-content {
-    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
-    border: 4px solid #448;
-    padding: 20px 30px;
-    text-align: center;
-    min-width: 600px;
+  background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+  border: 4px solid #448;
+  padding: 20px 30px;
+  text-align: center;
+  min-width: 600px;
 }
 
 .achv-content h2 {
-    color: #5af;
-    font-size: 14px;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 0 #000;
+  color: #5af;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 0 #000;
 }
 
 #achievementsList {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 20px;
 }
 
 .achv-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
-    gap: 8px;
-    padding: 8px;
-    border: 2px solid #333;
-    background: #1118;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  gap: 8px;
+  padding: 8px;
+  border: 2px solid #333;
+  background: #1118;
 }
 
 .achv-item.unlocked {
-    border-color: #5a5;
-    background: #1a2a1a88;
+  border-color: #5a5;
+  background: #1a2a1a88;
 }
 
 .achv-item.locked {
-    border-color: #555;
-    opacity: 0.5;
+  border-color: #555;
+  opacity: 0.5;
 }
 
 .achv-icon {
-    font-size: 16px;
-    width: 24px;
-    text-align: center;
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
 }
 
 .achv-item.unlocked .achv-icon {
-    color: #fd0;
+  color: #fd0;
 }
 
 .achv-item.locked .achv-icon {
-    color: #555;
+  color: #555;
 }
 
 .achv-name {
-    color: #fff;
-    font-size: 11px;
-    min-width: 80px;
-    flex-shrink: 0;
+  color: #fff;
+  font-size: 11px;
+  min-width: 80px;
+  flex-shrink: 0;
 }
 
 .achv-desc {
-    color: #888;
-    font-size: 10px;
-    flex-grow: 1;
+  color: #888;
+  font-size: 10px;
+  flex-grow: 1;
 }
 
 /* Victory Achievements */
 #victoryAchievements {
-    margin: 15px 0;
+  margin: 15px 0;
 }
 
 .victory-achv-header {
-    color: #fd0;
-    font-size: 10px;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 0 #000;
+  color: #fd0;
+  font-size: 10px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 0 #000;
 }
 
 .victory-achv-item {
-    color: #5f5;
-    font-size: 9px;
-    margin: 5px 0;
-    text-shadow: 1px 1px 0 #000;
+  color: #5f5;
+  font-size: 9px;
+  margin: 5px 0;
+  text-shadow: 1px 1px 0 #000;
 }
 
 /* Story Mode Screen */
 #storyModeScreen {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 50;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
 }
 
 #storyModeScreen h1 {
-    font-size: 28px;
-    color: #c5a;
-    margin-bottom: 30px;
-    text-shadow: 3px 3px 0 #000;
+  font-size: 28px;
+  color: #c5a;
+  margin-bottom: 30px;
+  text-shadow: 3px 3px 0 #000;
 }
 
 .chapter-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
 }
 
 .chapter-btn {
-    background: linear-gradient(180deg, #333, #1a1a1a);
-    border: 3px solid #555;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 10px;
-    padding: 15px 25px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    min-width: 350px;
-    position: relative;
+  background: linear-gradient(180deg, #333, #1a1a1a);
+  border: 3px solid #555;
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 10px;
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 350px;
+  position: relative;
 }
 
 .chapter-btn:hover:not(.locked) {
-    background: linear-gradient(180deg, #444, #2a2a2a);
-    border-color: #777;
-    transform: scale(1.02);
+  background: linear-gradient(180deg, #444, #2a2a2a);
+  border-color: #777;
+  transform: scale(1.02);
 }
 
 .chapter-btn.locked {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .chapter-btn.locked:hover {
-    transform: none;
+  transform: none;
 }
 
 .chapter-num {
-    font-size: 16px;
-    color: #c5a;
-    min-width: 30px;
+  font-size: 16px;
+  color: #c5a;
+  min-width: 30px;
 }
 
 .chapter-title {
-    flex-grow: 1;
-    text-align: left;
+  flex-grow: 1;
+  text-align: left;
 }
 
 .chapter-hero {
-    color: #888;
-    font-size: 8px;
+  color: #888;
+  font-size: 8px;
 }
 
 .lock-icon {
-    position: absolute;
-    right: 15px;
-    font-size: 14px;
+  position: absolute;
+  right: 15px;
+  font-size: 14px;
 }
 
 .chapter-btn.ending {
-    border-color: #fd0;
-    margin-top: 10px;
+  border-color: #fd0;
+  margin-top: 10px;
 }
 
 .chapter-btn.ending .chapter-num {
-    color: #fd0;
+  color: #fd0;
 }
 
 .chapter-btn.ending:not(.locked) {
-    background: linear-gradient(180deg, #443, #221);
+  background: linear-gradient(180deg, #443, #221);
 }
 
 /* Name Input Modal */
 #nameInputModal {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000c;
-    justify-content: center;
-    align-items: center;
-    z-index: 150;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000c;
+  justify-content: center;
+  align-items: center;
+  z-index: 150;
 }
 
 .name-input-content {
-    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
-    border: 4px solid #c5a;
-    padding: 30px 40px;
-    text-align: center;
+  background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+  border: 4px solid #c5a;
+  padding: 30px 40px;
+  text-align: center;
 }
 
 .name-input-content h2 {
-    color: #c5a;
-    font-size: 16px;
-    margin-bottom: 15px;
+  color: #c5a;
+  font-size: 16px;
+  margin-bottom: 15px;
 }
 
 .name-input-content p {
-    color: #888;
-    font-size: 10px;
-    margin-bottom: 20px;
+  color: #888;
+  font-size: 10px;
+  margin-bottom: 20px;
 }
 
 #playerNameInput {
-    background: #0a0a1a;
-    border: 2px solid #555;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 14px;
-    padding: 10px 15px;
-    width: 200px;
-    text-align: center;
-    margin-bottom: 20px;
+  background: #0a0a1a;
+  border: 2px solid #555;
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 14px;
+  padding: 10px 15px;
+  width: 200px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 #playerNameInput:focus {
-    outline: none;
-    border-color: #c5a;
+  outline: none;
+  border-color: #c5a;
 }
 
 #playerNameInput::placeholder {
-    color: #444;
+  color: #444;
 }
 
 /* Dialogue Box */
 #dialogueBox {
-    display: none;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 800px;
-    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
-    border: 3px solid #555;
-    padding: 20px;
-    z-index: 200;
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 800px;
+  background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+  border: 3px solid #555;
+  padding: 20px;
+  z-index: 200;
 }
 
 .dialogue-speaker {
-    color: #c5a;
-    font-size: 12px;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 0 #000;
+  color: #c5a;
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 0 #000;
 }
 
 .dialogue-text {
-    color: #fff;
-    font-size: 11px;
-    line-height: 1.8;
-    min-height: 50px;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.8;
+  min-height: 50px;
 }
 
 .dialogue-hint {
-    color: #666;
-    font-size: 8px;
-    text-align: right;
-    margin-top: 10px;
+  color: #666;
+  font-size: 8px;
+  text-align: right;
+  margin-top: 10px;
 }
 
 /* Larger dialogue text for CJK and Vietnamese (non-pixel fonts render smaller) */
 body.lang-cjk .dialogue-text,
 body.lang-vi .dialogue-text {
-    font-size: 14px;
-    line-height: 1.9;
+  font-size: 14px;
+  line-height: 1.9;
 }
 
 body.lang-cjk .dialogue-speaker,
 body.lang-vi .dialogue-speaker {
-    font-size: 14px;
+  font-size: 14px;
+}
+
+/* Gamepad Navigation Focus */
+@keyframes gamepadFocusPulse {
+    0% { transform: scale(1.05); box-shadow: 0 0 15px #fd0, inset 0 0 10px #fd0; border-color: #fd0; }
+    100% { transform: scale(1.1); box-shadow: 0 0 25px #fff, inset 0 0 20px #fff; border-color: #fff; }
+}
+
+.gamepad-focus {
+    outline: 4px solid #fff !important;
+    outline-offset: 2px;
+    box-shadow: 0 0 20px #fd0, inset 0 0 20px #fd0 !important;
+    transform: scale(1.05);
+    z-index: 1000;
+    position: relative;
+    animation: gamepadFocusPulse 0.4s infinite alternate !important;
+    background-blend-mode: hard-light !important;
+    filter: brightness(1.2) !important;
+    /* Ensure text is readable */
+    text-shadow: 0 0 5px #000 !important;
+}
+
+/* Ensure focused element is visible if it was hidden or low opacity */
+.gamepad-focus {
+    opacity: 1 !important;
+}
+
+/* Error Shake Animation */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.error-shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    border-color: #f44 !important;
 }

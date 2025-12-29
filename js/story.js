@@ -125,7 +125,16 @@ function showNameInput() {
 function confirmPlayerName() {
     const input = document.getElementById('playerNameInput');
     let name = input.value.trim();
-    if (!name) name = 'Hero';
+    
+    // Strict validation: name required
+    if (!name) {
+        playSound('error');
+        input.classList.add('error-shake');
+        // Remove class after animation completes so it can be triggered again
+        setTimeout(() => input.classList.remove('error-shake'), 500);
+        input.focus();
+        return;
+    }
 
     playerName = name;
     storyProgress.playerName = name;

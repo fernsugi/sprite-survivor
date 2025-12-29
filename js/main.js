@@ -203,10 +203,11 @@ function updatePlayer() {
         }
     } else {
         // Manual control
-        if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
-        if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
-        if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
-        if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+        const gp = window.gamepadDirection || { up: false, down: false, left: false, right: false };
+        if (keys['w'] || keys['W'] || keys['ArrowUp'] || gp.up) dy -= 1;
+        if (keys['s'] || keys['S'] || keys['ArrowDown'] || gp.down) dy += 1;
+        if (keys['a'] || keys['A'] || keys['ArrowLeft'] || gp.left) dx -= 1;
+        if (keys['d'] || keys['D'] || keys['ArrowRight'] || gp.right) dx += 1;
     }
 
     if (dx !== 0 || dy !== 0) {

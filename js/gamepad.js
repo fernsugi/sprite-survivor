@@ -1,9 +1,15 @@
-// Gamepad Support (PS5 DualSense, Xbox, etc.)
+// Gamepad Support (PS5 DualSense, Xbox, etc.) with UI Navigation
 
 let gpPrevButtons = []; // Previous frame button states
 let gpHoldTimers = []; // Hold timers for repeat
 const HOLD_DELAY = 30; // Frames before repeat starts
 const HOLD_REPEAT = 8; // Frames between repeats
+
+// UI Navigation State
+let uiFocusIndex = 0;
+let lastUiMoveTime = 0;
+const UI_MOVE_DELAY = 150; // ms between moves (debounce)
+let activeScreenId = null;
 
 function getGamepad() {
     const gamepads = navigator.getGamepads();
@@ -11,6 +17,170 @@ function getGamepad() {
         if (gamepads[i]) return gamepads[i];
     }
     return null;
+}
+
+function getVisibleScreen() {
+    // Check priority screens first (modals/overlays)
+    const screens = [
+        'nameInputModal', // Highest priority
+        'achievementsModal',
+        'gameOver',
+        'victory',
+        'pauseScreen',
+        'storyModeScreen',
+        'dialogueBox' // Special case, though dialogue handles its own input usually
+    ];
+    
+    for (const id of screens) {
+        const el = document.getElementById(id);
+        if (el && el.style.display !== 'none' && el.style.display !== '') {
+            // Dialogue box is handled separately in logic, but good to know
+            return id;
+        }
+    }
+    
+    // Check startScreen separately as it might be the bottom layer
+    const start = document.getElementById('startScreen');
+    if (start && getComputedStyle(start).display !== 'none') return 'startScreen';
+    
+    return null;
+}
+
+function getFocusableElements(screenId) {
+    if (!screenId) return [];
+    const screen = document.getElementById(screenId);
+    if (!screen) return [];
+    
+    // Select interactive elements
+    // standard buttons and inputs
+    let selector = 'button:not([disabled]):not(.locked), input:not([disabled])';
+    
+    // Special cases where buttons might not matches standard selector or need specific order
+    if (screenId === 'startScreen') {
+        // We want specific order usually: Main buttons, then secondary
+        const main = Array.from(screen.querySelectorAll('.menu-btn-main'));
+        const secondary = Array.from(screen.querySelectorAll('.menu-btn-secondary'));
+        // language buttons are in a separate panel #languagePanel, not inside #startScreen technically?
+        // Actually #languagePanel is a sibling of #gameContainer in HTML.
+        // If we want to navigate to language from start screen, we might need to add them manually
+        return [...main, ...secondary];
+    }
+    
+    if (screenId === 'storyModeScreen') {
+        selector = '.chapter-btn:not(.locked), .menu-btn';
+    }
+    
+    const elements = Array.from(screen.querySelectorAll(selector));
+    
+    // Filter out actually invisible elements (e.g. if parents are hidden)
+    return elements.filter(el => {
+         return el.offsetParent !== null && getComputedStyle(el).pointerEvents !== 'none';
+    });
+}
+
+function clearFocus() {
+    document.querySelectorAll('.gamepad-focus').forEach(el => el.classList.remove('gamepad-focus'));
+    // Also blur actual focus to prevent double-activation if multiple inputs
+    if (document.activeElement && document.activeElement.tagName !== 'BODY') {
+        document.activeElement.blur();
+    }
+}
+
+function updateMenuNavigation(gp) {
+    const screenId = getVisibleScreen();
+    
+    // Skip if dialogue is active (handled by dialogue logic)
+    if (screenId === 'dialogueBox') return;
+    
+    // Detect screen change to reset focus
+    if (screenId !== activeScreenId) {
+        activeScreenId = screenId;
+        uiFocusIndex = 0;
+        clearFocus();
+    }
+    
+    if (!screenId) return; // No menu visible
+    
+    let focusables = getFocusableElements(screenId);
+    
+    // If Start Screen, maybe allow valid navigation to language panel?
+    // For simplicity, let's stick to the main menu buttons first.
+    
+    if (focusables.length === 0) return;
+    
+    // Clamp index
+    if (uiFocusIndex >= focusables.length) uiFocusIndex = focusables.length - 1;
+    if (uiFocusIndex < 0) uiFocusIndex = 0;
+    
+    // Apply focus style
+    clearFocus();
+    const target = focusables[uiFocusIndex];
+    if (target) {
+        target.classList.add('gamepad-focus');
+        target.focus(); // Native focus helps with inputs
+    }
+    
+    // --- Navigation Inputs ---
+    const now = Date.now();
+    
+    // Allow faster scrolling if held? For now fixed delay.
+    if (now - lastUiMoveTime < UI_MOVE_DELAY) {
+        // Check for Confirm even during debounce
+        if (gp.buttons[0].pressed && !gpPrevButtons[0]) {
+             if (target) {
+                 target.click();
+                 // SFX handled by click usually, or we can add one
+             }
+        }
+        return; 
+    }
+    
+    // D-pad & Sticks
+    const lx = gp.axes[0];
+    const ly = gp.axes[1];
+    const deadzone = 0.5;
+    
+    const up = gp.buttons[12].pressed || ly < -deadzone;
+    const down = gp.buttons[13].pressed || ly > deadzone;
+    const left = gp.buttons[14].pressed || lx < -deadzone;
+    const right = gp.buttons[15].pressed || lx > deadzone;
+    
+    let moved = false;
+    
+    if (down) {
+        uiFocusIndex = (uiFocusIndex + 1) % focusables.length;
+        moved = true;
+    } else if (up) {
+        uiFocusIndex = (uiFocusIndex - 1 + focusables.length) % focusables.length;
+        moved = true;
+    } else if (right) {
+         // Optional: grid navigation if we wanted
+         // For now linear list is safer and simpler
+         // But for Start Screen (2x2 likely), Right might mean index + 1 if even?
+         // Let's stick to simple cycle for robustness unless user complains.
+         // Actually, let's try to be smart.
+         // If horizontal layout...
+         // But simple up/down cycle is always 'playable'.
+    } else if (left) {
+         // same
+    }
+    
+    if (moved) {
+        lastUiMoveTime = now;
+        if (typeof SFX !== 'undefined' && SFX.select) SFX.select(); // Reuse select sound if possible, or just silent
+        // If SFX object exists but no select method, oh well.
+        // main.js calls playSound('select'). function playSound is global? 
+        // list_dir showed sound.js.
+        if (typeof playSound === 'function') playSound('move'); // Assuming move sound exists, if not maybe 'select' is too loud?
+        // Let's just rely on visual feedback.
+    }
+    
+    // Confirm Action (A / Cross = button 0)
+    if (gp.buttons[0].pressed && !gpPrevButtons[0]) {
+        if (target) {
+            target.click();
+        }
+    }
 }
 
 function updateGamepad() {
@@ -45,33 +215,17 @@ function updateGamepad() {
     // R1 modifier state
     const r1Held = currButtons[5] || false;
 
-    // === ALWAYS AVAILABLE ===
-
-    // Options = Pause toggle (always, unless in dialogue without pause)
-    if (justPressed(9)) {
-        if (gamePaused) {
-            togglePause(); // Always unpause
-        } else if (!dialogueActive) {
-            togglePause(); // Pause only if no dialogue
-        }
-    }
-
-    // L1 = Toggle autopilot (in game, not during dialogue)
-    if (justPressed(4) && gameRunning && !dialogueActive && !gamePaused) {
-        autopilot = !autopilot;
-    }
-
-    // === DIALOGUE MODE ===
-    if (dialogueActive) {
+    // === DIALOGUE MODE (Highest Priority) ===
+    if (typeof dialogueActive !== 'undefined' && dialogueActive) {
         // X advances dialogue with hold-to-repeat
         if (currButtons[0]) {
             if (!gpPrevButtons[0]) {
                 gpHoldTimers['dialogue'] = 1;
-                advanceDialogue();
+                if (typeof advanceDialogue === 'function') advanceDialogue();
             } else {
                 gpHoldTimers['dialogue'] = (gpHoldTimers['dialogue'] || 0) + 1;
                 if (gpHoldTimers['dialogue'] > HOLD_DELAY && (gpHoldTimers['dialogue'] - HOLD_DELAY) % HOLD_REPEAT === 0) {
-                    advanceDialogue();
+                     if (typeof advanceDialogue === 'function') advanceDialogue();
                 }
             }
         } else {
@@ -84,36 +238,77 @@ function updateGamepad() {
         return;
     }
 
-    // === GAME INPUT (only when running and not paused) ===
-    if (!gameRunning || gamePaused) {
-        // Clear hold timers during pause to prevent sprite summon on unpause
-        gpHoldTimers = [];
+    // === MENU MODE ===
+    // If a menu screen is visible (Start, Pause, GameOver, Level Up, Story Map, Name Input)
+    const visibleScreen = getVisibleScreen();
+    // Special handling: if paused, we definitely want menu mode
+    // If not running, we definitely want menu mode
+    // (except if just loading, but getGamepad implies we are running JS)
+    
+    if (visibleScreen || (typeof gamePaused !== 'undefined' && gamePaused) || (typeof gameRunning !== 'undefined' && !gameRunning)) {
+        
+        // Handle Options (9) to unpause if we are on pause screen
+        // (Allows quick toggle without selecting Resume button)
+        if (justPressed(9)) {
+            if (typeof gamePaused !== 'undefined' && gamePaused && typeof togglePause === 'function') {
+                togglePause();
+            }
+        }
+        
+        updateMenuNavigation(gp);
+        
         gpPrevButtons = currButtons;
+        gpPrevButtons['gpMoving'] = false; // Reset movement flag while in menu
         return;
+    } else if (activeScreenId !== null) {
+        // We just exited a menu, clear focus state
+        activeScreenId = null;
+        clearFocus();
     }
+
+
+    // === GAME INPUT (only when running and not paused) ===
+    // If we are here, we are in-game.
 
     // Left stick - Movement (set based on current stick position)
     const lx = gp.axes[0];
     const ly = gp.axes[1];
 
     // Only override keys if gamepad is being used for movement
-    const gpLeft = lx < -deadzone || currButtons[14];
-    const gpRight = lx > deadzone || currButtons[15];
-    const gpUp = ly < -deadzone || currButtons[12];
-    const gpDown = ly > deadzone || currButtons[13];
+    // INCREASED DEADZONE to prevent drift
+    const gpLeft = lx < -0.4 || currButtons[14];
+    const gpRight = lx > 0.4 || currButtons[15];
+    const gpUp = ly < -0.4 || currButtons[12];
+    const gpDown = ly > 0.4 || currButtons[13];
 
-    // Track if gamepad was used for movement last frame
+    // Export gamepad state for main.js to use
+    window.gamepadDirection = {
+        left: gpLeft,
+        right: gpRight,
+        up: gpUp,
+        down: gpDown
+    };
+
+    // Track if gamepad was used for movement last frame (legacy check, maybe not needed but kept for safety)
     if (gpLeft || gpRight || gpUp || gpDown || gpPrevButtons['gpMoving']) {
-        keys['ArrowLeft'] = gpLeft;
-        keys['ArrowRight'] = gpRight;
-        keys['ArrowUp'] = gpUp;
-        keys['ArrowDown'] = gpDown;
         gpPrevButtons['gpMoving'] = gpLeft || gpRight || gpUp || gpDown;
+    }
+    
+    // Pause Game (Options / Start)
+    if (justPressed(9)) {
+         if (typeof togglePause === 'function') togglePause();
+    }
+    
+    // Toggle Autopilot (L1)
+    if (justPressed(4)) {
+        if (typeof autopilot !== 'undefined') {
+            autopilot = !autopilot; 
+        }
     }
 
     // X button - Use Skill
-    if (justPressed(0) && currentSkill) {
-        useSkill();
+    if (justPressed(0) && typeof currentSkill !== 'undefined' && currentSkill) {
+        if (typeof useSkill === 'function') useSkill();
     }
 
     // Right stick - Archer / Ninja (hold to repeat)
@@ -121,13 +316,15 @@ function updateGamepad() {
     const ry = gp.axes[3];
     const rightStickActive = Math.abs(rx) > deadzone || Math.abs(ry) > deadzone;
     if (rightStickActive) {
-        if (!gpPrevButtons['rs']) {
-            gpHoldTimers['rs'] = 1;
-            summonSprite(r1Held ? 4 : 0); // First push
-        } else {
-            gpHoldTimers['rs'] = (gpHoldTimers['rs'] || 0) + 1;
-            if (gpHoldTimers['rs'] > HOLD_DELAY && (gpHoldTimers['rs'] - HOLD_DELAY) % HOLD_REPEAT === 0) {
-                summonSprite(r1Held ? 4 : 0); // Repeat
+        if (typeof summonSprite === 'function') {
+            if (!gpPrevButtons['rs']) {
+                gpHoldTimers['rs'] = 1;
+                summonSprite(r1Held ? 4 : 0); // First push
+            } else {
+                gpHoldTimers['rs'] = (gpHoldTimers['rs'] || 0) + 1;
+                if (gpHoldTimers['rs'] > HOLD_DELAY && (gpHoldTimers['rs'] - HOLD_DELAY) % HOLD_REPEAT === 0) {
+                    summonSprite(r1Held ? 4 : 0); // Repeat
+                }
             }
         }
     } else {
@@ -136,13 +333,15 @@ function updateGamepad() {
     gpPrevButtons['rs'] = rightStickActive;
 
     // Face buttons with R1 modifier (hold to repeat)
-    if (heldOrRepeat(1)) summonSprite(r1Held ? 5 : 2); // Circle: Mage / Wizard
-    if (heldOrRepeat(2)) summonSprite(r1Held ? 6 : 1); // Square: Knight / Berserker
-    if (heldOrRepeat(3)) summonSprite(r1Held ? 7 : 3); // Triangle: Cleric / Frost
-
-    // Triggers (hold to repeat)
-    if (heldOrRepeat(6)) summonSprite(8); // L2: Vampire
-    if (heldOrRepeat(7)) summonSprite(9); // R2: Bomber
+    if (typeof summonSprite === 'function') {
+        if (heldOrRepeat(1)) summonSprite(r1Held ? 5 : 2); // Circle: Mage / Wizard
+        if (heldOrRepeat(2)) summonSprite(r1Held ? 6 : 1); // Square: Knight / Berserker
+        if (heldOrRepeat(3)) summonSprite(r1Held ? 7 : 3); // Triangle: Cleric / Frost
+        
+        // Triggers (hold to repeat)
+        if (heldOrRepeat(6)) summonSprite(8); // L2: Vampire
+        if (heldOrRepeat(7)) summonSprite(9); // R2: Bomber
+    }
 
     // Save state for next frame (preserve custom flags)
     const gpMoving = gpPrevButtons['gpMoving'];
