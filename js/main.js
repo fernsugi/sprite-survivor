@@ -407,9 +407,9 @@ function goToMainMenu() {
 const altSummonKeys = { 'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, ',': 7, '.': 8, '/': 9 };
 document.addEventListener('keydown', e => {
     keys[e.key] = true;
-    if (e.key === 'Escape') { togglePause(); return; }
-    // Handle dialogue advancement with SPACE (not when paused)
-    if ((e.key === ' ' || e.code === 'Space') && dialogueActive && !gamePaused) {
+    if (e.key === 'Escape' && !dialogueActive) { togglePause(); return; }
+    // Handle dialogue advancement with SPACE
+    if ((e.key === ' ' || e.code === 'Space') && dialogueActive) {
         e.preventDefault();
         advanceDialogue();
         return;
