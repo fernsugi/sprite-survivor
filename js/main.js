@@ -314,6 +314,7 @@ function update() {
 }
 
 function gameLoop() {
+    if (typeof updateGamepad === 'function') updateGamepad();
     if (gameStarted) { update(); draw(); }
     // Update dialogue animation even when paused
     if (dialogueActive) { updateDialogue(); }
