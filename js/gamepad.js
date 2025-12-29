@@ -167,12 +167,8 @@ function updateMenuNavigation(gp) {
     
     if (moved) {
         lastUiMoveTime = now;
-        if (typeof SFX !== 'undefined' && SFX.select) SFX.select(); // Reuse select sound if possible, or just silent
-        // If SFX object exists but no select method, oh well.
-        // main.js calls playSound('select'). function playSound is global? 
-        // list_dir showed sound.js.
-        if (typeof playSound === 'function') playSound('move'); // Assuming move sound exists, if not maybe 'select' is too loud?
-        // Let's just rely on visual feedback.
+        // Use playSound to ensure audio context is initialized
+        if (typeof playSound === 'function') playSound('move');
     }
     
     // Confirm Action (A / Cross = button 0)
@@ -186,6 +182,29 @@ function updateMenuNavigation(gp) {
 function updateGamepad() {
     const gp = getGamepad();
     if (!gp) return;
+    
+    // Check for any input to switch UI mode
+    // We check axes and buttons. 
+    // Optimization: only check if not already in GP mode
+    const anyButton = gp.buttons.some(b => b.pressed);
+    const anyAxis = gp.axes.some(a => Math.abs(a) > 0.4);
+
+    // Splash Screen Dismissal (Gamepad)
+    if (typeof splashActive !== 'undefined' && splashActive) {
+        if (anyButton) { // only buttons are guaranteed gestures, axes might fail audio resume
+             if (typeof dismissSplash === 'function') dismissSplash();
+             // Prevent this press from triggering menu action on next frame
+             // We copy current buttons to prevButtons so they aren't 'justPressed' next time
+             gpPrevButtons = gp.buttons.map(b => b.pressed);
+        }
+        return; // Don't process other input while splash is up
+    }
+
+    if (typeof setInputControlMode === 'function' && typeof currentInputMode !== 'undefined' && currentInputMode !== 'gp') {
+         if (anyButton || anyAxis) {
+             setInputControlMode('gp');
+         }
+    }
 
     const deadzone = 0.25;
 

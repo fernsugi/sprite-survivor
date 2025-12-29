@@ -28,7 +28,8 @@ function initSpriteButtons() {
         btn.style.fontSize = spriteFontSize;
         const numKey = index === 9 ? '0' : (index + 1).toString();
         const altKey = altKeys[index];
-        btn.innerHTML = `[${numKey}/${altKey}] ${t(type.nameKey)} <span class="cost" style="font-size:${costFontSize}">${type.cost}pts</span><br><span class="desc" style="font-size:${descFontSize}">${t(type.descKey)}</span>`;
+        // Wrap key hint in span for dynamic updating
+        btn.innerHTML = `<span class="key-hint" id="sprite-key-${index}">[${numKey}/${altKey}]</span> ${t(type.nameKey)} <span class="cost" style="font-size:${costFontSize}">${type.cost}pts</span><br><span class="desc" style="font-size:${descFontSize}">${t(type.descKey)}</span>`;
         btn.onclick = () => summonSprite(index);
         container.appendChild(btn);
     });

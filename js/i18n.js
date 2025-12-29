@@ -4,16 +4,23 @@ const SUPPORTED_LANGUAGES = ['en', 'ja', 'ko', 'zh-TW', 'zh-CN', 'es', 'pt', 'ru
 // Translations loaded inline (generated from locales/*.json)
 const translations = {
   "en": {
-    "spriteFontSize": "7px",
+    "spriteFontSize": "6px",
     "costFontSize": "8px",
     "descFontSize": "7px",
     "title": "SPRITE SURVIVOR",
     "subtitle": "Summon sprites, survive the horde",
     "startGame": "START GAME",
+    "clickToStart": "CLICK OR PRESS ANY BUTTON TO START",
+    "inputSupport": "KEYBOARD / GAMEPAD SUPPORTED",
     "instructMove": "- Move",
     "instructSummon": "- Summon sprites (Press/Hold)",
     "instructSkill": "- Use skill (when available)",
     "instructTip": "Collect orbs, summon sprites, survive!",
+    "instructMoveGP": "L-Stick",
+    "instructSummonGP": "Face Buttons / R-Stick",
+    "instructSkillGP": "X / A Button",
+    "instructAutopilotGP": "L1 / LB",
+    "instructPauseGP": "Options / Start",
     "hp": "HP",
     "points": "POINTS",
     "sprites": "SPRITES",
@@ -251,12 +258,14 @@ const translations = {
     "story_5_14": "THE END - Thank you for playing Sprite Survivor."
   },
   "ja": {
-    "spriteFontSize": "9px",
+    "spriteFontSize": "8px",
     "costFontSize": "7px",
     "descFontSize": "9px",
     "title": "スプライトサバイバー",
     "subtitle": "精霊を召喚し、群れを生き延びろ",
     "startGame": "ゲームスタート",
+    "clickToStart": "ボタンを押してスタート",
+    "inputSupport": "キーボード / コントローラー対応",
     "instructMove": "- 移動",
     "instructSummon": "- スプライト召喚 (押す/長押し)",
     "instructSkill": "- スキル発動（所持時）",
@@ -504,6 +513,8 @@ const translations = {
     "title": "스프라이트 서바이버",
     "subtitle": "정령을 소환하고 무리에서 살아남아라",
     "startGame": "게임 시작",
+    "clickToStart": "아무 버튼이나 누르세요",
+    "inputSupport": "키보드 / 게임패드 지원",
     "instructMove": "- 이동",
     "instructSummon": "- 스프라이트 소환 (누르기/길게)",
     "instructSkill": "- 스킬 사용 (보유 시)",
@@ -751,6 +762,8 @@ const translations = {
     "title": "精靈生存者",
     "subtitle": "召喚精靈，在群敵中生存",
     "startGame": "開始遊戲",
+    "clickToStart": "按任意鍵開始",
+    "inputSupport": "支援鍵盤 / 手把",
     "instructMove": "- 移動",
     "instructSummon": "- 召喚精靈 (按/長按)",
     "instructSkill": "- 使用技能（持有時）",
@@ -998,6 +1011,8 @@ const translations = {
     "title": "精灵生存者",
     "subtitle": "召唤精灵，在群敌中生存",
     "startGame": "开始游戏",
+    "clickToStart": "按任意键开始",
+    "inputSupport": "支持键盘 / 手柄",
     "instructMove": "- 移动",
     "instructSummon": "- 召唤精灵 (按/长按)",
     "instructSkill": "- 使用技能（持有时）",
@@ -1239,12 +1254,14 @@ const translations = {
     "story_complete_4_12": "第四章完成。所有英雄都已解放。为「感应者」的战斗开始了..."
   },
   "es": {
-    "spriteFontSize": "7px",
+    "spriteFontSize": "6px",
     "costFontSize": "8px",
     "descFontSize": "7px",
     "title": "SPRITE SURVIVOR",
     "subtitle": "Invoca espíritus, sobrevive a la horda",
     "startGame": "INICIAR JUEGO",
+    "clickToStart": "PRESIONA CUALQUIER BOTÓN",
+    "inputSupport": "TECLADO / MANDO COMPATIBLE",
     "instructMove": "- Mover",
     "instructSummon": "- Invocar sprites (Pulsar/Mantener)",
     "instructSkill": "- Usar habilidad (cuando esté disponible)",
@@ -1492,6 +1509,8 @@ const translations = {
     "title": "SPRITE SURVIVOR",
     "subtitle": "Invoque espíritos, sobreviva à horda",
     "startGame": "INICIAR JOGO",
+    "clickToStart": "PRESSIONE QUALQUER BOTÃO",
+    "inputSupport": "TECLADO / CONTROLE SUPORTADO",
     "instructMove": "- Mover",
     "instructSummon": "- Invocar sprites (Pressionar/Segurar)",
     "instructSkill": "- Usar habilidade (quando disponível)",
@@ -1733,12 +1752,14 @@ const translations = {
     "story_complete_4_12": "Capítulo 4 Completo. Todos os heróis foram libertados. A batalha pelo Senciente começa..."
   },
   "ru": {
-    "spriteFontSize": "7px",
+    "spriteFontSize": "6px",
     "costFontSize": "8px",
     "descFontSize": "7px",
     "title": "SPRITE SURVIVOR",
     "subtitle": "Призывай духов, выживай в орде",
     "startGame": "НАЧАТЬ ИГРУ",
+    "clickToStart": "НАЖМИТЕ ЛЮБУЮ КНОПКУ",
+    "inputSupport": "КЛАВИАТУРА / ГЕЙМПАД",
     "instructMove": "- Движение",
     "instructSummon": "- Призыв спрайтов (Нажать/Удерж.)",
     "instructSkill": "- Использовать умение (когда доступно)",
@@ -1980,12 +2001,14 @@ const translations = {
     "story_complete_4_12": "Глава 4 пройдена. Все герои освобождены. Битва за Сенсиента начинается..."
   },
   "fr": {
-    "spriteFontSize": "7px",
+    "spriteFontSize": "6px",
     "costFontSize": "8px",
     "descFontSize": "7px",
     "title": "SPRITE SURVIVOR",
     "subtitle": "Invoque des esprits, survis à la horde",
     "startGame": "JOUER",
+    "clickToStart": "APPUYEZ SUR UN BOUTON",
+    "inputSupport": "CLAVIER / MANETTE SUPPORTÉS",
     "instructMove": "- Déplacer",
     "instructSummon": "- Invoquer des sprites (Appuyer/Maintenir)",
     "instructSkill": "- Utiliser compétence (si disponible)",
@@ -2233,6 +2256,8 @@ const translations = {
     "title": "SPRITE SURVIVOR",
     "subtitle": "Triệu hồi linh hồn, sống sót qua bầy quái",
     "startGame": "BẮT ĐẦU",
+    "clickToStart": "NHẤN BẤT KỲ NÚT NÀO",
+    "inputSupport": "HỖ TRỢ BÀN PHÍM / TAY CẦM",
     "instructMove": "- Di chuyển",
     "instructSummon": "- Triệu hồi sprite (Nhấn/Giữ)",
     "instructSkill": "- Dùng kỹ năng (khi có)",
@@ -2553,6 +2578,11 @@ function setLanguage(lang, updateHistory = true) {
   if (typeof refreshAchievementsList === 'function') refreshAchievementsList();
   if (typeof refreshVictoryAchievements === 'function') refreshVictoryAchievements();
   if (typeof refreshBossName === 'function') refreshBossName();
+  
+  // Re-apply adaptive control hints if in gamepad mode
+  if (typeof updateSpriteKeyHints === 'function' && typeof currentInputMode !== 'undefined') {
+      updateSpriteKeyHints(currentInputMode);
+  }
   if (typeof updateStoryUI === 'function') updateStoryUI();
 }
 

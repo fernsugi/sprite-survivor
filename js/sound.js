@@ -402,6 +402,10 @@ const SFX = {
     },
 
     // UI sounds
+    move: () => {
+        playTone(500, 0.04, 'square', 0.02);
+    },
+
     select: () => {
         playTone(600, 0.06, 'square', 0.03);
         setTimeout(() => playTone(800, 0.08, 'square', 0.024), 40);
