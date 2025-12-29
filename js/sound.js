@@ -133,9 +133,15 @@ const SFX = {
     },
 
     summonKnight: () => {
-        // Sword unsheathe - subtle metallic slide
-        playTone(600, 0.06, 'triangle', 0.08);
-        setTimeout(() => playTone(400, 0.08, 'triangle', 0.06), 40);
+        // Sword unsheathe - metallic ring + impact
+        playNoise(0.03, 0.1);
+        playTone(800, 0.05, 'sawtooth', 0.12);
+        playTone(1200, 0.04, 'triangle', 0.1);
+        setTimeout(() => {
+            playTone(400, 0.07, 'triangle', 0.15);
+            playTone(600, 0.05, 'sawtooth', 0.1);
+        }, 50);
+        setTimeout(() => playTone(300, 0.08, 'triangle', 0.12), 100);
     },
 
     summonMage: () => {
@@ -176,9 +182,17 @@ const SFX = {
     },
 
     summonBerserker: () => {
-        // Aggressive roar - subtle low rumble
-        playTone(80, 0.1, 'sine', 0.1);
-        setTimeout(() => playTone(100, 0.08, 'triangle', 0.08), 40);
+        // Battle cry - deep roar + rage
+        playTone(80, 0.1, 'sawtooth', 0.18);
+        playTone(120, 0.08, 'square', 0.15);
+        playNoise(0.05, 0.12);
+        setTimeout(() => {
+            playTone(100, 0.08, 'sawtooth', 0.2);
+            playTone(150, 0.06, 'triangle', 0.15);
+        }, 60);
+        setTimeout(() => {
+            playTone(60, 0.1, 'sine', 0.18);
+        }, 120);
     },
 
     summonFrost: () => {
@@ -199,11 +213,17 @@ const SFX = {
     },
 
     summonBomber: () => {
-        // Bomb armed - subtle fuse sizzle
-        playNoise(0.1, 0.06);
+        // Bomb armed - fuse ignite + ominous charge
+        playNoise(0.06, 0.12);
+        playTone(200, 0.05, 'sawtooth', 0.1);
         setTimeout(() => {
-            playTone(50, 0.15, 'sine', 0.08);
-        }, 80);
+            playTone(150, 0.08, 'square', 0.15);
+            playNoise(0.04, 0.1);
+        }, 50);
+        setTimeout(() => {
+            playTone(100, 0.1, 'sine', 0.18);
+            playTone(80, 0.08, 'triangle', 0.12);
+        }, 100);
     },
 
     mergeSprite: () => {
