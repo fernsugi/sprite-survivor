@@ -51,7 +51,7 @@ const heroTypes = [
         nameKey: 'heroLaser',
         color: '#f0f',       // Magenta
         actionCooldown: 120, // 2 seconds
-        damage: 25,
+        damage: 12,
         range: 800,          // Full screen laser
         laserWidth: 60       // 2x wider
     },

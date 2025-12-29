@@ -16,6 +16,20 @@ function spawnSkillOrb() {
     });
 }
 
+// Story mode: spawn chapter-specific skill orbs
+function spawnStorySkillOrb() {
+    const margin = 80;
+    // Get the skill type for current chapter
+    const skillName = CHAPTER_SKILL_ORBS[storyChapter] || 'skillMagnet';
+    const skill = skillTypes.find(s => s.name === skillName);
+    if (!skill) return;
+    skillOrbs.push({
+        x: margin + Math.random() * (canvas.width - margin * 2),
+        y: margin + Math.random() * (canvas.height - margin * 2),
+        size: 12, pulse: Math.random() * Math.PI * 2, skill: skill
+    });
+}
+
 function useSkill() {
     if (!currentSkill) return;
     switch (currentSkill.name) {

@@ -38,8 +38,11 @@ function updateSpriteButtons() {
     spriteTypes.forEach((type, index) => {
         const btn = document.getElementById(`sprite-btn-${index}`);
         if (btn) {
-            btn.disabled = points < type.cost;
-            btn.classList.toggle('affordable', points >= type.cost);
+            // Check story mode availability
+            const available = !storyMode || (typeof isSpriteAvailable === 'function' && isSpriteAvailable(type.nameKey));
+            btn.disabled = !available || points < type.cost;
+            btn.classList.toggle('affordable', available && points >= type.cost);
+            btn.classList.toggle('locked', !available);
         }
     });
 }
@@ -92,6 +95,11 @@ function checkAllMerges() {
 function summonSprite(typeIndex) {
     if (gamePaused || !gameRunning) return;
     const type = spriteTypes[typeIndex];
+    // Check story mode sprite availability
+    if (storyMode && typeof isSpriteAvailable === 'function' && !isSpriteAvailable(type.nameKey)) {
+        playSound('error');
+        return;
+    }
     if (points < type.cost) return;
     points -= type.cost;
     usedSpriteTypes.add(typeIndex); // Track for achievements
@@ -183,7 +191,17 @@ function updateSprites() {
                         targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 80 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
                         if (nextTarget) { chainTargets.push(nextTarget); lastTarget = nextTarget; }
                     }
-                    chainTargets.forEach((target, idx) => { applyDamage(target, sprite.damage * Math.max(0.1, 1 - idx * 0.15)); if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color }); });
+                    chainTargets.forEach((target, idx) => {
+                        // Skip damage to projectile-immune boss if first target (Milia's Remnant)
+                        const isImmuneBoss = target === boss && boss.projectileImmune && idx === 0;
+                        if (!isImmuneBoss) {
+                            applyDamage(target, sprite.damage * Math.max(0.1, 1 - idx * 0.15));
+                        } else {
+                            // Visual nullify effect
+                            for (let k = 0; k < 5; k++) effects.push({ x: target.x, y: target.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 15, color: '#fff', type: 'particle' });
+                        }
+                        if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color });
+                    });
                     effects.push({ x: sprite.x, y: sprite.y, x2: nearestEnemy.x, y2: nearestEnemy.y, life: 10, type: 'lightning', color: sprite.color });
                 }
                 break;
@@ -264,19 +282,28 @@ function updateSpriteProjectiles() {
                     effects.push({ x: proj.x, y: proj.y, life: 25, type: 'aoe', color: '#fa0', radius: proj.explosionRadius });
                     for (let k = 0; k < 15; k++) effects.push({ x: proj.x, y: proj.y, vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8, life: 30, color: Math.random() > 0.5 ? '#fa0' : '#ff0', type: 'particle' });
                 } else {
-                    SFX.enemyHit();
-                    let dmg = proj.damage;
-                    // Weakened debuff: boss takes 50% less damage
-                    if (enemy === boss && debuffs.weakened > 0) dmg *= 0.5;
-                    // Check for boss shield
-                    if (enemy === boss && boss.shield > 0) {
-                        const absorbed = Math.min(boss.shield, dmg);
-                        boss.shield -= absorbed;
-                        dmg -= absorbed;
-                        if (absorbed > 0) effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: '#888' });
+                    // Check for boss projectile immunity (Milia's Remnant)
+                    if (enemy === boss && boss.projectileImmune) {
+                        // Projectile is nullified - visual effect but no damage
+                        effects.push({ x: proj.x, y: proj.y, life: 15, type: 'particle', color: '#fff', vx: 0, vy: -2 });
+                        for (let k = 0; k < 5; k++) {
+                            effects.push({ x: proj.x, y: proj.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 15, color: '#fff', type: 'particle' });
+                        }
+                    } else {
+                        SFX.enemyHit();
+                        let dmg = proj.damage;
+                        // Weakened debuff: boss takes 50% less damage
+                        if (enemy === boss && debuffs.weakened > 0) dmg *= 0.5;
+                        // Check for boss shield
+                        if (enemy === boss && boss.shield > 0) {
+                            const absorbed = Math.min(boss.shield, dmg);
+                            boss.shield -= absorbed;
+                            dmg -= absorbed;
+                            if (absorbed > 0) effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: '#888' });
+                        }
+                        enemy.hp -= dmg;
+                        effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: proj.color });
                     }
-                    enemy.hp -= dmg;
-                    effects.push({ x: proj.x, y: proj.y, life: 10, type: 'hit', color: proj.color });
                 }
                 spriteProjectiles.splice(i, 1); break;
             }

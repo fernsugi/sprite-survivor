@@ -161,8 +161,276 @@ function updateBossMechanics() {
     }
 }
 
+// Story mode Remnant boss attacks - unique patterns per chapter
+function remnantBossAttack() {
+    if (!boss) return;
+
+    boss.attackTimer++;
+    boss.moveTimer++;
+    if (boss.moveTimer >= 120) { boss.moveTimer = 0; boss.targetX = 100 + Math.random() * (canvas.width - 200); }
+    boss.x += (boss.targetX - boss.x) * 0.02;
+    if (boss.y < boss.targetY) boss.y += 2;
+    boss.phase += 0.05;
+
+    // Chapter-specific attack patterns
+    const chapter = boss.remnantType || 1;
+    let attackSpeed = 90; // Slower attacks for story mode (easier)
+
+    if (boss.attackTimer < attackSpeed) return;
+
+    boss.attackTimer = 0;
+    boss.attackPattern = (boss.attackPattern + 1) % 3;
+
+    switch (chapter) {
+        case 1: // Rex's Remnant - Warrior style (melee focused)
+            SFX.heroWarrior && SFX.heroWarrior();
+            switch (boss.attackPattern) {
+                case 0: // Charge - rushes at player (fast and far)
+                    const chargeAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
+                    for (let i = 0; i < 12; i++) {
+                        setTimeout(() => {
+                            if (!boss) return;
+                            boss.x += Math.cos(chargeAngle) * 25;
+                            boss.y += Math.sin(chargeAngle) * 25;
+                            effects.push({ x: boss.x, y: boss.y, life: 10, type: 'particle', color: '#f80', vx: -Math.cos(chargeAngle) * 5, vy: -Math.sin(chargeAngle) * 5 });
+                            // Check if charge hits player
+                            if (player.invincibleTime <= 0) {
+                                const dist = Math.hypot(player.x - boss.x, player.y - boss.y);
+                                if (dist < boss.size + 15) {
+                                    damagePlayer(boss.damage * 0.6);
+                                    player.invincibleTime = 60;
+                                    gotHit = true;
+                                }
+                            }
+                        }, i * 25);
+                    }
+                    break;
+                case 1: // Cone Slash - 240° melee swing (extended range)
+                    const slashAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
+                    for (let i = -4; i <= 4; i++) {
+                        const angle = slashAngle + i * 0.26; // ~15 degrees apart
+                        projectiles.push({ x: boss.x, y: boss.y, vx: Math.cos(angle) * 6, vy: Math.sin(angle) * 6, damage: boss.damage * 0.4, size: 15, color: '#f80', fromBoss: true, life: 35 });
+                    }
+                    effects.push({ x: boss.x, y: boss.y, life: 15, type: 'slash', angle: slashAngle, color: '#f80' });
+                    break;
+                case 2: // Ground Pound - shockwave
+                    effects.push({ x: boss.x, y: boss.y, life: 30, type: 'aoe', radius: 0, maxRadius: 150, color: '#f80' });
+                    setTimeout(() => {
+                        if (!boss) return;
+                        const dx = player.x - boss.x, dy = player.y - boss.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150 && player.invincibleTime <= 0) {
+                            damagePlayer(boss.damage * 0.5);
+                            player.invincibleTime = 30;
+                            gotHit = true;
+                        }
+                    }, 500);
+                    break;
+            }
+            break;
+
+        case 2: // Beth's Remnant - Bouncer style (bouncing projectiles)
+            SFX.heroBouncer && SFX.heroBouncer();
+            switch (boss.attackPattern) {
+                case 0: // Ball Burst - fires 3-5 bouncing balls
+                    const ballCount = 3 + Math.floor(Math.random() * 3);
+                    for (let i = 0; i < ballCount; i++) {
+                        const angle = Math.random() * Math.PI * 2;
+                        heroBalls.push({
+                            x: boss.x, y: boss.y,
+                            vx: Math.cos(angle) * 4,
+                            vy: Math.sin(angle) * 4,
+                            size: 12,
+                            damage: boss.damage * 0.3,
+                            bounces: 5,
+                            life: 480, // 8 seconds
+                            color: '#0ff',
+                            fromBoss: true
+                        });
+                    }
+                    break;
+                case 1: // Rapid Fire - quick succession of single balls
+                    for (let i = 0; i < 4; i++) {
+                        setTimeout(() => {
+                            if (!boss) return;
+                            const angle = Math.atan2(player.y - boss.y, player.x - boss.x) + (Math.random() - 0.5) * 0.3;
+                            heroBalls.push({
+                                x: boss.x, y: boss.y,
+                                vx: Math.cos(angle) * 5,
+                                vy: Math.sin(angle) * 5,
+                                size: 10,
+                                damage: boss.damage * 0.25,
+                                bounces: 3,
+                                life: 300,
+                                color: '#0ff',
+                                fromBoss: true
+                            });
+                            SFX.heroBallBounce && SFX.heroBallBounce();
+                        }, i * 150);
+                    }
+                    break;
+                case 2: // Orbit - balls orbit then launch
+                    for (let i = 0; i < 6; i++) {
+                        const angle = (Math.PI * 2 / 6) * i;
+                        setTimeout(() => {
+                            if (!boss) return;
+                            const launchAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
+                            heroBalls.push({
+                                x: boss.x + Math.cos(angle) * 40,
+                                y: boss.y + Math.sin(angle) * 40,
+                                vx: Math.cos(launchAngle) * 3.5,
+                                vy: Math.sin(launchAngle) * 3.5,
+                                size: 10,
+                                damage: boss.damage * 0.25,
+                                bounces: 4,
+                                life: 360,
+                                color: '#0ff',
+                                fromBoss: true
+                            });
+                        }, 500 + i * 100);
+                    }
+                    break;
+            }
+            break;
+
+        case 3: // Milia's Remnant - Angel style (area denial)
+            SFX.heroAngel && SFX.heroAngel();
+            // Spawn minions for Wizard chain (always keep some nearby)
+            if (enemies.length < 3) {
+                const config = enemyTypes.find(e => e.type === 'chaser') || enemyTypes[0];
+                for (let i = 0; i < 2; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = 60 + Math.random() * 40;
+                    enemies.push({
+                        x: boss.x + Math.cos(angle) * dist,
+                        y: boss.y + Math.sin(angle) * dist,
+                        size: config.size * 0.8,
+                        hp: config.hp * 0.5, // Weaker minions
+                        maxHp: config.hp * 0.5,
+                        damage: config.damage * 0.5,
+                        speed: config.speed * 0.7,
+                        type: 'chaser',
+                        color: '#aaf', // Light blue tint
+                        slowed: 0
+                    });
+                }
+            }
+            switch (boss.attackPattern) {
+                case 0: // Holy Rings - expanding rings of light
+                    for (let ring = 0; ring < 3; ring++) {
+                        setTimeout(() => {
+                            if (!boss) return;
+                            effects.push({ x: boss.x, y: boss.y, life: 60, type: 'aoe', radius: 0, maxRadius: 200 + ring * 50, color: '#fff', speed: 3 });
+                        }, ring * 400);
+                    }
+                    break;
+                case 1: // Divine Shield - invulnerable briefly
+                    boss.shield = 500; // Temporary shield
+                    effects.push({ x: boss.x, y: boss.y, life: 180, type: 'shield', color: '#fff8' });
+                    setTimeout(() => { if (boss) boss.shield = 0; }, 3000);
+                    break;
+                case 2: // Feather Storm - rains feathers in area
+                    for (let i = 0; i < 8; i++) {
+                        setTimeout(() => {
+                            if (!boss) return;
+                            const x = player.x + (Math.random() - 0.5) * 200;
+                            const y = player.y - 100;
+                            projectiles.push({ x, y, vx: 0, vy: 3, damage: boss.damage * 0.3, size: 8, color: '#fff', fromBoss: true });
+                        }, i * 100);
+                    }
+                    break;
+            }
+            break;
+
+        case 4: // Troy's Remnant - Laser style (beams)
+            SFX.heroLaser && SFX.heroLaser();
+            switch (boss.attackPattern) {
+                case 0: // Sweep Beam - laser sweeps across arena
+                    const sweepStartAngle = boss.phase;
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => {
+                            if (!boss) return;
+                            const angle = sweepStartAngle + i * 0.1;
+                            for (let j = 0; j < 15; j++) {
+                                projectiles.push({
+                                    x: boss.x + Math.cos(angle) * j * 40,
+                                    y: boss.y + Math.sin(angle) * j * 40,
+                                    vx: Math.cos(angle) * 8,
+                                    vy: Math.sin(angle) * 8,
+                                    damage: boss.damage * 0.2,
+                                    size: 10,
+                                    color: '#f0f',
+                                    fromBoss: true,
+                                    life: 10
+                                });
+                            }
+                        }, i * 50);
+                    }
+                    break;
+                case 1: // Lock-On Burst - warning then fires
+                    const targetX = player.x, targetY = player.y;
+                    effects.push({ x: targetX, y: targetY, life: 45, type: 'laser_warning', color: '#f0f8' });
+                    setTimeout(() => {
+                        if (!boss) return;
+                        const angle = Math.atan2(targetY - boss.y, targetX - boss.x);
+                        for (let i = 0; i < 20; i++) {
+                            projectiles.push({
+                                x: boss.x + Math.cos(angle) * i * 30,
+                                y: boss.y + Math.sin(angle) * i * 30,
+                                vx: Math.cos(angle) * 10,
+                                vy: Math.sin(angle) * 10,
+                                damage: boss.damage * 0.3,
+                                size: 12,
+                                color: '#f0f',
+                                fromBoss: true,
+                                life: 15
+                            });
+                        }
+                    }, 750);
+                    break;
+                case 2: // Multi-Beam - 3 lasers in spread
+                    const baseAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
+                    for (let spread = -1; spread <= 1; spread++) {
+                        const angle = baseAngle + spread * 0.4;
+                        for (let i = 0; i < 12; i++) {
+                            projectiles.push({
+                                x: boss.x + Math.cos(angle) * i * 35,
+                                y: boss.y + Math.sin(angle) * i * 35,
+                                vx: Math.cos(angle) * 7,
+                                vy: Math.sin(angle) * 7,
+                                damage: boss.damage * 0.25,
+                                size: 10,
+                                color: '#f0f',
+                                fromBoss: true,
+                                life: 20
+                            });
+                        }
+                    }
+                    break;
+            }
+            // Troy's Remnant: Constant Pulse - unavoidable chip damage every 2 seconds
+            boss.pulseTimer = (boss.pulseTimer || 0) + 1;
+            if (boss.pulseTimer >= 120) { // 2 seconds at 60fps
+                boss.pulseTimer = 0;
+                if (player.invincibleTime <= 0) {
+                    damagePlayer(3);
+                    effects.push({ x: player.x, y: player.y, life: 15, type: 'hit', color: '#f0f' });
+                    // Pulse visual from boss
+                    effects.push({ x: boss.x, y: boss.y, life: 30, type: 'aoe', color: '#f0f8', radius: 0, maxRadius: 400, speed: 10 });
+                }
+            }
+            break;
+    }
+}
+
 function bossAttack() {
     if (!boss) return;
+
+    // Story mode Remnant bosses use special attack patterns
+    if (storyMode && boss.type === 'remnant') {
+        remnantBossAttack();
+        return;
+    }
 
     // Boss-specific mechanics
     updateBossMechanics();
@@ -353,6 +621,19 @@ function updateBoss() {
             score += 1000;
             SFX.bossDeath();
             for (let i = 0; i < 50; i++) effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 60, color: boss.color, type: 'particle' });
+
+            // Story mode: let checkStoryWaveComplete handle the boss death
+            if (storyMode) {
+                boss = null;
+                document.getElementById('bossHealth').style.display = 'none';
+                // Clear all projectiles so player doesn't get hit during victory dialogue
+                projectiles = [];
+                enemies = [];
+                heroBalls = []; // Clear bouncing balls from Bouncer-style boss
+                // Keep bossActive = true so checkStoryWaveComplete can detect boss death
+                return;
+            }
+
             if (wave >= 20) {
                 gameRunning = false; SFX.victory();
                 if (!cheatMode) saveHighScore(score);

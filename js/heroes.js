@@ -249,44 +249,117 @@ function updateHeroBalls() {
         // Move ball
         ball.x += ball.vx;
         ball.y += ball.vy;
-        ball.lifetime--;
+        // Use life if set (boss balls), otherwise lifetime (hero balls)
+        if (ball.life !== undefined) {
+            ball.life--;
+            if (ball.life <= 0) {
+                heroBalls.splice(i, 1);
+                continue;
+            }
+        } else {
+            ball.lifetime--;
+        }
 
-        // Bounce off edges
+        // Bounce off edges with bounce limit for boss balls
         if (ball.x <= ball.size || ball.x >= canvas.width - ball.size) {
             ball.vx *= -1;
             ball.x = Math.max(ball.size, Math.min(canvas.width - ball.size, ball.x));
+            if (ball.bounces !== undefined) {
+                ball.bounces--;
+                if (ball.bounces <= 0) {
+                    heroBalls.splice(i, 1);
+                    continue;
+                }
+            }
             SFX.heroBallBounce();
         }
         if (ball.y <= ball.size || ball.y >= canvas.height - ball.size) {
             ball.vy *= -1;
             ball.y = Math.max(ball.size, Math.min(canvas.height - ball.size, ball.y));
+            if (ball.bounces !== undefined) {
+                ball.bounces--;
+                if (ball.bounces <= 0) {
+                    heroBalls.splice(i, 1);
+                    continue;
+                }
+            }
             SFX.heroBallBounce();
         }
 
-        // Damage enemies on contact
-        enemies.forEach(enemy => {
-            const dx = enemy.x - ball.x;
-            const dy = enemy.y - ball.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < ball.size + enemy.size / 2) {
-                enemy.hp -= ball.damage;
-                effects.push({ x: enemy.x, y: enemy.y, life: 8, type: 'hit', color: ball.color });
-            }
-        });
+        // Boss balls damage the player (but can be blocked/reflected by sprites)
+        if (ball.fromBoss) {
+            // Check for Knight blocking or Berserker reflecting
+            let blocked = false;
+            if (debuffs.noBlock <= 0) {
+                for (const sprite of sprites) {
+                    const sdx = sprite.x - ball.x;
+                    const sdy = sprite.y - ball.y;
+                    const sdist = Math.sqrt(sdx * sdx + sdy * sdy);
+                    const blockRadius = sprite.size + ball.size;
 
-        // Damage boss on contact
-        if (boss) {
-            const dx = boss.x - ball.x;
-            const dy = boss.y - ball.y;
+                    if (sdist < blockRadius) {
+                        if (sprite.blocksProjectiles) {
+                            // Knight blocks: destroy ball
+                            heroBalls.splice(i, 1);
+                            effects.push({ x: ball.x, y: ball.y, life: 15, type: 'hit', color: '#f55' });
+                            for (let j = 0; j < 5; j++) {
+                                effects.push({ x: ball.x, y: ball.y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, life: 15, color: '#f55', type: 'particle' });
+                            }
+                            blocked = true;
+                            break;
+                        } else if (sprite.reflectsProjectiles) {
+                            // Berserker reflects: convert to player's ball
+                            ball.fromBoss = false;
+                            ball.color = '#f80';
+                            // Reverse and boost velocity
+                            ball.vx *= -1.2;
+                            ball.vy *= -1.2;
+                            effects.push({ x: ball.x, y: ball.y, life: 10, type: 'hit', color: '#f80' });
+                            blocked = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (blocked) continue;
+
+            // Check player collision
+            const dx = player.x - ball.x;
+            const dy = player.y - ball.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < ball.size + boss.size / 2) {
-                boss.hp -= ball.damage * (debuffs.weakened > 0 ? 0.5 : 1);
-                effects.push({ x: boss.x, y: boss.y, life: 8, type: 'hit', color: ball.color });
+            if (dist < ball.size + player.width / 2 && player.invincibleTime <= 0) {
+                damagePlayer(ball.damage);
+                player.invincibleTime = 30;
+                gotHit = true;
+                effects.push({ x: player.x, y: player.y, life: 10, type: 'hit', color: ball.color });
+                // Ball doesn't disappear on hit - it bounces through
+            }
+        } else {
+            // Hero balls damage enemies on contact
+            enemies.forEach(enemy => {
+                const dx = enemy.x - ball.x;
+                const dy = enemy.y - ball.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < ball.size + enemy.size / 2) {
+                    enemy.hp -= ball.damage;
+                    effects.push({ x: enemy.x, y: enemy.y, life: 8, type: 'hit', color: ball.color });
+                }
+            });
+
+            // Damage boss on contact
+            if (boss) {
+                const dx = boss.x - ball.x;
+                const dy = boss.y - ball.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < ball.size + boss.size / 2) {
+                    boss.hp -= ball.damage * (debuffs.weakened > 0 ? 0.5 : 1);
+                    effects.push({ x: boss.x, y: boss.y, life: 8, type: 'hit', color: ball.color });
+                }
             }
         }
 
-        // Remove expired balls
-        if (ball.lifetime <= 0) {
+        // Remove expired balls (for hero balls with lifetime)
+        if (ball.lifetime !== undefined && ball.lifetime <= 0) {
             heroBalls.splice(i, 1);
         }
     }

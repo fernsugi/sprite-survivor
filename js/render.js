@@ -219,6 +219,11 @@ function draw() {
         ctx.globalAlpha = 1;
     });
 
+    // Story Mode Sprite Orbs
+    if (storyMode && typeof drawSpriteOrbs === 'function') {
+        drawSpriteOrbs();
+    }
+
     // Enemies
     enemies.forEach(enemy => {
         if (enemy.slowed > 0) { ctx.fillStyle = '#8ef4'; ctx.beginPath(); ctx.arc(enemy.x, enemy.y, enemy.size + 5, 0, Math.PI * 2); ctx.fill(); }
@@ -241,12 +246,53 @@ function draw() {
         ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 20 + bossPulse, 0, Math.PI * 2); ctx.stroke();
         ctx.globalAlpha = 1;
-        ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/2 - 2, boss.y - boss.size/2 - 2, boss.size + 4, boss.size + 4);
-        ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2, boss.size, boss.size);
-        const eyeSize = boss.size / 6;
-        ctx.fillStyle = '#fff'; ctx.fillRect(boss.x - boss.size/4, boss.y - boss.size/6, eyeSize, eyeSize); ctx.fillRect(boss.x + boss.size/8, boss.y - boss.size/6, eyeSize, eyeSize);
-        ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/4 + 2, boss.y - boss.size/6 + 2, eyeSize/2, eyeSize/2); ctx.fillRect(boss.x + boss.size/8 + 2, boss.y - boss.size/6 + 2, eyeSize/2, eyeSize/2);
-        ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x + boss.size/2 - 8, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x - 4, boss.y - boss.size/2 - 15, 8, 15);
+
+        // Remnant bosses look like heroes (square with heroic details)
+        if (boss.type === 'remnant') {
+            // Base square body (like a hero)
+            ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/2 - 2, boss.y - boss.size/2 - 2, boss.size + 4, boss.size + 4);
+            ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2, boss.size, boss.size);
+            // Hero-like face (friendly eyes)
+            const eyeSize = boss.size / 6;
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(boss.x - boss.size/4, boss.y - boss.size/8, eyeSize, eyeSize);
+            ctx.fillRect(boss.x + boss.size/8, boss.y - boss.size/8, eyeSize, eyeSize);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(boss.x - boss.size/4 + 2, boss.y - boss.size/8 + 2, eyeSize/2, eyeSize/2);
+            ctx.fillRect(boss.x + boss.size/8 + 2, boss.y - boss.size/8 + 2, eyeSize/2, eyeSize/2);
+            // Cape/wings extending from sides (hero-like)
+            ctx.fillStyle = boss.color;
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(boss.x - boss.size/2, boss.y - boss.size/4);
+            ctx.lineTo(boss.x - boss.size/2 - 15, boss.y);
+            ctx.lineTo(boss.x - boss.size/2, boss.y + boss.size/4);
+            ctx.closePath(); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(boss.x + boss.size/2, boss.y - boss.size/4);
+            ctx.lineTo(boss.x + boss.size/2 + 15, boss.y);
+            ctx.lineTo(boss.x + boss.size/2, boss.y + boss.size/4);
+            ctx.closePath(); ctx.fill();
+            ctx.globalAlpha = 1;
+            // Corrupted aura effect (dark wisps)
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#408';
+            for (let i = 0; i < 4; i++) {
+                const angle = boss.phase + i * Math.PI / 2;
+                const px = boss.x + Math.cos(angle) * (boss.size/2 + 10);
+                const py = boss.y + Math.sin(angle) * (boss.size/2 + 10);
+                ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+        } else {
+            // Normal demon boss appearance
+            ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/2 - 2, boss.y - boss.size/2 - 2, boss.size + 4, boss.size + 4);
+            ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2, boss.size, boss.size);
+            const eyeSize = boss.size / 6;
+            ctx.fillStyle = '#fff'; ctx.fillRect(boss.x - boss.size/4, boss.y - boss.size/6, eyeSize, eyeSize); ctx.fillRect(boss.x + boss.size/8, boss.y - boss.size/6, eyeSize, eyeSize);
+            ctx.fillStyle = '#000'; ctx.fillRect(boss.x - boss.size/4 + 2, boss.y - boss.size/6 + 2, eyeSize/2, eyeSize/2); ctx.fillRect(boss.x + boss.size/8 + 2, boss.y - boss.size/6 + 2, eyeSize/2, eyeSize/2);
+            ctx.fillStyle = boss.color; ctx.fillRect(boss.x - boss.size/2, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x + boss.size/2 - 8, boss.y - boss.size/2 - 10, 8, 10); ctx.fillRect(boss.x - 4, boss.y - boss.size/2 - 15, 8, 15);
+        }
     }
 
     // Sprites - unique shapes per type

@@ -217,9 +217,16 @@
             <div id="startScreen">
                 <h1 data-i18n="title">SPRITE SURVIVOR</h1>
                 <div class="subtitle" data-i18n="subtitle">Summon spirits, survive the horde</div>
-                <button class="start-btn" onclick="startGame()" data-i18n="startGame">START GAME</button>
-                <button class="cheat-btn" onclick="startGame(true)" data-i18n="cheatMode">CHEAT MODE</button>
-                <button class="achv-btn" onclick="showAchievements()" data-i18n="achievements">ACHIEVEMENTS</button>
+                <div class="menu-buttons">
+                    <div class="main-buttons">
+                        <button class="menu-btn-main story" onclick="showStoryMode()" data-i18n="storyMode">STORY MODE</button>
+                        <button class="menu-btn-main survival" onclick="startGame()" data-i18n="survival">SURVIVAL</button>
+                    </div>
+                    <div class="secondary-buttons">
+                        <button class="menu-btn-secondary" onclick="startGame(true)" data-i18n="cheatMode" style="background: rgba(180, 60, 60, 0.3); border-color: #a44;">CHEAT MODE</button>
+                        <button class="menu-btn-secondary" onclick="showAchievements()" data-i18n="achievements">ACHIEVEMENTS</button>
+                    </div>
+                </div>
                 <div class="instructions">
                     <span>WASD / Arrow Keys</span> <span data-i18n="instructMove">- Move</span><br>
                     <span>1-0 / ZXCVBNM,./</span> <span data-i18n="instructSummon">- Summon sprites</span><br>
@@ -282,6 +289,56 @@
                 <button class="restart-btn" onclick="togglePause()" data-i18n="resume">RESUME</button>
                 <button class="restart-btn menu-btn" onclick="goToMainMenu()" data-i18n="mainMenu">MAIN MENU</button>
             </div>
+
+            <div id="storyModeScreen">
+                <h1 data-i18n="storyMode">STORY MODE</h1>
+                <div class="chapter-list">
+                    <button class="chapter-btn" onclick="startChapter(1)" data-chapter="1">
+                        <span class="chapter-num">1</span>
+                        <span class="chapter-title" data-i18n="chapter1">The Warrior's Dawn</span>
+                        <span class="chapter-hero">Rex</span>
+                    </button>
+                    <button class="chapter-btn locked" onclick="startChapter(2)" data-chapter="2">
+                        <span class="chapter-num">2</span>
+                        <span class="chapter-title" data-i18n="chapter2">Echoes of Momentum</span>
+                        <span class="chapter-hero">Beth</span>
+                        <span class="lock-icon">🔒</span>
+                    </button>
+                    <button class="chapter-btn locked" onclick="startChapter(3)" data-chapter="3">
+                        <span class="chapter-num">3</span>
+                        <span class="chapter-title" data-i18n="chapter3">Wings of Light</span>
+                        <span class="chapter-hero">Milia</span>
+                        <span class="lock-icon">🔒</span>
+                    </button>
+                    <button class="chapter-btn locked" onclick="startChapter(4)" data-chapter="4">
+                        <span class="chapter-num">4</span>
+                        <span class="chapter-title" data-i18n="chapter4">The Final Beam</span>
+                        <span class="chapter-hero">Troy</span>
+                        <span class="lock-icon">🔒</span>
+                    </button>
+                    <button class="chapter-btn ending locked" onclick="startEnding()" data-chapter="ending">
+                        <span class="chapter-num">★</span>
+                        <span class="chapter-title" data-i18n="ending">Ending</span>
+                        <span class="lock-icon">🔒</span>
+                    </button>
+                </div>
+                <button class="restart-btn menu-btn" onclick="hideStoryMode()" data-i18n="back">BACK</button>
+            </div>
+
+            <div id="nameInputModal">
+                <div class="name-input-content">
+                    <h2 data-i18n="enterName">Enter Your Name</h2>
+                    <p data-i18n="namePrompt">The heroes wish to know who answered their call.</p>
+                    <input type="text" id="playerNameInput" maxlength="12" placeholder="Hero">
+                    <button class="restart-btn" onclick="confirmPlayerName()" data-i18n="confirm">CONFIRM</button>
+                </div>
+            </div>
+
+            <div id="dialogueBox">
+                <div class="dialogue-speaker" id="dialogueSpeaker">NARRATOR</div>
+                <div class="dialogue-text" id="dialogueText"></div>
+                <div class="dialogue-hint" data-i18n="dialogueHint">[SPACE] to continue</div>
+            </div>
         </div>
 
         <div id="languagePanel">
@@ -312,6 +369,7 @@
     <script src="js/enemies.js"></script>
     <script src="js/heroes.js"></script>
     <script src="js/render.js"></script>
+    <script src="js/story.js"></script>
     <script src="js/main.js"></script>
 </body>
 

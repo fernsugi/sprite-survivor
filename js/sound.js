@@ -15,7 +15,7 @@ function initAudio() {
 
         // Create master gain (volume control)
         masterGain = audioCtx.createGain();
-        masterGain.gain.value = 0.1; // Master volume at 10%
+        masterGain.gain.value = 0.5; // Master volume at 50%
 
         // Create compressor to prevent clipping
         compressor = audioCtx.createDynamicsCompressor();
@@ -105,15 +105,16 @@ const SFX = {
     },
 
     playerHit: () => {
-        playTone(150, 0.2, 'square', 0.03);
-        playNoise(0.1, 0.015);
+        // Short low click - subtle damage feedback
+        playTone(120, 0.03, 'square', 0.015);
     },
 
     playerDeath: () => {
-        playTone(400, 0.1, 'square', 0.4);
-        setTimeout(() => playTone(300, 0.1, 'square', 0.4), 100);
-        setTimeout(() => playTone(200, 0.2, 'square', 0.4), 200);
-        setTimeout(() => playTone(100, 0.4, 'square', 0.4), 300);
+        // Game over - subtle descending tones
+        playTone(400, 0.1, 'square', 0.2);
+        setTimeout(() => playTone(300, 0.1, 'square', 0.2), 100);
+        setTimeout(() => playTone(200, 0.2, 'square', 0.2), 200);
+        setTimeout(() => playTone(100, 0.4, 'square', 0.2), 300);
     },
 
     // Sprite sounds
@@ -132,11 +133,9 @@ const SFX = {
     },
 
     summonKnight: () => {
-        // Sword unsheathe - metallic sliding sound
-        playNoise(0.08, 0.15);
-        playTone(800, 0.05, 'square', 0.2);
-        setTimeout(() => playTone(600, 0.08, 'square', 0.25), 30);
-        setTimeout(() => playTone(400, 0.1, 'sawtooth', 0.2), 60);
+        // Sword unsheathe - subtle metallic slide
+        playTone(600, 0.06, 'triangle', 0.08);
+        setTimeout(() => playTone(400, 0.08, 'triangle', 0.06), 40);
     },
 
     summonMage: () => {
@@ -177,11 +176,9 @@ const SFX = {
     },
 
     summonBerserker: () => {
-        // Aggressive roar - low powerful sound
-        playTone(80, 0.15, 'sawtooth', 0.3);
-        playTone(100, 0.12, 'square', 0.25);
-        setTimeout(() => playTone(120, 0.1, 'sawtooth', 0.2), 50);
-        setTimeout(() => playNoise(0.08, 0.15), 80);
+        // Aggressive roar - subtle low rumble
+        playTone(80, 0.1, 'sine', 0.1);
+        setTimeout(() => playTone(100, 0.08, 'triangle', 0.08), 40);
     },
 
     summonFrost: () => {
@@ -202,14 +199,11 @@ const SFX = {
     },
 
     summonBomber: () => {
-        // Bomb armed - fuse sizzle then ominous boom
-        playNoise(0.2, 0.25);
+        // Bomb armed - subtle fuse sizzle
+        playNoise(0.1, 0.06);
         setTimeout(() => {
-            playTone(40, 0.25, 'sawtooth', 0.35);
-            playTone(55, 0.2, 'square', 0.3);
-            playNoise(0.15, 0.2);
-        }, 120);
-        setTimeout(() => playTone(30, 0.3, 'sine', 0.25), 250);
+            playTone(50, 0.15, 'sine', 0.08);
+        }, 80);
     },
 
     mergeSprite: () => {
@@ -220,8 +214,8 @@ const SFX = {
 
     shoot: () => {
         if (!canPlaySound('shoot')) return;
-        playTone(800, 0.05, 'square', 0.1);
-        playTone(600, 0.05, 'square', 0.08);
+        // Subtle short tick for projectile firing
+        playTone(700, 0.02, 'sine', 0.025);
     },
 
     melee: () => {
@@ -237,9 +231,9 @@ const SFX = {
     },
 
     heal: () => {
-        playTone(500, 0.1, 'sine', 0.2);
-        setTimeout(() => playTone(700, 0.1, 'sine', 0.2), 100);
-        setTimeout(() => playTone(900, 0.15, 'sine', 0.2), 200);
+        if (!canPlaySound('heal')) return;
+        // Subtle soft chime
+        playTone(600, 0.04, 'sine', 0.02);
     },
 
     lightning: () => {
@@ -259,22 +253,22 @@ const SFX = {
     // Enemy sounds
     enemyHit: () => {
         if (!canPlaySound('enemyHit')) return;
-        playTone(200, 0.05, 'square', 0.08);
+        // Subtle tick when hitting enemy
+        playTone(250, 0.02, 'square', 0.02);
     },
 
     enemyDeath: () => {
         if (!canPlaySound('enemyDeath')) return;
-        playTone(300, 0.1, 'square', 0.01);
-        setTimeout(() => playTone(150, 0.15, 'square', 0.01), 50);
-        playNoise(0.1, 0.008);
+        // Short higher click - subtle kill confirmation
+        playTone(400, 0.025, 'sine', 0.012);
     },
 
     // Boss sounds
     bossSpawn: () => {
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => playTone(100 + i * 50, 0.2, 'square', 0.3), i * 150);
-        }
-        setTimeout(() => playNoise(0.3, 0.3), 600);
+        // Subtle deep rumble - ominous but not harsh
+        playTone(60, 0.3, 'sine', 0.04);
+        setTimeout(() => playTone(80, 0.25, 'sine', 0.035), 100);
+        setTimeout(() => playTone(100, 0.2, 'triangle', 0.03), 200);
     },
 
     bossHit: () => {
@@ -380,12 +374,44 @@ const SFX = {
     },
 
     victory: () => {
+        // Victory fanfare - subtle ascending tones
         const notes = [523, 659, 784, 1047]; // C5, E5, G5, C6
         notes.forEach((note, i) => {
-            setTimeout(() => playTone(note, 0.3, 'square', 0.3), i * 150);
+            setTimeout(() => playTone(note, 0.3, 'square', 0.15), i * 150);
         });
+    },
+
+    // UI sounds
+    select: () => {
+        playTone(600, 0.06, 'square', 0.03);
+        setTimeout(() => playTone(800, 0.08, 'square', 0.024), 40);
+    },
+
+    error: () => {
+        playTone(200, 0.1, 'square', 0.04);
+        setTimeout(() => playTone(150, 0.15, 'square', 0.036), 80);
+    },
+
+    // Dialogue typing sound
+    type: () => {
+        if (!canPlaySound('type')) return;
+        playTone(800 + Math.random() * 200, 0.02, 'square', 0.01);
+    },
+
+    // Dialogue advance sound (quieter select)
+    dialogueNext: () => {
+        playTone(600, 0.06, 'square', 0.03);
+        setTimeout(() => playTone(800, 0.08, 'square', 0.024), 40);
     }
 };
+
+// Play sound by name
+function playSound(name) {
+    initAudio();
+    if (SFX[name]) {
+        SFX[name]();
+    }
+}
 
 // Toggle sound
 function toggleSound() {

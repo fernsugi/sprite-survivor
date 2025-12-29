@@ -65,3 +65,22 @@ const debuffs = {
     slow: 0,        // Movement slowed 50%
     weakened: 0     // Boss takes 50% less damage
 };
+
+// Story Mode State
+let storyMode = false;
+let storyChapter = 0;       // 1-4 for chapters, 5 for ending
+let storyWave = 0;          // Current wave within chapter (1-5)
+let storyWaveSpawning = false; // Flag to prevent rapid wave increments
+let playerName = 'Hero';    // Player's entered name
+let storyProgress = {       // Saved in localStorage
+    chaptersCompleted: 0,   // 0-4
+    playerName: null
+};
+
+// Dialogue State
+let dialogueActive = false;
+let dialogueQueue = [];     // Array of {speaker, text} objects
+let dialogueIndex = 0;
+let dialogueCharIndex = 0;
+let dialogueTimer = 0;
+const DIALOGUE_SPEED = 1;   // Frames per character (lower = faster)

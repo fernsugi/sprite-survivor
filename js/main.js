@@ -250,26 +250,44 @@ function update() {
     }
 
     // Game timer + passive point generation (1 point per 0.5 seconds = 2 per second)
+    // In story mode, only generate points after collecting first sprite and when no sprite orb is waiting
     const prevHalfSecond = Math.floor(gameTime * 2);
     gameTime += 1 / 60;
-    if (Math.floor(gameTime * 2) > prevHalfSecond) points++;
+    const hasSpriteOrbPending = typeof spriteOrbs !== 'undefined' && spriteOrbs.length > 0;
+    const canGeneratePoints = !storyMode || (typeof collectedSprites !== 'undefined' && collectedSprites.size > 0 && !hasSpriteOrbPending);
+    if (Math.floor(gameTime * 2) > prevHalfSecond && canGeneratePoints) points++;
 
-    // Wave timer
-    waveTimer += 1 / 60;
-    if (waveTimer >= WAVE_DURATION && !bossActive) {
-        waveTimer = 0; wave++;
-        SFX.waveStart();
-        if (wave % BOSS_WAVE_INTERVAL === 0) spawnBoss();
+    // Wave timer (survival mode only)
+    if (!storyMode) {
+        waveTimer += 1 / 60;
+        if (waveTimer >= WAVE_DURATION && !bossActive) {
+            waveTimer = 0; wave++;
+            SFX.waveStart();
+            if (wave % BOSS_WAVE_INTERVAL === 0) spawnBoss();
+        }
     }
 
     // Update player
     updatePlayer();
 
     // Spawning
-    if (Math.random() < 0.02 && orbs.length < 20) spawnOrb();
-    if (Math.random() < 0.003 && skillOrbs.length < 2) spawnSkillOrb();
-    const spawnRate = 0.02 + wave * 0.005;
-    if (Math.random() < spawnRate && enemies.length < 25 + wave * 3 && !bossActive) spawnEnemy();
+    if (!storyMode) {
+        // Survival mode: spawn everything normally
+        if (Math.random() < 0.02 && orbs.length < 20) spawnOrb();
+        if (Math.random() < 0.003 && skillOrbs.length < 2) spawnSkillOrb();
+        const spawnRate = 0.02 + wave * 0.005;
+        if (Math.random() < spawnRate && enemies.length < 25 + wave * 3 && !bossActive) spawnEnemy();
+    } else if (collectedSprites && collectedSprites.size > 0 && spriteOrbs.length === 0 && !awaitingRewardCollection) {
+        // Story mode: spawn orbs only when no sprite orb is waiting to be collected
+        // and not during reward collection phase (after boss defeat)
+        if (Math.random() < 0.02 && orbs.length < 15) spawnOrb();
+        if (Math.random() < 0.002 && skillOrbs.length < 1) spawnStorySkillOrb();
+    }
+
+    // Update story mode sprite orbs
+    if (storyMode && typeof updateSpriteOrbs === 'function') {
+        updateSpriteOrbs();
+    }
 
     // Update game objects
     updateOrbs();
@@ -297,6 +315,10 @@ function update() {
 
 function gameLoop() {
     if (gameStarted) { update(); draw(); }
+    // Update dialogue animation even when paused
+    if (dialogueActive) { updateDialogue(); }
+    // Check story wave completion
+    if (storyMode && gameRunning) { checkStoryWaveComplete(); }
     requestAnimationFrame(gameLoop);
 }
 
@@ -314,6 +336,19 @@ function startGame(cheat = false) {
 }
 
 function restartGame() {
+    // In story mode, restart the current chapter from the beginning
+    if (storyMode) {
+        const currentChapter = storyChapter;
+        // Reset all story state
+        document.getElementById('gameOver').style.display = 'none';
+        document.getElementById('victory').style.display = 'none';
+        document.getElementById('bossHealth').style.display = 'none';
+        document.getElementById('dialogueBox').style.display = 'none';
+        storyChapter = currentChapter;
+        beginStoryChapter();
+        return;
+    }
+
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.overHeal = 0; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
     currentSkill = null; updateSkillDisplay();
@@ -340,6 +375,15 @@ function goToMainMenu() {
     score = 0; displayScore = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
     // Reset debuffs
     for (const key in debuffs) debuffs[key] = 0;
+    // Reset story mode
+    storyMode = false; storyChapter = 0; storyWave = 0; storyWaveSpawning = false;
+    dialogueActive = false; dialogueQueue = []; dialogueIndex = 0; dialogueCharIndex = 0;
+    if (typeof spriteOrbs !== 'undefined') spriteOrbs = [];
+    if (typeof collectedSprites !== 'undefined') collectedSprites = new Set();
+    if (typeof pendingWaveSpawn !== 'undefined') pendingWaveSpawn = false;
+    if (typeof pendingBossSpawn !== 'undefined') pendingBossSpawn = false;
+    if (typeof pendingVictory !== 'undefined') pendingVictory = false;
+    if (typeof pendingRewardSprite !== 'undefined') pendingRewardSprite = false;
     gameStarted = false;
     gameRunning = false;
     gamePaused = false;
@@ -349,6 +393,9 @@ function goToMainMenu() {
     document.getElementById('victory').style.display = 'none';
     document.getElementById('bossHealth').style.display = 'none';
     document.getElementById('pauseScreen').style.display = 'none';
+    document.getElementById('dialogueBox').style.display = 'none';
+    document.getElementById('storyModeScreen').style.display = 'none';
+    document.getElementById('nameInputModal').style.display = 'none';
     document.getElementById('startScreen').style.display = 'flex';
     updateUI();
     updateHighScoreDisplay();
@@ -359,6 +406,12 @@ const altSummonKeys = { 'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, 
 document.addEventListener('keydown', e => {
     keys[e.key] = true;
     if (e.key === 'Escape') { togglePause(); return; }
+    // Handle dialogue advancement with SPACE
+    if ((e.key === ' ' || e.code === 'Space') && dialogueActive) {
+        e.preventDefault();
+        advanceDialogue();
+        return;
+    }
     if (!gameStarted || !gameRunning || gamePaused) return;
     if (e.key === 'Tab') { e.preventDefault(); autopilot = !autopilot; return; }
     if (e.key >= '1' && e.key <= '9') { const index = parseInt(e.key) - 1; if (index < spriteTypes.length) summonSprite(index); }
@@ -371,8 +424,16 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('keyup', e => { keys[e.key] = false; });
 
-// Initialize
-initSpriteButtons();
-updateUI();
-updateHighScoreDisplay();
-gameLoop();
+// Initialize - translations are now inline, no async loading needed
+(function init() {
+    // Apply saved language or detect from URL/localStorage
+    const urlLang = getURLLanguage();
+    const savedLang = localStorage.getItem('spriteSurvivorLang');
+    const initialLang = urlLang || savedLang || 'en';
+    setLanguage(initialLang, false);
+
+    initSpriteButtons();
+    updateUI();
+    updateHighScoreDisplay();
+    gameLoop();
+})();

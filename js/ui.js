@@ -9,8 +9,14 @@ function updateUI() {
     document.getElementById('pointsDisplay').textContent = points;
     document.getElementById('pointsFill').style.width = Math.min(100, (points / POINTS_FOR_SPRITE * 100)) + '%';
     document.getElementById('spriteCount').textContent = sprites.length;
-    document.getElementById('waveNumber').textContent = wave;
-    document.getElementById('waveTimer').textContent = bossActive ? t('bossBattle') : `${t('nextWave')}: ${Math.ceil(WAVE_DURATION - waveTimer)}s`;
+    // Show storyWave in story mode, wave in survival mode
+    document.getElementById('waveNumber').textContent = storyMode ? storyWave : wave;
+    // In story mode, show wave progress; in survival mode, show timer
+    if (storyMode) {
+        document.getElementById('waveTimer').textContent = bossActive ? t('bossBattle') : `${storyWave}/5`;
+    } else {
+        document.getElementById('waveTimer').textContent = bossActive ? t('bossBattle') : `${t('nextWave')}: ${Math.ceil(WAVE_DURATION - waveTimer)}s`;
+    }
     document.getElementById('gameTimer').textContent = formatTime(gameTime);
     if (boss) document.getElementById('bossHealthFill').style.width = (boss.hp / boss.maxHp * 100) + '%';
     updateSpriteButtons();

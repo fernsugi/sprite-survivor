@@ -172,3 +172,9 @@ Heroes are affected by debuffs:
 - Collision detection via distance checks (no physics engine)
 - Effects system for particles, slashes, AOE rings, lightning
 - i18n uses `data-i18n` attributes + `t(key)` function
+
+## Sound Design Guidelines
+When creating or modifying sound effects in `sound.js`:
+- **Always use subtle/quiet volumes** - prefer volume values of 0.02-0.1 for regular SFX
+- **Use soft waveforms** - prefer `sine` and `triangle` over harsh `square` and `sawtooth`
+- **Avoid stacking loud sounds** - limit simultaneous tones

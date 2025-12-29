@@ -323,6 +323,7 @@ body.lang-vi .sprite-btn .desc {
 }
 
 .sprite-btn {
+    position: relative;
     background: linear-gradient(180deg, #444, #222);
     border: 2px solid #666;
     color: #fff;
@@ -361,6 +362,21 @@ body.lang-vi .sprite-btn .desc {
 .sprite-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.sprite-btn.locked {
+    opacity: 0.3;
+    border-color: #333;
+    background: #111;
+}
+
+.sprite-btn.locked::after {
+    content: '🔒';
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
 }
 
 .sprite-btn.affordable {
@@ -413,45 +429,83 @@ body.lang-vi .sprite-btn .desc {
     margin-bottom: 40px;
 }
 
-.start-btn {
+/* Menu Button Layout */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.main-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.secondary-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Main Menu Buttons (Story Mode & Survival) */
+.menu-btn-main {
     background: linear-gradient(180deg, #4a4, #282);
-    border: 4px solid #5c5;
+    border: 3px solid #5c5;
     color: #fff;
     font-family: 'Press Start 2P', cursive;
-    font-size: 16px;
-    padding: 20px 50px;
+    font-size: 12px;
+    padding: 18px 25px;
     cursor: pointer;
     transition: all 0.2s;
-    margin-bottom: 30px;
-    animation: startPulse 2s infinite;
+    min-width: 160px;
 }
 
-@keyframes startPulse {
-    0%, 100% { box-shadow: 0 0 10px #4a4; transform: scale(1); }
-    50% { box-shadow: 0 0 30px #4a4; transform: scale(1.02); }
+.menu-btn-main.story {
+    background: linear-gradient(180deg, #a48, #626);
+    border-color: #c5a;
 }
 
-.start-btn:hover {
-    background: linear-gradient(180deg, #5b5, #393);
-    border-color: #7d7;
+.menu-btn-main.survival {
+    background: linear-gradient(180deg, #4a4, #282);
+    border-color: #5c5;
+    animation: survivalPulse 2s infinite;
+}
+
+@keyframes survivalPulse {
+    0%, 100% { box-shadow: 0 0 8px #4a4; }
+    50% { box-shadow: 0 0 20px #4a4; }
+}
+
+.menu-btn-main:hover {
     transform: scale(1.05);
+    filter: brightness(1.2);
 }
 
-.cheat-btn {
-    background: linear-gradient(180deg, #a44, #622);
-    border: 3px solid #c55;
-    color: #fff;
+.menu-btn-main.story:hover {
+    border-color: #d7c;
+}
+
+.menu-btn-main.survival:hover {
+    border-color: #7d7;
+}
+
+/* Secondary Menu Buttons (Cheat Mode & Achievements) */
+.menu-btn-secondary {
+    background: linear-gradient(180deg, #444, #222);
+    border: 2px solid #666;
+    color: #aaa;
     font-family: 'Press Start 2P', cursive;
-    font-size: 10px;
-    padding: 10px 20px;
+    font-size: 8px;
+    padding: 10px 15px;
     cursor: pointer;
     transition: all 0.2s;
-    margin-bottom: 30px;
 }
 
-.cheat-btn:hover {
-    background: linear-gradient(180deg, #b55, #733);
-    border-color: #d77;
+.menu-btn-secondary:hover {
+    background: linear-gradient(180deg, #555, #333);
+    border-color: #888;
+    color: #fff;
     transform: scale(1.05);
 }
 
@@ -602,25 +656,6 @@ body.lang-vi .sprite-btn .desc {
     background: linear-gradient(180deg, #f44, #a00);
 }
 
-/* Achievement Button */
-.achv-btn {
-    background: linear-gradient(180deg, #448, #226);
-    border: 3px solid #55a;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 30px;
-}
-
-.achv-btn:hover {
-    background: linear-gradient(180deg, #559, #337);
-    border-color: #77c;
-    transform: scale(1.05);
-}
-
 /* Achievements Modal */
 #achievementsModal {
     display: none;
@@ -722,4 +757,201 @@ body.lang-vi .sprite-btn .desc {
     font-size: 9px;
     margin: 5px 0;
     text-shadow: 1px 1px 0 #000;
+}
+
+/* Story Mode Screen */
+#storyModeScreen {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+#storyModeScreen h1 {
+    font-size: 28px;
+    color: #c5a;
+    margin-bottom: 30px;
+    text-shadow: 3px 3px 0 #000;
+}
+
+.chapter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.chapter-btn {
+    background: linear-gradient(180deg, #333, #1a1a1a);
+    border: 3px solid #555;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 350px;
+    position: relative;
+}
+
+.chapter-btn:hover:not(.locked) {
+    background: linear-gradient(180deg, #444, #2a2a2a);
+    border-color: #777;
+    transform: scale(1.02);
+}
+
+.chapter-btn.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chapter-btn.locked:hover {
+    transform: none;
+}
+
+.chapter-num {
+    font-size: 16px;
+    color: #c5a;
+    min-width: 30px;
+}
+
+.chapter-title {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.chapter-hero {
+    color: #888;
+    font-size: 8px;
+}
+
+.lock-icon {
+    position: absolute;
+    right: 15px;
+    font-size: 14px;
+}
+
+.chapter-btn.ending {
+    border-color: #fd0;
+    margin-top: 10px;
+}
+
+.chapter-btn.ending .chapter-num {
+    color: #fd0;
+}
+
+.chapter-btn.ending:not(.locked) {
+    background: linear-gradient(180deg, #443, #221);
+}
+
+/* Name Input Modal */
+#nameInputModal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000c;
+    justify-content: center;
+    align-items: center;
+    z-index: 150;
+}
+
+.name-input-content {
+    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+    border: 4px solid #c5a;
+    padding: 30px 40px;
+    text-align: center;
+}
+
+.name-input-content h2 {
+    color: #c5a;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.name-input-content p {
+    color: #888;
+    font-size: 10px;
+    margin-bottom: 20px;
+}
+
+#playerNameInput {
+    background: #0a0a1a;
+    border: 2px solid #555;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    padding: 10px 15px;
+    width: 200px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#playerNameInput:focus {
+    outline: none;
+    border-color: #c5a;
+}
+
+#playerNameInput::placeholder {
+    color: #444;
+}
+
+/* Dialogue Box */
+#dialogueBox {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
+    background: linear-gradient(180deg, #1a1a2e, #0a0a1a);
+    border: 3px solid #555;
+    padding: 20px;
+    z-index: 200;
+}
+
+.dialogue-speaker {
+    color: #c5a;
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0 #000;
+}
+
+.dialogue-text {
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.8;
+    min-height: 50px;
+}
+
+.dialogue-hint {
+    color: #666;
+    font-size: 8px;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* Larger dialogue text for CJK and Vietnamese (non-pixel fonts render smaller) */
+body.lang-cjk .dialogue-text,
+body.lang-vi .dialogue-text {
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+body.lang-cjk .dialogue-speaker,
+body.lang-vi .dialogue-speaker {
+    font-size: 14px;
 }
