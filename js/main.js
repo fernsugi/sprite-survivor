@@ -467,7 +467,7 @@ function startSplashCycle() {
         
         if (titleEl) titleEl.textContent = translations[lang]['title'] || "SPRITE SURVIVOR";
         if (descEl) descEl.textContent = translations[lang]['clickToStart'] || "CLICK TO START";
-        if (supportEl) supportEl.textContent = translations[lang]['inputSupport'] || "KEYBOARD / GAMEPAD SUPPORTED";
+        if (supportEl) supportEl.innerHTML = translations[lang]['inputSupport'] || "KEYBOARD / GAMEPAD SUPPORTED";
         
         // Update font style for CJK/Vietnamese if needed
         const splash = document.getElementById('splashScreen');

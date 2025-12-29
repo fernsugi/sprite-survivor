@@ -11,7 +11,7 @@ const translations = {
     "subtitle": "Summon sprites, survive the horde",
     "startGame": "START GAME",
     "clickToStart": "CLICK OR PRESS ANY BUTTON TO START",
-    "inputSupport": "KEYBOARD / GAMEPAD SUPPORTED",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> KEYBOARD / GAMEPAD <i class='fa-solid fa-gamepad'></i> SUPPORTED",
     "instructMove": "- Move",
     "instructSummon": "- Summon sprites (Press/Hold)",
     "instructSkill": "- Use skill (when available)",
@@ -265,7 +265,7 @@ const translations = {
     "subtitle": "精霊を召喚し、群れを生き延びろ",
     "startGame": "ゲームスタート",
     "clickToStart": "ボタンを押してスタート",
-    "inputSupport": "キーボード / コントローラー対応",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> キーボード / コントローラー <i class='fa-solid fa-gamepad'></i> 対応",
     "instructMove": "- 移動",
     "instructSummon": "- スプライト召喚 (押す/長押し)",
     "instructSkill": "- スキル発動（所持時）",
@@ -514,7 +514,7 @@ const translations = {
     "subtitle": "정령을 소환하고 무리에서 살아남아라",
     "startGame": "게임 시작",
     "clickToStart": "아무 버튼이나 누르세요",
-    "inputSupport": "키보드 / 게임패드 지원",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> 키보드 / 게임패드 <i class='fa-solid fa-gamepad'></i> 지원",
     "instructMove": "- 이동",
     "instructSummon": "- 스프라이트 소환 (누르기/길게)",
     "instructSkill": "- 스킬 사용 (보유 시)",
@@ -763,7 +763,7 @@ const translations = {
     "subtitle": "召喚精靈，在群敵中生存",
     "startGame": "開始遊戲",
     "clickToStart": "按任意鍵開始",
-    "inputSupport": "支援鍵盤 / 手把",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> 支援鍵盤 / 手把 <i class='fa-solid fa-gamepad'></i>",
     "instructMove": "- 移動",
     "instructSummon": "- 召喚精靈 (按/長按)",
     "instructSkill": "- 使用技能（持有時）",
@@ -1012,7 +1012,7 @@ const translations = {
     "subtitle": "召唤精灵，在群敌中生存",
     "startGame": "开始游戏",
     "clickToStart": "按任意键开始",
-    "inputSupport": "支持键盘 / 手柄",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> 支持键盘 / 手柄 <i class='fa-solid fa-gamepad'></i>",
     "instructMove": "- 移动",
     "instructSummon": "- 召唤精灵 (按/长按)",
     "instructSkill": "- 使用技能（持有时）",
@@ -1261,7 +1261,7 @@ const translations = {
     "subtitle": "Invoca espíritus, sobrevive a la horda",
     "startGame": "INICIAR JUEGO",
     "clickToStart": "PRESIONA CUALQUIER BOTÓN",
-    "inputSupport": "TECLADO / MANDO COMPATIBLE",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> TECLADO / MANDO <i class='fa-solid fa-gamepad'></i> COMPATIBLE",
     "instructMove": "- Mover",
     "instructSummon": "- Invocar sprites (Pulsar/Mantener)",
     "instructSkill": "- Usar habilidad (cuando esté disponible)",
@@ -1510,7 +1510,7 @@ const translations = {
     "subtitle": "Invoque espíritos, sobreviva à horda",
     "startGame": "INICIAR JOGO",
     "clickToStart": "PRESSIONE QUALQUER BOTÃO",
-    "inputSupport": "TECLADO / CONTROLE SUPORTADO",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> TECLADO / CONTROLE <i class='fa-solid fa-gamepad'></i> SUPORTADO",
     "instructMove": "- Mover",
     "instructSummon": "- Invocar sprites (Pressionar/Segurar)",
     "instructSkill": "- Usar habilidade (quando disponível)",
@@ -1759,7 +1759,7 @@ const translations = {
     "subtitle": "Призывай духов, выживай в орде",
     "startGame": "НАЧАТЬ ИГРУ",
     "clickToStart": "НАЖМИТЕ ЛЮБУЮ КНОПКУ",
-    "inputSupport": "КЛАВИАТУРА / ГЕЙМПАД",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> КЛАВИАТУРА / ГЕЙМПАД <i class='fa-solid fa-gamepad'></i>",
     "instructMove": "- Движение",
     "instructSummon": "- Призыв спрайтов (Нажать/Удерж.)",
     "instructSkill": "- Использовать умение (когда доступно)",
@@ -2008,7 +2008,7 @@ const translations = {
     "subtitle": "Invoque des esprits, survis à la horde",
     "startGame": "JOUER",
     "clickToStart": "APPUYEZ SUR UN BOUTON",
-    "inputSupport": "CLAVIER / MANETTE SUPPORTÉS",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> CLAVIER / MANETTE <i class='fa-solid fa-gamepad'></i> SUPPORTÉS",
     "instructMove": "- Déplacer",
     "instructSummon": "- Invoquer des sprites (Appuyer/Maintenir)",
     "instructSkill": "- Utiliser compétence (si disponible)",
@@ -2257,7 +2257,7 @@ const translations = {
     "subtitle": "Triệu hồi linh hồn, sống sót qua bầy quái",
     "startGame": "BẮT ĐẦU",
     "clickToStart": "NHẤN BẤT KỲ NÚT NÀO",
-    "inputSupport": "HỖ TRỢ BÀN PHÍM / TAY CẦM",
+    "inputSupport": "<i class='fa-solid fa-keyboard'></i> HỖ TRỢ BÀN PHÍM / TAY CẦM <i class='fa-solid fa-gamepad'></i>",
     "instructMove": "- Di chuyển",
     "instructSummon": "- Triệu hồi sprite (Nhấn/Giữ)",
     "instructSkill": "- Dùng kỹ năng (khi có)",
@@ -2568,7 +2568,7 @@ function setLanguage(lang, updateHistory = true) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const translation = translations[lang]?.[key] || translations['en']?.[key];
-    if (translation) el.textContent = translation;
+    if (translation) el.innerHTML = translation;
   });
   updateSEO(lang);
   if (updateHistory) updateURL(lang);
