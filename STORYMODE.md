@@ -43,7 +43,7 @@ They surrendered their powers and were locked away deep in a lair crawling with 
 
 ### The Final Breath
 
-But the heroes had one thing left - their very essence, their spirit.
+But the heroes had one thing left - their very essence, their last breath.
 
 With their dying breath, they reached across dimensions, searching for someone who could help. They found **The Other World** - our world.
 
@@ -174,7 +174,7 @@ One burns brighter than the rest - orange, like a dying flame.
 "{PLAYER_NAME}... I will not forget it."
 
 [REX]
-"Listen carefully. In our world, the spirits of great warriors past linger as Sprites."
+"Listen carefully. In our world, the sprites of great warriors past linger as Sprites."
 
 [REX]
 "Most cannot see them, let alone command them. But you..."
@@ -196,7 +196,7 @@ A green light pulses in the distance.
 
 ```
 [REX]
-"Yes! You did it. The Archer's spirit now fights alongside you."
+"Yes! You did it. The Archer's sprite now fights alongside you."
 
 [REX]
 "But be warned - demons are coming. They sense your presence."
@@ -212,7 +212,7 @@ A green light pulses in the distance.
 As the last demon falls, a cold blue light emerges from the shadows.
 
 [REX]
-"The Frost spirit... it was drawn to your battle."
+"The Frost sprite... it was drawn to your battle."
 
 [REX]
 "Claim it, {PLAYER_NAME}. Its power will slow your enemies."
@@ -279,7 +279,7 @@ The Remnant shatters into light. The energy flows upward... and vanishes.
 "I can feel it. My strength returning, piece by piece."
 
 [NARRATOR]
-A red light pulses nearby - the Knight spirit.
+A red light pulses nearby - the Knight sprite.
 
 [REX]
 "The Knight. It stood by me in countless battles."
@@ -334,7 +334,7 @@ Three heroes remain...
 
 ```
 [NARRATOR]
-You return to the spirit realm.
+You return to the sprite realm.
 A cyan light flickers weakly in the volcanic haze.
 
 [BETH]
@@ -363,10 +363,10 @@ A cyan light flickers weakly in the volcanic haze.
 "Not bad! You're getting the hang of this."
 
 [NARRATOR]
-An orange glow pulses with violent energy - the Berserker spirit.
+An orange glow pulses with violent energy - the Berserker sprite.
 
 [BETH]
-"Oh, the Berserker. Wild one, that spirit."
+"Oh, the Berserker. Wild one, that sprite."
 
 [BETH]
 "It can spin and deflect attacks. Against my Remnant... you'll need that."
@@ -418,7 +418,7 @@ The Remnant bursts into countless sparks that fade into the sky.
 "I can feel myself again. The real me, not that... thing."
 
 [NARRATOR]
-A cyan light crackles nearby - the Wizard spirit.
+A cyan light crackles nearby - the Wizard sprite.
 
 [BETH]
 "The Wizard! Chain lightning, baby. Hits everything in sight."
@@ -475,7 +475,7 @@ Two heroes remain...
 
 ```
 [NARRATOR]
-The spirit realm grows cold. Ice crystals form in the air around you.
+The sprite realm grows cold. Ice crystals form in the air around you.
 A pure white light shimmers in the frozen mist.
 
 [MILIA]
@@ -510,7 +510,7 @@ Silence. The light pulses gently.
 "You fight well. The others chose wisely in you."
 
 [NARRATOR]
-A purple light blooms from the ice - the Mage spirit.
+A purple light blooms from the ice - the Mage sprite.
 
 [MILIA]
 "The Mage. Its power is area magic - it strikes a location, not a target."
@@ -569,7 +569,7 @@ The light drifts upward, peaceful at last.
 "Thank you, {PLAYER_NAME}. You've freed me from my own reflection."
 
 [NARRATOR]
-A warm yellow light appears - the Cleric spirit.
+A warm yellow light appears - the Cleric sprite.
 
 [MILIA]
 "The Cleric. A healer, like I once was."
@@ -660,7 +660,7 @@ A magenta light burns in the darkness - intense, unwavering.
 "Impressive. You've made it this far."
 
 [NARRATOR]
-A dark purple light pulses ominously - the Vampire spirit.
+A dark purple light pulses ominously - the Vampire sprite.
 
 [TROY]
 "The Vampire. It drains life from enemies to sustain itself."
@@ -722,7 +722,7 @@ Silence falls over the void.
 "You actually did it, {PLAYER_NAME}. You freed all of us."
 
 [NARRATOR]
-Two lights emerge from where the Remnant fell - the Ninja and Bomber spirits.
+Two lights emerge from where the Remnant fell - the Ninja and Bomber sprites.
 
 [TROY]
 "Take them. They're yours now."
