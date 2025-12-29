@@ -195,7 +195,7 @@ function updateSprites() {
                     let chainTargets = [nearestEnemy], lastTarget = nearestEnemy;
                     for (let c = 0; c < 3 + sprite.level; c++) {
                         let nextTarget = null, nextDist = Infinity;
-                        targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 120 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
+                        targets.forEach(enemy => { if (chainTargets.includes(enemy)) return; const dx = enemy.x - lastTarget.x, dy = enemy.y - lastTarget.y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 100 && dist < nextDist) { nextDist = dist; nextTarget = enemy; } });
                         if (nextTarget) { chainTargets.push(nextTarget); lastTarget = nextTarget; }
                     }
                     chainTargets.forEach((target, idx) => {
@@ -207,7 +207,7 @@ function updateSprites() {
                             // Visual nullify effect
                             for (let k = 0; k < 5; k++) effects.push({ x: target.x, y: target.y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 15, color: '#fff', type: 'particle' });
                         }
-                        if (idx > 0) effects.push({ x: chainTargets[idx-1].x, y: chainTargets[idx-1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color });
+                        if (idx > 0) effects.push({ x: chainTargets[idx - 1].x, y: chainTargets[idx - 1].y, x2: target.x, y2: target.y, life: 10, type: 'lightning', color: sprite.color });
                     });
                     effects.push({ x: sprite.x, y: sprite.y, x2: nearestEnemy.x, y2: nearestEnemy.y, life: 10, type: 'lightning', color: sprite.color });
                 }
@@ -267,7 +267,7 @@ function updateSpriteProjectiles() {
         for (let j = targets.length - 1; j >= 0; j--) {
             const enemy = targets[j];
             const dx = enemy.x - proj.x, dy = enemy.y - proj.y, dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < (enemy.size || boss?.size || 14)/2 + proj.size) {
+            if (dist < (enemy.size || boss?.size || 14) / 2 + proj.size) {
                 if (proj.explosive) {
                     SFX.explosion();
                     targets.forEach(e => {

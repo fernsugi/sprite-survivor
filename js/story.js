@@ -41,7 +41,9 @@ function updateChapterButtons() {
     chapters.forEach(btn => {
         const chapterNum = btn.dataset.chapter;
         if (chapterNum === 'ending') {
-            if (storyProgress.chaptersCompleted >= 4) {
+            // Ending unlocks after: beating survival/cheat mode (firstWin) AND all 4 chapters completed
+            const achievements = loadAchievements();
+            if (achievements.firstWin && storyProgress.chaptersCompleted >= 4) {
                 btn.classList.remove('locked');
                 btn.querySelector('.lock-icon')?.remove();
             }
