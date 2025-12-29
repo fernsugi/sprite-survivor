@@ -2551,6 +2551,8 @@ function setLanguage(lang, updateHistory = true) {
   if (typeof updateSkillDisplay === 'function') updateSkillDisplay();
   if (typeof updateUI === 'function') updateUI();
   if (typeof refreshAchievementsList === 'function') refreshAchievementsList();
+  if (typeof refreshVictoryAchievements === 'function') refreshVictoryAchievements();
+  if (typeof refreshBossName === 'function') refreshBossName();
   if (typeof updateStoryUI === 'function') updateStoryUI();
 }
 

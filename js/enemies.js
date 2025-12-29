@@ -62,6 +62,17 @@ function spawnBoss() {
     SFX.bossSpawn();
 }
 
+// Refresh boss name on language change
+function refreshBossName() {
+    if (!boss) return;
+    // Story mode uses hardcoded names, survival mode uses translation keys
+    if (storyMode && boss.name) {
+        document.getElementById('bossName').textContent = boss.name;
+    } else if (boss.nameKey) {
+        document.getElementById('bossName').textContent = t(boss.nameKey);
+    }
+}
+
 function updateBossMechanics() {
     if (!boss) return;
 

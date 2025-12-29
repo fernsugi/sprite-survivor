@@ -1,5 +1,8 @@
 // Achievement System
 
+// Store newly unlocked achievements for language refresh
+let lastUnlockedAchievements = [];
+
 // Load achievements from localStorage
 function loadAchievements() {
     try {
@@ -141,14 +144,21 @@ function hideAchievements() {
 
 // Display newly unlocked achievements on victory screen
 function displayVictoryAchievements(newlyUnlocked) {
+    lastUnlockedAchievements = newlyUnlocked; // Store for language refresh
+    refreshVictoryAchievements();
+}
+
+// Refresh victory achievements display (called on language change)
+function refreshVictoryAchievements() {
     const container = document.getElementById('victoryAchievements');
-    if (newlyUnlocked.length === 0) {
+    if (!container) return;
+    if (lastUnlockedAchievements.length === 0) {
         container.innerHTML = '';
         return;
     }
 
     let html = `<div class="victory-achv-header">${t('achvUnlocked')}</div>`;
-    newlyUnlocked.forEach(achvId => {
+    lastUnlockedAchievements.forEach(achvId => {
         const achvDef = achievementDefs.find(a => a.id === achvId);
         if (achvDef) {
             const name = getAchievementName(achvDef);
