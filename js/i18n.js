@@ -8,7 +8,7 @@ const translations = {
     "costFontSize": "8px",
     "descFontSize": "7px",
     "title": "SPRITE SURVIVOR",
-    "subtitle": "Summon spirits, survive the horde",
+    "subtitle": "Summon sprites, survive the horde",
     "startGame": "START GAME",
     "instructMove": "- Move",
     "instructSummon": "- Summon sprites",
@@ -110,20 +110,20 @@ const translations = {
     "story_1_6": "But you're different. You can interact with this world in ways we cannot.",
     "story_1_7": "In our world, the spirits of great warriors past linger as Sprites. You have the gift to command them.",
     "story_1_8": "There! That presence... it's the Archer. Go to it, {name}. Walk toward the light and claim its power!",
-    "story_collect_archer": "Yes! The Archer's spirit now fights alongside you. But be warned - demons are coming. They sense your presence!",
+    "story_collect_archer": "Yes! The Archer's sprite now fights alongside you. But be warned - demons are coming. They sense your presence!",
     "story_boss_1_0": "A massive warrior materializes - a distorted echo of Rex. Its eyes burn with mindless fury.",
     "story_boss_1_1": "It cannot speak. It is not me - only a shadow of my strength.",
     "story_boss_1_2": "Destroy it, and my power returns to me!",
     "story_vic_1_0": "The Remnant shatters into light. The energy flows upward... and vanishes.",
     "story_vic_1_1": "You... you actually did it. I can feel it. My strength returning, piece by piece.",
-    "story_vic_1_2": "A red light pulses nearby - the Knight spirit.",
+    "story_vic_1_2": "A red light pulses nearby - the Knight sprite.",
     "story_vic_1_3": "The Knight. It stood by me in countless battles.",
     "story_vic_1_4": "Take it, {name}. It will protect you when arrows cannot.",
     "story_complete_1_1": "You've done more than I dared hope. But I am only one of four.",
     "story_complete_1_2": "Beth... Milia... Troy... They need you. Rest for now. When you're ready, seek out Beth's Remnant.",
     "story_complete_1_3": "Chapter 1 Complete. Rex's power has been freed. Three heroes remain...",
     "story_mid_appear_1_1": "As the last demon falls, a cold blue light emerges from the shadows.",
-    "story_mid_appear_1_2": "The Frost spirit... it was drawn to your battle.",
+    "story_mid_appear_1_2": "The Frost sprite... it was drawn to your battle.",
     "story_mid_appear_1_3": "Claim it, {name}. Its power will slow your enemies.",
     "story_mid_collect_1_1": "Good. You're learning fast.",
     "story_mid_collect_1_2": "Now... I must tell you something.",
@@ -133,7 +133,7 @@ const translations = {
     "story_mid_collect_1_6": "The ground trembles. An orange glow builds in the distance.",
     "story_mid_collect_1_7": "It comes. My power, corrupted and unchained.",
     "story_mid_collect_1_8": "Stay at range. Use the Frost to slow it. You can do this, {name}!",
-    "story_2_1": "You return to the spirit realm. A cyan light flickers weakly in the volcanic haze.",
+    "story_2_1": "You return to the sprite realm. A cyan light flickers weakly in the volcanic haze.",
     "story_2_2": "So you're the one Rex told me about.",
     "story_2_3": "I'm Beth. They called me the Bouncer back when I could actually fight.",
     "story_2_4": "My power was all about momentum - keeping things moving, ricocheting attacks.",
@@ -141,8 +141,8 @@ const translations = {
     "story_2_6": "You'll need to learn to dodge, {name}. And if you can't dodge...",
     "story_2_7": "...reflect it right back at them.",
     "story_mid_appear_2_1": "Not bad! You're getting the hang of this.",
-    "story_mid_appear_2_2": "An orange glow pulses with violent energy - the Berserker spirit.",
-    "story_mid_appear_2_3": "Oh, the Berserker. Wild one, that spirit.",
+    "story_mid_appear_2_2": "An orange glow pulses with violent energy - the Berserker sprite.",
+    "story_mid_appear_2_3": "Oh, the Berserker. Wild one, that sprite.",
     "story_mid_appear_2_4": "It can spin and deflect attacks. Against my Remnant... you'll need that.",
     "story_mid_collect_2_1": "Perfect. Now you can fight fire with fire.",
     "story_mid_collect_2_2": "My Remnant launches bouncing projectiles. They ricochet everywhere.",
@@ -155,7 +155,7 @@ const translations = {
     "story_vic_2_0": "The Remnant bursts into countless sparks that fade into the sky.",
     "story_vic_2_1": "Hah! You actually pulled it off!",
     "story_vic_2_2": "I can feel myself again. The real me, not that... thing.",
-    "story_vic_2_3": "A cyan light crackles nearby - the Wizard spirit.",
+    "story_vic_2_3": "A cyan light crackles nearby - the Wizard sprite.",
     "story_vic_2_4": "The Wizard! Chain lightning, baby. Hits everything in sight.",
     "story_vic_2_5": "Take it. You've earned it.",
     "story_complete_2_1": "Two down, two to go.",
@@ -163,7 +163,7 @@ const translations = {
     "story_complete_2_3": "Her Remnant won't play fair. Projectiles won't work the way you expect.",
     "story_complete_2_4": "But I believe in you, {name}. Go get 'em.",
     "story_complete_2_5": "Chapter 2 Complete. Beth's power has been freed. Two heroes remain...",
-    "story_3_1": "The spirit realm grows cold. Ice crystals form in the air around you. A pure white light shimmers in the frozen mist.",
+    "story_3_1": "The sprite realm grows cold. Ice crystals form in the air around you. A pure white light shimmers in the frozen mist.",
     "story_3_2": "...",
     "story_3_3": "Silence. The light pulses gently.",
     "story_3_4": "...Forgive me. It has been so long since I've spoken to anyone.",
@@ -173,7 +173,7 @@ const translations = {
     "story_3_8": "It will nullify your projectiles, {name}. Arrows, bolts, even lightning...",
     "story_3_9": "If you strike directly, it will simply... vanish.",
     "story_mid_appear_3_1": "You fight well. The others chose wisely in you.",
-    "story_mid_appear_3_2": "A purple light blooms from the ice - the Mage spirit.",
+    "story_mid_appear_3_2": "A purple light blooms from the ice - the Mage sprite.",
     "story_mid_appear_3_3": "The Mage. Its power is area magic - it strikes a location, not a target.",
     "story_mid_appear_3_4": "My Remnant cannot nullify what doesn't come 'at' it. The Mage's explosions will bypass its defenses.",
     "story_mid_collect_3_1": "There is another way to harm my Remnant.",
@@ -186,7 +186,7 @@ const translations = {
     "story_boss_3_2": "Strike it with the Mage. Chain to it with the Wizard. You can do this.",
     "story_vic_3_0": "The angelic Remnant folds its wings and dissolves into pure light. The light drifts upward, peaceful at last.",
     "story_vic_3_1": "Thank you, {name}. You've freed me from my own reflection.",
-    "story_vic_3_2": "A warm yellow light appears - the Cleric spirit.",
+    "story_vic_3_2": "A warm yellow light appears - the Cleric sprite.",
     "story_vic_3_3": "The Cleric. A healer, like I once was.",
     "story_vic_3_4": "It will mend your wounds. You'll need it for what comes next.",
     "story_complete_3_1": "Only Troy remains.",
@@ -206,7 +206,7 @@ const translations = {
     "story_4_9": "Use the Cleric. Use the Vampire. Sustain is everything.",
     "story_4_10": "Now... face the final trial.",
     "story_mid_appear_4_1": "Impressive. You've made it this far.",
-    "story_mid_appear_4_2": "A dark purple light pulses ominously - the Vampire spirit.",
+    "story_mid_appear_4_2": "A dark purple light pulses ominously - the Vampire sprite.",
     "story_mid_appear_4_3": "The Vampire. It drains life from enemies to sustain itself.",
     "story_mid_appear_4_4": "Against my Remnant, sustain is everything. The Cleric heals. The Vampire heals.",
     "story_mid_collect_4_1": "Together, they might keep you alive long enough to win.",
@@ -220,7 +220,7 @@ const translations = {
     "story_vic_4_0": "The Remnant's light flickers... dims... and finally fades. Silence falls over the void.",
     "story_vic_4_1": "...It's over.",
     "story_vic_4_2": "You actually did it, {name}. You freed all of us.",
-    "story_vic_4_3": "Two lights emerge from where the Remnant fell - the Ninja and Bomber spirits.",
+    "story_vic_4_3": "Two lights emerge from where the Remnant fell - the Ninja and Bomber sprites.",
     "story_vic_4_4": "Take them. They're yours now.",
     "story_vic_4_5": "You've earned every sprite, every power, every victory.",
     "story_complete_4_1": "The four lights - orange, cyan, white, and magenta - gather before you.",
@@ -2477,16 +2477,16 @@ const translations = {
 
 // SEO metadata for each language
 const seoData = {
-    en: { title: "Sprite Survivor - Free Browser Survival Game | Play Online", description: "Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. No download required." },
-    ja: { title: "スプライトサバイバー - 無料ブラウザゲーム | オンラインでプレイ", description: "スプライトサバイバーを無料でプレイ！強力なスプライトを召喚し、ボスを倒し、無限のウェーブを生き延びよう。ダウンロード不要。" },
-    ko: { title: "스프라이트 서바이버 - 무료 브라우저 생존 게임 | 온라인 플레이", description: "스프라이트 서바이버를 무료로 플레이하세요! 강력한 스프라이트를 소환하고, 보스를 물리치고, 끝없는 웨이브에서 살아남으세요." },
-    "zh-TW": { title: "精靈生存者 - 免費瀏覽器生存遊戲 | 線上遊玩", description: "免費遊玩精靈生存者！召喚強大的精靈，擊敗史詩級Boss，在無盡的波次中生存。無需下載。" },
-    "zh-CN": { title: "精灵生存者 - 免费浏览器生存游戏 | 在线游玩", description: "免费游玩精灵生存者！召唤强大的精灵，击败史诗级Boss，在无尽的波次中生存。无需下载。" },
-    es: { title: "Sprite Survivor - Juego de Supervivencia Gratis | Jugar Online", description: "¡Juega Sprite Survivor gratis en tu navegador! Invoca sprites poderosos, derrota jefes épicos y sobrevive oleadas infinitas." },
-    pt: { title: "Sprite Survivor - Jogo de Sobrevivência Grátis | Jogar Online", description: "Jogue Sprite Survivor grátis no seu navegador! Invoque sprites poderosos, derrote chefes épicos e sobreviva a ondas infinitas." },
-    ru: { title: "Sprite Survivor - Бесплатная Браузерная Игра | Играть Онлайн", description: "Играйте в Sprite Survivor бесплатно! Призывайте мощных спрайтов, побеждайте эпических боссов и выживайте в бесконечных волнах." },
-    fr: { title: "Sprite Survivor - Jeu de Survie Gratuit | Jouer en Ligne", description: "Jouez à Sprite Survivor gratuitement! Invoquez des sprites puissants, battez des boss épiques et survivez aux vagues infinies." },
-    vi: { title: "Sprite Survivor - Game Sinh Tồn Miễn Phí | Chơi Online", description: "Chơi Sprite Survivor miễn phí! Triệu hồi sprite mạnh mẽ, đánh bại boss và sinh tồn qua các đợt quái vô tận." }
+  en: { title: "Sprite Survivor - Free Browser Survival Game | Play Online", description: "Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. No download required." },
+  ja: { title: "スプライトサバイバー - 無料ブラウザゲーム | オンラインでプレイ", description: "スプライトサバイバーを無料でプレイ！強力なスプライトを召喚し、ボスを倒し、無限のウェーブを生き延びよう。ダウンロード不要。" },
+  ko: { title: "스프라이트 서바이버 - 무료 브라우저 생존 게임 | 온라인 플레이", description: "스프라이트 서바이버를 무료로 플레이하세요! 강력한 스프라이트를 소환하고, 보스를 물리치고, 끝없는 웨이브에서 살아남으세요." },
+  "zh-TW": { title: "精靈生存者 - 免費瀏覽器生存遊戲 | 線上遊玩", description: "免費遊玩精靈生存者！召喚強大的精靈，擊敗史詩級Boss，在無盡的波次中生存。無需下載。" },
+  "zh-CN": { title: "精灵生存者 - 免费浏览器生存游戏 | 在线游玩", description: "免费游玩精灵生存者！召唤强大的精灵，击败史诗级Boss，在无尽的波次中生存。无需下载。" },
+  es: { title: "Sprite Survivor - Juego de Supervivencia Gratis | Jugar Online", description: "¡Juega Sprite Survivor gratis en tu navegador! Invoca sprites poderosos, derrota jefes épicos y sobrevive oleadas infinitas." },
+  pt: { title: "Sprite Survivor - Jogo de Sobrevivência Grátis | Jogar Online", description: "Jogue Sprite Survivor grátis no seu navegador! Invoque sprites poderosos, derrote chefes épicos e sobreviva a ondas infinitas." },
+  ru: { title: "Sprite Survivor - Бесплатная Браузерная Игра | Играть Онлайн", description: "Играйте в Sprite Survivor бесплатно! Призывайте мощных спрайтов, побеждайте эпических боссов и выживайте в бесконечных волнах." },
+  fr: { title: "Sprite Survivor - Jeu de Survie Gratuit | Jouer en Ligne", description: "Jouez à Sprite Survivor gratuitement! Invoquez des sprites puissants, battez des boss épiques et survivez aux vagues infinies." },
+  vi: { title: "Sprite Survivor - Game Sinh Tồn Miễn Phí | Chơi Online", description: "Chơi Sprite Survivor miễn phí! Triệu hồi sprite mạnh mẽ, đánh bại boss và sinh tồn qua các đợt quái vô tận." }
 };
 
 const langLabels = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文', 'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский', 'fr': 'Français', 'vi': 'T.Viet' };
@@ -2494,66 +2494,66 @@ const langLabels = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-
 let currentLang = 'en';
 
 function updateSEO(lang) {
-    const seo = seoData[lang] || seoData.en;
-    document.title = seo.title;
-    const updateMeta = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
-    updateMeta('meta[name="title"]', 'content', seo.title);
-    updateMeta('meta[name="description"]', 'content', seo.description);
-    updateMeta('meta[property="og:title"]', 'content', seo.title);
-    updateMeta('meta[property="og:description"]', 'content', seo.description);
-    updateMeta('meta[property="og:url"]', 'content', getLanguageURL(lang));
-    updateMeta('meta[name="twitter:title"]', 'content', seo.title);
-    updateMeta('meta[name="twitter:description"]', 'content', seo.description);
-    updateMeta('meta[name="twitter:url"]', 'content', getLanguageURL(lang));
-    const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) canonical.setAttribute('href', getLanguageURL(lang));
+  const seo = seoData[lang] || seoData.en;
+  document.title = seo.title;
+  const updateMeta = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
+  updateMeta('meta[name="title"]', 'content', seo.title);
+  updateMeta('meta[name="description"]', 'content', seo.description);
+  updateMeta('meta[property="og:title"]', 'content', seo.title);
+  updateMeta('meta[property="og:description"]', 'content', seo.description);
+  updateMeta('meta[property="og:url"]', 'content', getLanguageURL(lang));
+  updateMeta('meta[name="twitter:title"]', 'content', seo.title);
+  updateMeta('meta[name="twitter:description"]', 'content', seo.description);
+  updateMeta('meta[name="twitter:url"]', 'content', getLanguageURL(lang));
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute('href', getLanguageURL(lang));
 }
 
 function getLanguageURL(lang) {
-    const base = 'https://spritesurvivor.com/';
-    return lang === 'en' ? base : base + '?lang=' + lang;
+  const base = 'https://spritesurvivor.com/';
+  return lang === 'en' ? base : base + '?lang=' + lang;
 }
 
 function updateURL(lang) {
-    const pathname = window.location.pathname;
-    const url = lang === 'en' ? pathname : pathname + '?lang=' + lang;
-    history.replaceState({ lang }, '', url);
+  const pathname = window.location.pathname;
+  const url = lang === 'en' ? pathname : pathname + '?lang=' + lang;
+  history.replaceState({ lang }, '', url);
 }
 
 function getURLLanguage() {
-    const params = new URLSearchParams(window.location.search);
-    const lang = params.get('lang');
-    return (lang && translations[lang]) ? lang : null;
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get('lang');
+  return (lang && translations[lang]) ? lang : null;
 }
 
 function setLanguage(lang, updateHistory = true) {
-    if (!translations[lang] || Object.keys(translations[lang]).length === 0) {
-        console.warn('Language ' + lang + ' not available, falling back to English');
-        lang = 'en';
-    }
-    currentLang = lang;
-    localStorage.setItem('spriteSurvivorLang', lang);
-    // Add language-specific classes for font handling
-    document.body.classList.toggle('lang-vi', lang === 'vi');
-    document.body.classList.toggle('lang-cjk', ['ja', 'ko', 'zh-TW', 'zh-CN'].includes(lang));
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.textContent.includes(langLabels[lang])) btn.classList.add('active');
-    });
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        const translation = translations[lang]?.[key] || translations['en']?.[key];
-        if (translation) el.textContent = translation;
-    });
-    updateSEO(lang);
-    if (updateHistory) updateURL(lang);
-    if (typeof initSpriteButtons === 'function') initSpriteButtons();
-    if (typeof updateSkillDisplay === 'function') updateSkillDisplay();
-    if (typeof updateUI === 'function') updateUI();
-    if (typeof refreshAchievementsList === 'function') refreshAchievementsList();
-    if (typeof updateStoryUI === 'function') updateStoryUI();
+  if (!translations[lang] || Object.keys(translations[lang]).length === 0) {
+    console.warn('Language ' + lang + ' not available, falling back to English');
+    lang = 'en';
+  }
+  currentLang = lang;
+  localStorage.setItem('spriteSurvivorLang', lang);
+  // Add language-specific classes for font handling
+  document.body.classList.toggle('lang-vi', lang === 'vi');
+  document.body.classList.toggle('lang-cjk', ['ja', 'ko', 'zh-TW', 'zh-CN'].includes(lang));
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.textContent.includes(langLabels[lang])) btn.classList.add('active');
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const translation = translations[lang]?.[key] || translations['en']?.[key];
+    if (translation) el.textContent = translation;
+  });
+  updateSEO(lang);
+  if (updateHistory) updateURL(lang);
+  if (typeof initSpriteButtons === 'function') initSpriteButtons();
+  if (typeof updateSkillDisplay === 'function') updateSkillDisplay();
+  if (typeof updateUI === 'function') updateUI();
+  if (typeof refreshAchievementsList === 'function') refreshAchievementsList();
+  if (typeof updateStoryUI === 'function') updateStoryUI();
 }
 
 function t(key) {
-    return translations[currentLang]?.[key] || translations['en']?.[key] || key;
+  return translations[currentLang]?.[key] || translations['en']?.[key] || key;
 }
