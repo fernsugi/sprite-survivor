@@ -481,7 +481,7 @@ function startSplashCycle() {
     splashInterval = setInterval(() => {
         langIndex = (langIndex + 1) % langs.length;
         updateSplashText(langs[langIndex]);
-    }, 2000); // Switch every 2 seconds
+    }, 1000); // Switch every 1 second (matches blink)
 }
 
 // Initialize - translations are now inline, no async loading needed
