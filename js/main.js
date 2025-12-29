@@ -409,8 +409,8 @@ const altSummonKeys = { 'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, 
 document.addEventListener('keydown', e => {
     keys[e.key] = true;
     if (e.key === 'Escape') { togglePause(); return; }
-    // Handle dialogue advancement with SPACE
-    if ((e.key === ' ' || e.code === 'Space') && dialogueActive) {
+    // Handle dialogue advancement with SPACE (not when paused)
+    if ((e.key === ' ' || e.code === 'Space') && dialogueActive && !gamePaused) {
         e.preventDefault();
         advanceDialogue();
         return;

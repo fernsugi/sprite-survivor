@@ -539,7 +539,7 @@ body.lang-vi .menu-btn-secondary, body.lang-cjk .menu-btn-secondary {
     justify-content: center;
     color: #fff;
     text-align: center;
-    z-index: 50;
+    z-index: 250;
 }
 
 #pauseScreen h1 {
