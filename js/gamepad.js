@@ -63,11 +63,23 @@ function updateGamepad() {
 
     // === DIALOGUE MODE ===
     if (dialogueActive) {
-        if (justPressed(0)) { // Only X advances dialogue (not Options)
-            advanceDialogue();
+        // X advances dialogue with hold-to-repeat
+        if (currButtons[0]) {
+            if (!gpPrevButtons[0]) {
+                gpHoldTimers['dialogue'] = 1;
+                advanceDialogue();
+            } else {
+                gpHoldTimers['dialogue'] = (gpHoldTimers['dialogue'] || 0) + 1;
+                if (gpHoldTimers['dialogue'] > HOLD_DELAY && (gpHoldTimers['dialogue'] - HOLD_DELAY) % HOLD_REPEAT === 0) {
+                    advanceDialogue();
+                }
+            }
+        } else {
+            gpHoldTimers['dialogue'] = 0;
         }
-        // Clear hold timers during dialogue to prevent sprite summon on exit
-        gpHoldTimers = [];
+        // Clear sprite hold timers during dialogue to prevent sprite summon on exit
+        for (let i = 0; i < 20; i++) gpHoldTimers[i] = 0;
+        gpHoldTimers['rs'] = 0;
         gpPrevButtons = currButtons;
         return;
     }
@@ -99,17 +111,31 @@ function updateGamepad() {
         gpPrevButtons['gpMoving'] = gpLeft || gpRight || gpUp || gpDown;
     }
 
-    // Right stick - Use Skill
+    // X button - Use Skill
+    if (justPressed(0) && currentSkill) {
+        useSkill();
+    }
+
+    // Right stick - Archer / Ninja (hold to repeat)
     const rx = gp.axes[2];
     const ry = gp.axes[3];
     const rightStickActive = Math.abs(rx) > deadzone || Math.abs(ry) > deadzone;
-    if (rightStickActive && currentSkill && !gpPrevButtons['rs']) {
-        useSkill();
+    if (rightStickActive) {
+        if (!gpPrevButtons['rs']) {
+            gpHoldTimers['rs'] = 1;
+            summonSprite(r1Held ? 4 : 0); // First push
+        } else {
+            gpHoldTimers['rs'] = (gpHoldTimers['rs'] || 0) + 1;
+            if (gpHoldTimers['rs'] > HOLD_DELAY && (gpHoldTimers['rs'] - HOLD_DELAY) % HOLD_REPEAT === 0) {
+                summonSprite(r1Held ? 4 : 0); // Repeat
+            }
+        }
+    } else {
+        gpHoldTimers['rs'] = 0;
     }
     gpPrevButtons['rs'] = rightStickActive;
 
     // Face buttons with R1 modifier (hold to repeat)
-    if (heldOrRepeat(0)) summonSprite(r1Held ? 4 : 0); // X: Archer / Ninja
     if (heldOrRepeat(1)) summonSprite(r1Held ? 5 : 2); // Circle: Mage / Wizard
     if (heldOrRepeat(2)) summonSprite(r1Held ? 6 : 1); // Square: Knight / Berserker
     if (heldOrRepeat(3)) summonSprite(r1Held ? 7 : 3); // Triangle: Cleric / Frost
@@ -120,8 +146,10 @@ function updateGamepad() {
 
     // Save state for next frame (preserve custom flags)
     const gpMoving = gpPrevButtons['gpMoving'];
-    const rs = gpPrevButtons['rs'];
+    const rsState = gpPrevButtons['rs'];
+    const rsTimer = gpHoldTimers['rs'];
     gpPrevButtons = currButtons;
     gpPrevButtons['gpMoving'] = gpMoving;
-    gpPrevButtons['rs'] = rs;
+    gpPrevButtons['rs'] = rsState;
+    gpHoldTimers['rs'] = rsTimer;
 }
