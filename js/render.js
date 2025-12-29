@@ -488,8 +488,8 @@ function draw() {
     }
 
     if (currentSkill) {
-        ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center';
-        ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(t(currentSkill.name), player.x, player.y - player.height - 5);
+        ctx.font = 'bold 10px Arial, sans-serif'; ctx.textAlign = 'center';
+        ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeText(t(currentSkill.name), player.x, player.y - player.height - 5);
         ctx.fillStyle = currentSkill.color; ctx.fillText(t(currentSkill.name), player.x, player.y - player.height - 5);
     }
     // Autopilot indicator - top-left corner, white when ON, grey when OFF

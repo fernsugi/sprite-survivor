@@ -325,6 +325,7 @@ function gameLoop() {
 function startGame(cheat = false) {
     initAudio();
     loadSoundPreference();
+    playSound('select');
     cheatMode = cheat;
     if (cheatMode) points = Infinity;
     usedSpriteTypes = new Set(); gotHit = false; heroSummoned = false; // Reset achievement tracking

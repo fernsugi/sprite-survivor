@@ -128,12 +128,14 @@ function refreshAchievementsList() {
 
 // Show achievements modal
 function showAchievements() {
+    playSound('select');
     refreshAchievementsList();
     document.getElementById('achievementsModal').style.display = 'flex';
 }
 
 // Hide achievements modal
 function hideAchievements() {
+    playSound('select');
     document.getElementById('achievementsModal').style.display = 'none';
 }
 

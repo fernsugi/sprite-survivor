@@ -161,22 +161,73 @@ function updateBossMechanics() {
     }
 }
 
+// Remnant boss constants
+const REMNANT = {
+    MOVE_INTERVAL: 120,      // 2 seconds between position changes
+    ATTACK_COOLDOWN: 90,     // 1.5 seconds between attacks
+    PULSE_INTERVAL: 120,     // 2 seconds between Troy's pulses
+    BALL_LIFE_LONG: 480,     // 8 seconds
+    BALL_LIFE_MED: 360,      // 6 seconds
+    BALL_LIFE_SHORT: 300,    // 5 seconds
+    DMG_CHARGE: 0.6,         // Rex charge damage multiplier
+    DMG_CONE: 0.4,           // Rex cone slash damage multiplier
+    DMG_POUND: 0.5,          // Rex ground pound damage multiplier
+    DMG_BALL: 0.8,           // Beth ball burst damage multiplier
+    DMG_BALL_RAPID: 0.7,     // Beth rapid fire damage multiplier
+    DMG_FEATHER: 0.3,        // Milia feather damage multiplier
+    DMG_BEAM_SWEEP: 0.2,     // Troy sweep beam damage multiplier
+    DMG_BEAM_LOCK: 0.3,      // Troy lock-on damage multiplier
+    DMG_BEAM_MULTI: 0.25,    // Troy multi-beam damage multiplier
+    PULSE_DAMAGE: 3          // Troy pulse chip damage
+};
+
+// Helper: create boss projectile
+function createBossProjectile(x, y, angle, speed, damage, opts = {}) {
+    return {
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        damage,
+        size: opts.size || 10,
+        color: opts.color || '#f0f',
+        fromBoss: true,
+        life: opts.life
+    };
+}
+
+// Helper: create boss bouncing ball
+function createBossBall(x, y, angle, speed, damage, opts = {}) {
+    return {
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: opts.size || 10,
+        damage,
+        bounces: opts.bounces || 5,
+        life: opts.life || REMNANT.BALL_LIFE_LONG,
+        color: opts.color || '#0ff',
+        fromBoss: true
+    };
+}
+
 // Story mode Remnant boss attacks - unique patterns per chapter
 function remnantBossAttack() {
     if (!boss) return;
 
     boss.attackTimer++;
     boss.moveTimer++;
-    if (boss.moveTimer >= 120) { boss.moveTimer = 0; boss.targetX = 100 + Math.random() * (canvas.width - 200); }
+    if (boss.moveTimer >= REMNANT.MOVE_INTERVAL) {
+        boss.moveTimer = 0;
+        boss.targetX = 100 + Math.random() * (canvas.width - 200);
+    }
     boss.x += (boss.targetX - boss.x) * 0.02;
     if (boss.y < boss.targetY) boss.y += 2;
     boss.phase += 0.05;
 
     // Chapter-specific attack patterns
     const chapter = boss.remnantType || 1;
-    let attackSpeed = 90; // Slower attacks for story mode (easier)
 
-    if (boss.attackTimer < attackSpeed) return;
+    if (boss.attackTimer < REMNANT.ATTACK_COOLDOWN) return;
 
     boss.attackTimer = 0;
     boss.attackPattern = (boss.attackPattern + 1) % 3;
@@ -193,11 +244,10 @@ function remnantBossAttack() {
                             boss.x += Math.cos(chargeAngle) * 25;
                             boss.y += Math.sin(chargeAngle) * 25;
                             effects.push({ x: boss.x, y: boss.y, life: 10, type: 'particle', color: '#f80', vx: -Math.cos(chargeAngle) * 5, vy: -Math.sin(chargeAngle) * 5 });
-                            // Check if charge hits player
                             if (player.invincibleTime <= 0) {
                                 const dist = Math.hypot(player.x - boss.x, player.y - boss.y);
                                 if (dist < boss.size + 15) {
-                                    damagePlayer(boss.damage * 0.6);
+                                    damagePlayer(boss.damage * REMNANT.DMG_CHARGE);
                                     player.invincibleTime = 60;
                                     gotHit = true;
                                 }
@@ -208,8 +258,8 @@ function remnantBossAttack() {
                 case 1: // Cone Slash - 240° melee swing (extended range)
                     const slashAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
                     for (let i = -4; i <= 4; i++) {
-                        const angle = slashAngle + i * 0.26; // ~15 degrees apart
-                        projectiles.push({ x: boss.x, y: boss.y, vx: Math.cos(angle) * 6, vy: Math.sin(angle) * 6, damage: boss.damage * 0.4, size: 15, color: '#f80', fromBoss: true, life: 35 });
+                        const angle = slashAngle + i * 0.26;
+                        projectiles.push(createBossProjectile(boss.x, boss.y, angle, 6, boss.damage * REMNANT.DMG_CONE, { size: 15, color: '#f80', life: 35 }));
                     }
                     effects.push({ x: boss.x, y: boss.y, life: 15, type: 'slash', angle: slashAngle, color: '#f80' });
                     break;
@@ -220,7 +270,7 @@ function remnantBossAttack() {
                         const dx = player.x - boss.x, dy = player.y - boss.y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         if (dist < 150 && player.invincibleTime <= 0) {
-                            damagePlayer(boss.damage * 0.5);
+                            damagePlayer(boss.damage * REMNANT.DMG_POUND);
                             player.invincibleTime = 30;
                             gotHit = true;
                         }
@@ -236,17 +286,7 @@ function remnantBossAttack() {
                     const ballCount = 3 + Math.floor(Math.random() * 3);
                     for (let i = 0; i < ballCount; i++) {
                         const angle = Math.random() * Math.PI * 2;
-                        heroBalls.push({
-                            x: boss.x, y: boss.y,
-                            vx: Math.cos(angle) * 4,
-                            vy: Math.sin(angle) * 4,
-                            size: 12,
-                            damage: boss.damage * 0.3,
-                            bounces: 5,
-                            life: 480, // 8 seconds
-                            color: '#0ff',
-                            fromBoss: true
-                        });
+                        heroBalls.push(createBossBall(boss.x, boss.y, angle, 4, boss.damage * REMNANT.DMG_BALL, { size: 12, life: REMNANT.BALL_LIFE_LONG }));
                     }
                     break;
                 case 1: // Rapid Fire - quick succession of single balls
@@ -254,39 +294,19 @@ function remnantBossAttack() {
                         setTimeout(() => {
                             if (!boss) return;
                             const angle = Math.atan2(player.y - boss.y, player.x - boss.x) + (Math.random() - 0.5) * 0.3;
-                            heroBalls.push({
-                                x: boss.x, y: boss.y,
-                                vx: Math.cos(angle) * 5,
-                                vy: Math.sin(angle) * 5,
-                                size: 10,
-                                damage: boss.damage * 0.25,
-                                bounces: 3,
-                                life: 300,
-                                color: '#0ff',
-                                fromBoss: true
-                            });
+                            heroBalls.push(createBossBall(boss.x, boss.y, angle, 5, boss.damage * REMNANT.DMG_BALL_RAPID, { size: 10, bounces: 3, life: REMNANT.BALL_LIFE_SHORT }));
                             SFX.heroBallBounce && SFX.heroBallBounce();
                         }, i * 150);
                     }
                     break;
                 case 2: // Orbit - balls orbit then launch
                     for (let i = 0; i < 6; i++) {
-                        const angle = (Math.PI * 2 / 6) * i;
+                        const orbitAngle = (Math.PI * 2 / 6) * i;
                         setTimeout(() => {
                             if (!boss) return;
                             const launchAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
-                            heroBalls.push({
-                                x: boss.x + Math.cos(angle) * 40,
-                                y: boss.y + Math.sin(angle) * 40,
-                                vx: Math.cos(launchAngle) * 3.5,
-                                vy: Math.sin(launchAngle) * 3.5,
-                                size: 10,
-                                damage: boss.damage * 0.25,
-                                bounces: 4,
-                                life: 360,
-                                color: '#0ff',
-                                fromBoss: true
-                            });
+                            const ball = createBossBall(boss.x + Math.cos(orbitAngle) * 40, boss.y + Math.sin(orbitAngle) * 40, launchAngle, 3.5, boss.damage * REMNANT.DMG_BALL_RAPID, { size: 10, bounces: 4, life: REMNANT.BALL_LIFE_MED });
+                            heroBalls.push(ball);
                         }, 500 + i * 100);
                     }
                     break;
@@ -335,7 +355,7 @@ function remnantBossAttack() {
                             if (!boss) return;
                             const x = player.x + (Math.random() - 0.5) * 200;
                             const y = player.y - 100;
-                            projectiles.push({ x, y, vx: 0, vy: 3, damage: boss.damage * 0.3, size: 8, color: '#fff', fromBoss: true });
+                            projectiles.push(createBossProjectile(x, y, Math.PI / 2, 3, boss.damage * REMNANT.DMG_FEATHER, { size: 8, color: '#fff' }));
                         }, i * 100);
                     }
                     break;
@@ -352,17 +372,8 @@ function remnantBossAttack() {
                             if (!boss) return;
                             const angle = sweepStartAngle + i * 0.1;
                             for (let j = 0; j < 15; j++) {
-                                projectiles.push({
-                                    x: boss.x + Math.cos(angle) * j * 40,
-                                    y: boss.y + Math.sin(angle) * j * 40,
-                                    vx: Math.cos(angle) * 8,
-                                    vy: Math.sin(angle) * 8,
-                                    damage: boss.damage * 0.2,
-                                    size: 10,
-                                    color: '#f0f',
-                                    fromBoss: true,
-                                    life: 10
-                                });
+                                const proj = createBossProjectile(boss.x + Math.cos(angle) * j * 40, boss.y + Math.sin(angle) * j * 40, angle, 8, boss.damage * REMNANT.DMG_BEAM_SWEEP, { life: 10 });
+                                projectiles.push(proj);
                             }
                         }, i * 50);
                     }
@@ -374,17 +385,7 @@ function remnantBossAttack() {
                         if (!boss) return;
                         const angle = Math.atan2(targetY - boss.y, targetX - boss.x);
                         for (let i = 0; i < 20; i++) {
-                            projectiles.push({
-                                x: boss.x + Math.cos(angle) * i * 30,
-                                y: boss.y + Math.sin(angle) * i * 30,
-                                vx: Math.cos(angle) * 10,
-                                vy: Math.sin(angle) * 10,
-                                damage: boss.damage * 0.3,
-                                size: 12,
-                                color: '#f0f',
-                                fromBoss: true,
-                                life: 15
-                            });
+                            projectiles.push(createBossProjectile(boss.x + Math.cos(angle) * i * 30, boss.y + Math.sin(angle) * i * 30, angle, 10, boss.damage * REMNANT.DMG_BEAM_LOCK, { size: 12, life: 15 }));
                         }
                     }, 750);
                     break;
@@ -393,29 +394,18 @@ function remnantBossAttack() {
                     for (let spread = -1; spread <= 1; spread++) {
                         const angle = baseAngle + spread * 0.4;
                         for (let i = 0; i < 12; i++) {
-                            projectiles.push({
-                                x: boss.x + Math.cos(angle) * i * 35,
-                                y: boss.y + Math.sin(angle) * i * 35,
-                                vx: Math.cos(angle) * 7,
-                                vy: Math.sin(angle) * 7,
-                                damage: boss.damage * 0.25,
-                                size: 10,
-                                color: '#f0f',
-                                fromBoss: true,
-                                life: 20
-                            });
+                            projectiles.push(createBossProjectile(boss.x + Math.cos(angle) * i * 35, boss.y + Math.sin(angle) * i * 35, angle, 7, boss.damage * REMNANT.DMG_BEAM_MULTI, { life: 20 }));
                         }
                     }
                     break;
             }
-            // Troy's Remnant: Constant Pulse - unavoidable chip damage every 2 seconds
+            // Troy's Remnant: Constant Pulse - unavoidable chip damage
             boss.pulseTimer = (boss.pulseTimer || 0) + 1;
-            if (boss.pulseTimer >= 120) { // 2 seconds at 60fps
+            if (boss.pulseTimer >= REMNANT.PULSE_INTERVAL) {
                 boss.pulseTimer = 0;
                 if (player.invincibleTime <= 0) {
-                    damagePlayer(3);
+                    damagePlayer(REMNANT.PULSE_DAMAGE);
                     effects.push({ x: player.x, y: player.y, life: 15, type: 'hit', color: '#f0f' });
-                    // Pulse visual from boss
                     effects.push({ x: boss.x, y: boss.y, life: 30, type: 'aoe', color: '#f0f8', radius: 0, maxRadius: 400, speed: 10 });
                 }
             }

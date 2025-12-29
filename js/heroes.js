@@ -234,12 +234,39 @@ function performHeroAction(hero, target) {
                 vx: Math.cos(ballAngle) * type.ballSpeed,
                 vy: Math.sin(ballAngle) * type.ballSpeed,
                 damage: type.damage,
-                lifetime: type.ballLifetime,
+                life: type.ballLifetime,
                 color: type.color,
                 size: type.ballSize || 8
             });
             break;
     }
+}
+
+// Helper: handle ball bouncing off walls, returns true if ball should be removed
+function handleBallBounce(ball) {
+    let bounced = false;
+
+    // X-axis bounce
+    if (ball.x <= ball.size || ball.x >= canvas.width - ball.size) {
+        ball.vx *= -1;
+        ball.x = Math.max(ball.size, Math.min(canvas.width - ball.size, ball.x));
+        bounced = true;
+    }
+    // Y-axis bounce
+    if (ball.y <= ball.size || ball.y >= canvas.height - ball.size) {
+        ball.vy *= -1;
+        ball.y = Math.max(ball.size, Math.min(canvas.height - ball.size, ball.y));
+        bounced = true;
+    }
+
+    if (bounced) {
+        if (ball.bounces !== undefined) {
+            ball.bounces--;
+            if (ball.bounces <= 0) return true; // Remove ball
+        }
+        SFX.heroBallBounce();
+    }
+    return false;
 }
 
 function updateHeroBalls() {
@@ -249,41 +276,18 @@ function updateHeroBalls() {
         // Move ball
         ball.x += ball.vx;
         ball.y += ball.vy;
-        // Use life if set (boss balls), otherwise lifetime (hero balls)
-        if (ball.life !== undefined) {
-            ball.life--;
-            if (ball.life <= 0) {
-                heroBalls.splice(i, 1);
-                continue;
-            }
-        } else {
-            ball.lifetime--;
+
+        // Decrease life and remove expired balls
+        ball.life--;
+        if (ball.life <= 0) {
+            heroBalls.splice(i, 1);
+            continue;
         }
 
-        // Bounce off edges with bounce limit for boss balls
-        if (ball.x <= ball.size || ball.x >= canvas.width - ball.size) {
-            ball.vx *= -1;
-            ball.x = Math.max(ball.size, Math.min(canvas.width - ball.size, ball.x));
-            if (ball.bounces !== undefined) {
-                ball.bounces--;
-                if (ball.bounces <= 0) {
-                    heroBalls.splice(i, 1);
-                    continue;
-                }
-            }
-            SFX.heroBallBounce();
-        }
-        if (ball.y <= ball.size || ball.y >= canvas.height - ball.size) {
-            ball.vy *= -1;
-            ball.y = Math.max(ball.size, Math.min(canvas.height - ball.size, ball.y));
-            if (ball.bounces !== undefined) {
-                ball.bounces--;
-                if (ball.bounces <= 0) {
-                    heroBalls.splice(i, 1);
-                    continue;
-                }
-            }
-            SFX.heroBallBounce();
+        // Handle wall bouncing
+        if (handleBallBounce(ball)) {
+            heroBalls.splice(i, 1);
+            continue;
         }
 
         // Boss balls damage the player (but can be blocked/reflected by sprites)
@@ -356,11 +360,6 @@ function updateHeroBalls() {
                     effects.push({ x: boss.x, y: boss.y, life: 8, type: 'hit', color: ball.color });
                 }
             }
-        }
-
-        // Remove expired balls (for hero balls with lifetime)
-        if (ball.lifetime !== undefined && ball.lifetime <= 0) {
-            heroBalls.splice(i, 1);
         }
     }
 }
