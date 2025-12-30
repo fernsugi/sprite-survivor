@@ -1,7 +1,7 @@
 // Gamepad Support (PS5 DualSense, Xbox, etc.) with UI Navigation
 
 let gpPrevButtons = []; // Previous frame button states
-let gpHoldTimers = []; // Hold timers for repeat
+let gpHoldTimers = {}; // Hold timers for repeat (object for mixed numeric/string keys)
 const HOLD_DELAY = 30; // Frames before repeat starts
 const HOLD_REPEAT = 8; // Frames between repeats
 
