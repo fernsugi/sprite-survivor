@@ -223,41 +223,41 @@ body.lang-cjk #waveTimer {
 
 body.lang-vi #gameOver h1,
 body.lang-cjk #gameOver h1 {
-  font-size: 30px;
+  font-size: 32px;
 }
 
 body.lang-vi #victory h1,
 body.lang-cjk #victory h1 {
-  font-size: 26px;
+  font-size: 28px;
 }
 
 body.lang-vi #gameOver p,
 body.lang-vi #victory p,
 body.lang-cjk #gameOver p,
 body.lang-cjk #victory p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.lang-vi .restart-btn,
 body.lang-cjk .restart-btn {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 body.lang-vi #gameOver .menu-btn,
 body.lang-vi #victory .menu-btn,
 body.lang-cjk #gameOver .menu-btn,
 body.lang-cjk #victory .menu-btn {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 body.lang-vi .victory-achv-header,
 body.lang-cjk .victory-achv-header {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body.lang-vi .victory-achv-item,
 body.lang-cjk .victory-achv-item {
-  font-size: 11px;
+  font-size: 13px;
 }
 /* End Vietnamese and lang-cjk font override */
 
