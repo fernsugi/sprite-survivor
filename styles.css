@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow: hidden; /* Prevent scrollbars */
+}
+
 body {
   background: #0a0a0f;
   min-height: 100vh;
@@ -179,12 +183,12 @@ body.lang-vi input {
 
 body.lang-vi #startScreen .subtitle,
 body.lang-cjk #startScreen .subtitle {
-  font-size: 12px;
+  font-size: 18px;
 }
 
 body.lang-vi #startScreen .instructions,
 body.lang-cjk #startScreen .instructions {
-  font-size: 10px;
+  font-size: 15px;
 }
 
 body.lang-vi .sprite-btn .desc,
@@ -201,35 +205,35 @@ body.lang-cjk .menu-btn-secondary {
 /* Responsive scaling for different screen sizes */
 @media (max-width: 1400px), (max-height: 850px) {
   #gameWrapper {
-    transform: scale(0.9);
+    transform: scale(1.0);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 1280px), (max-height: 780px) {
   #gameWrapper {
-    transform: scale(0.8);
+    transform: scale(0.9);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 1150px), (max-height: 700px) {
   #gameWrapper {
-    transform: scale(0.7);
+    transform: scale(0.8);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 1000px), (max-height: 620px) {
   #gameWrapper {
-    transform: scale(0.6);
+    transform: scale(0.7);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 850px), (max-height: 540px) {
   #gameWrapper {
-    transform: scale(0.5);
+    transform: scale(0.6);
     transform-origin: center center;
   }
 }
@@ -254,11 +258,9 @@ body.lang-cjk .menu-btn-secondary {
 }
 
 #languagePanel h3 {
-  margin-bottom: 10px;
-  font-size: 8px !important;
   color: #aaa;
-  font-family: "Press Start 2P", cursive !important;
-  line-height: 1.2;
+  font: bold 13px Arial, sans-serif !important;
+  line-height: 1.5 !important;
 }
 
 .lang-btn {
@@ -547,7 +549,7 @@ body.lang-cjk .menu-btn-secondary {
 }
 
 #startScreen .subtitle {
-  font-size: 10px;
+  font-size: 15px;
   color: #888;
   margin-bottom: 40px;
 }
@@ -638,7 +640,7 @@ body.lang-cjk .menu-btn-secondary {
 }
 
 #startScreen .instructions {
-  font-size: 8px;
+  font-size: 12px;
   color: #666;
   line-height: 2;
   max-width: 600px;
@@ -764,7 +766,7 @@ body.lang-cjk .menu-btn-secondary {
 
 #highScoreDisplay {
   color: #fff;
-  font-size: 6px;
+  font-size: 12px;
   margin-top: 4px;
   text-shadow: 1px 1px 0 #000;
 }
@@ -1070,7 +1072,7 @@ body.lang-cjk .menu-btn-secondary {
 
 .dialogue-hint {
   color: #666;
-  font-size: 8px;
+  font: bold 15px Arial, sans-serif !important;
   text-align: right;
   margin-top: 10px;
 }
@@ -1085,4 +1087,124 @@ body.lang-vi .dialogue-text {
 body.lang-cjk .dialogue-speaker,
 body.lang-vi .dialogue-speaker {
   font-size: 14px;
+}
+
+/* Gamepad Navigation Focus */
+@keyframes gamepadFocusPulse {
+    0% { transform: scale(1.05); box-shadow: 0 0 10px #fd0; }
+    100% { transform: scale(1.08); box-shadow: 0 0 15px #fff; }
+}
+
+.gamepad-focus {
+    outline: 3px solid #fff !important;
+    outline-offset: 2px;
+    box-shadow: 0 0 15px #fd0 !important;
+    transform: scale(1.05);
+    z-index: 1000;
+    position: relative;
+    animation: gamepadFocusPulse 0.4s infinite alternate !important;
+    filter: brightness(1.15) !important;
+    /* Ensure text is readable */
+    text-shadow: 0 0 3px #000 !important;
+}
+
+/* Ensure focused element is visible if it was hidden or low opacity */
+.gamepad-focus {
+    opacity: 1 !important;
+}
+
+/* Error Shake Animation */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.error-shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    border-color: #f44 !important;
+}
+
+/* Splash Screen (Audio Init) */
+#splashScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: pointer;
+}
+
+.splash-content {
+    text-align: center;
+}
+
+.splash-content h1 {
+    font-size: 40px;
+    color: #4af;
+    text-shadow: 0 0 20px #4af, 0 4px 0 #248;
+    margin-bottom: 20px;
+}
+
+.splash-content p {
+    color: #fff;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Gamepad Icons */
+.gp-icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin: 0 1px;
+    box-sizing: border-box;
+    position: relative;
+    top: -1px;
+}
+
+.gp-icon.square {
+    border: 2px solid currentColor;
+    border-radius: 2px;
+}
+
+.gp-icon.circle {
+    border: 2px solid currentColor;
+    border-radius: 50%;
+}
+
+.gp-icon.triangle {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid currentColor;
+    top: -2px;
+}
+
+/* Refactored inline styles */
+#waveTimer {
+  font-size: 8px;
+  margin-top: 4px;
+}
+
+#langHint {
+  display: none;
+  color: #aaa;
+  margin-bottom: 5px;
+  font: bold 13px Arial, sans-serif !important;
 }

@@ -20,9 +20,9 @@
     <!-- Primary Meta Tags -->
     <meta name="title" content="Sprite Survivor - Free Browser Survival Game | Play Online" />
     <meta name="description"
-        content="Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. No download required. Available in 10 languages." />
+        content="Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. Supports keyboard and gamepad/controller. No download required. Available in 10 languages." />
     <meta name="keywords"
-        content="sprite survivor, browser game, survival game, free online game, indie game, pixel game, tower defense, summoner game, boss battle, web game, HTML5 game" />
+        content="sprite survivor, browser game, survival game, free online game, indie game, pixel game, tower defense, summoner game, boss battle, web game, HTML5 game, gamepad support, controller support, joystick, PS5 controller, Xbox controller" />
     <meta name="author" content="Sprite Survivor" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
@@ -50,7 +50,7 @@
     <meta property="og:url" content="https://spritesurvivor.com/" />
     <meta property="og:title" content="Sprite Survivor - Free Browser Survival Game" />
     <meta property="og:description"
-        content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser - no download required! Available in 10 languages." />
+        content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser with keyboard or gamepad - no download required! Available in 10 languages." />
     <meta property="og:image" content="https://spritesurvivor.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -71,7 +71,7 @@
     <meta name="twitter:url" content="https://spritesurvivor.com/" />
     <meta name="twitter:title" content="Sprite Survivor - Free Browser Survival Game" />
     <meta name="twitter:description"
-        content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser! Available in 10 languages." />
+        content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser with keyboard or gamepad! Available in 10 languages." />
     <meta name="twitter:image" content="https://spritesurvivor.com/og-image.png" />
 
     <!-- Additional SEO -->
@@ -102,7 +102,7 @@
         "@context": "https://schema.org",
         "@type": "VideoGame",
         "name": "Sprite Survivor",
-        "description": "A free browser-based survival game where you summon powerful sprites to defeat waves of enemies and epic bosses.",
+        "description": "A free browser-based survival game where you summon powerful sprites to defeat waves of enemies and epic bosses. Supports keyboard and gamepad controllers.",
         "url": "https://spritesurvivor.com/",
         "image": "https://spritesurvivor.com/og-image.png",
         "genre": ["Survival", "Action", "Strategy", "Indie"],
@@ -110,6 +110,7 @@
         "applicationCategory": "Game",
         "operatingSystem": "Any",
         "browserRequirements": "Requires JavaScript. Works on Chrome, Firefox, Safari, Edge.",
+        "gameInput": ["Keyboard", "Gamepad", "PlayStation Controller", "Xbox Controller"],
         "inLanguage": [
           "en",
           "ja",
@@ -187,7 +188,8 @@
           "Sprite merging and leveling system",
           "10 language support",
           "No download required",
-          "Works on mobile and desktop"
+          "Works on mobile and desktop",
+          "Full gamepad and controller support (PS5, Xbox, etc.)"
         ]
       }
     </script>
@@ -247,6 +249,19 @@
             </div>
         </div>
 
+        <!-- Splash Screen for Audio Init -->
+        <div id="splashScreen">
+            <div class="splash-content">
+                <h1 data-i18n="title">SPRITE SURVIVOR</h1>
+                <p class="blink" data-i18n="clickToStart">CLICK OR PRESS ANY BUTTON TO START</p>
+                <p class="input-support" data-i18n="inputSupport"
+                    style="font-size: 18px; margin-top: 15px; color: #888; font-family: monospace; letter-spacing: 1px;">
+                    KEYBOARD
+                    / GAMEPAD SUPPORTED</p>
+            </div>
+        </div>
+
+        <!-- Game Container -->
         <div id="gameContainer">
             <canvas id="gameCanvas" width="1000" height="750"></canvas>
 
@@ -255,6 +270,10 @@
                 <div class="subtitle" data-i18n="subtitle">
                     Summon sprites, survive the horde
                 </div>
+                <p class="input-support" data-i18n="inputSupport"
+                    style="font-size: 13px; margin-bottom: 12px; color: #888; font-family: monospace;">
+                    KEYBOARD /
+                    GAMEPAD SUPPORTED</p>
                 <div class="menu-buttons">
                     <div class="main-buttons">
                         <button class="menu-btn-main story" onclick="showStoryMode()" data-i18n="storyMode">
@@ -275,15 +294,16 @@
                     </div>
                 </div>
                 <div class="instructions">
-                    <span>WASD / Arrow Keys</span>
+                    <span id="keyMove">WASD / Arrow Keys</span>
                     <span data-i18n="instructMove">- Move</span><br />
-                    <span>1-0 / ZXCVBNM,./</span>
+                    <span id="keySummon">1-0 / ZXCVBNM,./</span>
                     <span data-i18n="instructSummon">- Summon sprites</span><br />
-                    <span>SPACE</span>
+                    <span id="keySkill">SPACE</span>
                     <span data-i18n="instructSkill">- Use skill (when available)</span><br />
-                    <span>TAB</span>
+                    <span id="keyAuto">TAB</span>
                     <span data-i18n="instructAutopilot">- Toggle autopilot</span><br />
-                    <span>ESC</span> <span data-i18n="instructPause">- Pause</span><br /><br />
+                    <span id="keyPause">ESC</span>
+                    <span data-i18n="instructPause">- Pause</span><br /><br />
                     <span data-i18n="instructTip">Collect orbs, summon sprites, survive!</span>
                 </div>
                 <div id="highScoreDisplay">
@@ -296,7 +316,7 @@
                 <div>
                     <span data-i18n="wave">WAVE</span> <span id="waveNumber">1</span>
                 </div>
-                <div id="waveTimer" style="font-size: 8px; margin-top: 4px"></div>
+                <div id="waveTimer"></div>
             </div>
 
             <div id="gameTimerDisplay">
@@ -414,6 +434,8 @@
                         The heroes wish to know who answered their call.
                     </p>
                     <input type="text" id="playerNameInput" maxlength="12" placeholder="Hero" />
+                    <div id="nameInputError" style="color: #f66; font-size: 12px; margin-top: 5px; min-height: 16px;">
+                    </div>
                     <button class="restart-btn" onclick="confirmPlayerName()" data-i18n="confirm">
                         CONFIRM
                     </button>
@@ -434,6 +456,9 @@
                 🔊
             </button>
             <h3 data-i18n="language">LANGUAGE</h3>
+            <div id="langHint" class="input-hint">
+                [R3] 🔄
+            </div>
             <button class="lang-btn active" onclick="setLanguage('en')">
                 English
             </button>
@@ -466,6 +491,7 @@
     <script src="js/heroes.js"></script>
     <script src="js/render.js"></script>
     <script src="js/story.js"></script>
+    <script src="js/gamepad.js"></script>
     <script src="js/main.js"></script>
 </body>
 

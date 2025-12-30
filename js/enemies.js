@@ -55,7 +55,8 @@ function spawnBoss() {
         shield: 0,                    // Boss 3: Void Emperor
         shieldTimer: 0,               // Boss 3: Void Emperor
         enrageTimer: 0,               // Boss 4: Death Titan
-        enraged: false                // Boss 4: Death Titan
+        enraged: false,               // Boss 4: Death Titan
+        slowed: 0                     // Frost slow effect
     };
     document.getElementById('bossHealth').style.display = 'block';
     document.getElementById('bossName').textContent = t(boss.nameKey);
@@ -225,14 +226,18 @@ function createBossBall(x, y, angle, speed, damage, opts = {}) {
 function remnantBossAttack() {
     if (!boss) return;
 
+    // Handle slow effect
+    if (boss.slowed > 0) boss.slowed--;
+    const bossSpeedMult = boss.slowed > 0 ? 0.5 : 1;
+
     boss.attackTimer++;
     boss.moveTimer++;
     if (boss.moveTimer >= REMNANT.MOVE_INTERVAL) {
         boss.moveTimer = 0;
         boss.targetX = 100 + Math.random() * (canvas.width - 200);
     }
-    boss.x += (boss.targetX - boss.x) * 0.02;
-    if (boss.y < boss.targetY) boss.y += 2;
+    boss.x += (boss.targetX - boss.x) * 0.02 * bossSpeedMult;
+    if (boss.y < boss.targetY) boss.y += 2 * bossSpeedMult;
     boss.phase += 0.05;
 
     // Chapter-specific attack patterns
@@ -247,13 +252,14 @@ function remnantBossAttack() {
         case 1: // Rex's Remnant - Warrior style (melee focused)
             SFX.heroWarrior && SFX.heroWarrior();
             switch (boss.attackPattern) {
-                case 0: // Charge - rushes at player (fast and far)
+                case 0: // Charge - rushes at player (fast and far, reduced when slowed)
                     const chargeAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
+                    const chargeSpeed = 25 * bossSpeedMult;
                     for (let i = 0; i < 12; i++) {
                         setTimeout(() => {
                             if (!boss) return;
-                            boss.x += Math.cos(chargeAngle) * 25;
-                            boss.y += Math.sin(chargeAngle) * 25;
+                            boss.x += Math.cos(chargeAngle) * chargeSpeed;
+                            boss.y += Math.sin(chargeAngle) * chargeSpeed;
                             effects.push({ x: boss.x, y: boss.y, life: 10, type: 'particle', color: '#f80', vx: -Math.cos(chargeAngle) * 5, vy: -Math.sin(chargeAngle) * 5 });
                             if (player.invincibleTime <= 0) {
                                 const dist = Math.hypot(player.x - boss.x, player.y - boss.y);
@@ -509,10 +515,14 @@ function bossAttack() {
                 break;
         }
     }
+    // Handle slow effect
+    if (boss.slowed > 0) boss.slowed--;
+    const speedMult = boss.slowed > 0 ? 0.5 : 1;
+
     boss.moveTimer++;
     if (boss.moveTimer >= 120) { boss.moveTimer = 0; boss.targetX = 100 + Math.random() * (canvas.width - 200); }
-    boss.x += (boss.targetX - boss.x) * 0.02;
-    if (boss.y < boss.targetY) boss.y += 2;
+    boss.x += (boss.targetX - boss.x) * 0.02 * speedMult;
+    if (boss.y < boss.targetY) boss.y += 2 * speedMult;
     boss.phase += 0.05;
 }
 
@@ -651,7 +661,7 @@ function updateBoss() {
 
             if (wave >= 20) {
                 gameRunning = false; SFX.victory();
-                if (!cheatMode) saveHighScore(score);
+                if (!cheatMode && !storyMode) saveHighScore(score);
                 const newAchievements = checkAchievements();
                 displayVictoryAchievements(newAchievements);
                 document.getElementById('victory').style.display = 'flex';

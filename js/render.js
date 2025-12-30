@@ -1,5 +1,13 @@
 // Rendering System
 
+// Gradient cache for sprite rendering performance
+const spriteGradientCache = new Map();
+
+// Clear gradient cache (call on game restart to free memory)
+function clearSpriteGradientCache() {
+    spriteGradientCache.clear();
+}
+
 // Debuff visual colors
 const debuffColors = {
     noHeal: '#f44',    // Red - can't recover
@@ -295,147 +303,174 @@ function draw() {
         }
     }
 
-    // Sprites - unique shapes per type
+    // Sprites - Premium Visuals
     sprites.forEach(sprite => {
         const s = sprite.size;
-        // Subtle animated aura - pulsing ring + soft glow with white
-        const pulse = Math.sin(sprite.angle * 2) * 2;
-        ctx.globalAlpha = 0.06;
-        ctx.fillStyle = '#fff';
-        ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.04;
+        
+        // Dynamic lighting based on game time
+        const pulse = Math.sin(sprite.angle * 2 + gameTime) * 2;
+        
+        // 1. Soft Outer Glow (Ambient Light)
+        ctx.globalAlpha = 0.15;
         ctx.fillStyle = sprite.color;
-        ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.08 + Math.sin(sprite.angle * 3) * 0.03;
-        ctx.strokeStyle = sprite.color;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 6 + pulse, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(sprite.x, sprite.y, s + 8 + pulse, 0, Math.PI * 2); ctx.fill();
         ctx.globalAlpha = 1;
-        ctx.save(); ctx.translate(sprite.x, sprite.y); ctx.rotate(sprite.angle);
 
-        // Draw unique shape based on sprite type
-        ctx.fillStyle = '#000';
+        ctx.save();
+        ctx.translate(sprite.x, sprite.y);
+        ctx.rotate(sprite.angle);
+
+        // 2. Base Shape with Gradient (Volume)
+        // Cache gradients per sprite type, size, and color for performance
+        const cacheKey = `${sprite.nameKey}_${s}_${sprite.color}`;
+        let grad = spriteGradientCache.get(cacheKey);
+        if (!grad) {
+            grad = ctx.createRadialGradient(0, 0, s/4, 0, 0, s);
+            grad.addColorStop(0, '#fff'); // Highlight center
+            grad.addColorStop(0.3, sprite.color); // Main body
+            grad.addColorStop(1, '#000'); // Dark edge (simulating shading)
+            spriteGradientCache.set(cacheKey, grad);
+        }
+        
+        // Define the path first, then fill with gradient
         ctx.beginPath();
+        
+        // Define shape path based on type
         switch (sprite.nameKey) {
-            case 'archer': // Arrow/triangle pointing up
-                ctx.moveTo(0, -s/2 - 2); ctx.lineTo(-s/2 - 1, s/2 + 1); ctx.lineTo(s/2 + 1, s/2 + 1);
+            case 'archer': // Stylized Arrowhead
+                ctx.moveTo(0, -s/2 - 4); 
+                ctx.lineTo(-s/2 - 2, s/2 + 2); 
+                ctx.quadraticCurveTo(0, s/2 - 2, s/2 + 2, s/2 + 2);
                 break;
-            case 'knight': // Square with shield notch
-                ctx.rect(-s/2 - 1, -s/2 - 1, s + 2, s + 2);
+            case 'knight': // Rounded Shield
+                ctx.moveTo(-s/2, -s/2);
+                ctx.lineTo(s/2, -s/2);
+                ctx.lineTo(s/2, 0);
+                ctx.bezierCurveTo(s/2, s/2 + 2, -s/2, s/2 + 2, -s/2, 0);
                 break;
-            case 'mage': // Diamond
-                ctx.moveTo(0, -s/2 - 2); ctx.lineTo(-s/2 - 1, 0); ctx.lineTo(0, s/2 + 2); ctx.lineTo(s/2 + 1, 0);
+            case 'mage': // Elegant Diamond
+                ctx.moveTo(0, -s/2 - 4); 
+                ctx.lineTo(-s/2 - 2, 0); 
+                ctx.lineTo(0, s/2 + 4); 
+                ctx.lineTo(s/2 + 2, 0);
                 break;
-            case 'cleric': // Circle
-                ctx.arc(0, 0, s/2 + 2, 0, Math.PI * 2);
+            case 'cleric': // Perfect Orb
+                ctx.arc(0, 0, s/2 + 1, 0, Math.PI * 2);
                 break;
-            case 'ninja': // 4-pointed star/shuriken
+            case 'ninja': // Sharp Shuriken
                 for (let i = 0; i < 4; i++) {
                     const a = i * Math.PI / 2;
-                    ctx.lineTo(Math.cos(a) * (s/2 + 2), Math.sin(a) * (s/2 + 2));
+                    ctx.lineTo(Math.cos(a) * (s/2 + 4), Math.sin(a) * (s/2 + 4));
                     ctx.lineTo(Math.cos(a + Math.PI/4) * (s/4), Math.sin(a + Math.PI/4) * (s/4));
                 }
                 break;
-            case 'wizard': // Pentagon (hat shape)
-                ctx.moveTo(0, -s/2 - 3); ctx.lineTo(-s/2 - 1, -s/6); ctx.lineTo(-s/3, s/2 + 1); ctx.lineTo(s/3, s/2 + 1); ctx.lineTo(s/2 + 1, -s/6);
+            case 'wizard': // Wizard Hat / Pentagon
+                ctx.moveTo(0, -s/2 - 5); 
+                ctx.lineTo(-s/2 - 1, -s/6); 
+                ctx.lineTo(-s/3, s/2 + 1); 
+                ctx.lineTo(s/3, s/2 + 1); 
+                ctx.lineTo(s/2 + 1, -s/6);
                 break;
-            case 'berserker': // Spiky square
-                const sp = s/2 + 1;
-                ctx.moveTo(-sp, -sp + 3); ctx.lineTo(-sp + 3, -sp); ctx.lineTo(sp - 3, -sp); ctx.lineTo(sp, -sp + 3);
-                ctx.lineTo(sp, sp - 3); ctx.lineTo(sp - 3, sp); ctx.lineTo(-sp + 3, sp); ctx.lineTo(-sp, sp - 3);
+            case 'berserker': // Jagged Axe/Blade
+                const sp = s/2 + 2;
+                ctx.moveTo(-sp, -sp + 3); ctx.lineTo(-sp + 3, -sp); 
+                ctx.lineTo(sp - 3, -sp); ctx.lineTo(sp, -sp + 3);
+                ctx.lineTo(sp, sp - 3); ctx.lineTo(sp - 3, sp); 
+                ctx.lineTo(-sp + 3, sp); ctx.lineTo(-sp, sp - 3);
                 break;
-            case 'frost': // Hexagon/crystal
+            case 'frost': // Crystal Hex
                 for (let i = 0; i < 6; i++) {
                     const a = i * Math.PI / 3 - Math.PI / 6;
-                    ctx.lineTo(Math.cos(a) * (s/2 + 2), Math.sin(a) * (s/2 + 2));
+                    ctx.lineTo(Math.cos(a) * (s/2 + 3), Math.sin(a) * (s/2 + 3));
                 }
                 break;
-            case 'vampire': // Diamond with cape wings
-                ctx.moveTo(0, -s/2 - 2); ctx.lineTo(-s/3, -s/6); ctx.lineTo(-s/2 - 3, s/4);
-                ctx.lineTo(-s/4, s/3); ctx.lineTo(0, s/2 + 2); ctx.lineTo(s/4, s/3);
-                ctx.lineTo(s/2 + 3, s/4); ctx.lineTo(s/3, -s/6);
+            case 'vampire': // Bat-like Winged Diamond
+                ctx.moveTo(0, -s/2 - 2); 
+                ctx.lineTo(-s/3, -s/6); 
+                ctx.quadraticCurveTo(-s, 0, -s/2 - 3, s/4);
+                ctx.lineTo(-s/4, s/3); 
+                ctx.lineTo(0, s/2 + 5); 
+                ctx.lineTo(s/4, s/3);
+                ctx.lineTo(s/2 + 3, s/4); 
+                ctx.quadraticCurveTo(s, 0, s/3, -s/6);
                 break;
-            case 'bomber': // Round bomb
+            case 'bomber': // Bomb
                 ctx.arc(0, 0, s/2 + 2, 0, Math.PI * 2);
                 break;
-            default: // Fallback square
+            default: 
                 ctx.rect(-s/2 - 1, -s/2 - 1, s + 2, s + 2);
         }
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
 
-        // Inner colored shape
-        ctx.fillStyle = sprite.color;
+        // Fill with gradient for 3D effect
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // 3. Colored Outline (instead of black)
+        // We simulate a dark outline by stroking with a semi-transparent dark overlay
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(0,0,0,0.5)'; 
+        ctx.stroke();
+        
+        // 4. Inner Light / Specular Highlight (The "Premium" Shine)
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = '#fff';
         ctx.beginPath();
+        // Add a small reflection accent varying by shape
         switch (sprite.nameKey) {
-            case 'archer':
-                ctx.moveTo(0, -s/2); ctx.lineTo(-s/2 + 1, s/2 - 1); ctx.lineTo(s/2 - 1, s/2 - 1);
+            case 'cleric':
+            case 'bomber':
+                ctx.arc(-s/4, -s/4, s/5, 0, Math.PI * 2);
                 break;
             case 'knight':
-                ctx.rect(-s/2, -s/2, s, s);
+                ctx.rect(-s/3, -s/3, s/4, s/4);
                 break;
             case 'mage':
-                ctx.moveTo(0, -s/2); ctx.lineTo(-s/2 + 1, 0); ctx.lineTo(0, s/2); ctx.lineTo(s/2 - 1, 0);
-                break;
-            case 'cleric':
-                ctx.arc(0, 0, s/2, 0, Math.PI * 2);
-                break;
-            case 'ninja':
-                for (let i = 0; i < 4; i++) {
-                    const a = i * Math.PI / 2;
-                    ctx.lineTo(Math.cos(a) * s/2, Math.sin(a) * s/2);
-                    ctx.lineTo(Math.cos(a + Math.PI/4) * (s/5), Math.sin(a + Math.PI/4) * (s/5));
-                }
-                break;
-            case 'wizard':
-                ctx.moveTo(0, -s/2 - 1); ctx.lineTo(-s/2 + 1, -s/6 + 1); ctx.lineTo(-s/3 + 1, s/2 - 1); ctx.lineTo(s/3 - 1, s/2 - 1); ctx.lineTo(s/2 - 1, -s/6 + 1);
-                break;
-            case 'berserker':
-                const spi = s/2 - 1;
-                ctx.moveTo(-spi, -spi + 2); ctx.lineTo(-spi + 2, -spi); ctx.lineTo(spi - 2, -spi); ctx.lineTo(spi, -spi + 2);
-                ctx.lineTo(spi, spi - 2); ctx.lineTo(spi - 2, spi); ctx.lineTo(-spi + 2, spi); ctx.lineTo(-spi, spi - 2);
-                break;
-            case 'frost':
-                for (let i = 0; i < 6; i++) {
-                    const a = i * Math.PI / 3 - Math.PI / 6;
-                    ctx.lineTo(Math.cos(a) * s/2, Math.sin(a) * s/2);
-                }
-                break;
-            case 'vampire':
-                ctx.moveTo(0, -s/2); ctx.lineTo(-s/3 + 1, -s/6 + 1); ctx.lineTo(-s/2 - 1, s/4 - 1);
-                ctx.lineTo(-s/4 + 1, s/3 - 1); ctx.lineTo(0, s/2); ctx.lineTo(s/4 - 1, s/3 - 1);
-                ctx.lineTo(s/2 + 1, s/4 - 1); ctx.lineTo(s/3 - 1, -s/6 + 1);
-                break;
-            case 'bomber':
-                ctx.arc(0, 0, s/2, 0, Math.PI * 2);
-                break;
+            case 'archer':
+                 ctx.moveTo(0, -s/2); ctx.lineTo(-s/6, -s/6); ctx.lineTo(0, -s/3); ctx.fill();
+                 break;
             default:
-                ctx.rect(-s/2, -s/2, s, s);
+                 // Generic shine
+                 ctx.arc(-s/4, -s/4, 2, 0, Math.PI * 2);
         }
-        ctx.closePath(); ctx.fill();
+        ctx.fill();
+        ctx.globalAlpha = 1;
 
-        // Bomber fuse detail
-        if (sprite.nameKey === 'bomber') {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(-1, -s/2 - 4, 2, 5);
-            ctx.fillStyle = '#f80';
-            ctx.beginPath(); ctx.arc(0, -s/2 - 5, 2, 0, Math.PI * 2); ctx.fill();
-        }
-
-        // Knight shield detail
+        // 5. Specific Details (Symbols inside)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        
+        // Add iconic details for each sprite type
         if (sprite.nameKey === 'knight') {
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(-s/4, -s/4, s/2, s/2);
-        }
-
-        // Cleric cross detail
-        if (sprite.nameKey === 'cleric') {
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(-1, -s/3, 2, s/1.5);
-            ctx.fillRect(-s/3, -1, s/1.5, 2);
+             // Cross on shield
+             ctx.fillRect(-1, -s/3, 2, s/1.5);
+             ctx.fillRect(-s/3, -1, s/1.5, 2);
+        } else if (sprite.nameKey === 'bomber') {
+            // Fuse
+            ctx.fillStyle = '#333';
+            ctx.fillRect(-1, -s/2 - 5, 2, 4);
+            ctx.fillStyle = '#f40';
+            ctx.beginPath(); ctx.arc(0, -s/2 - 6, 2, 0, Math.PI * 2); ctx.fill();
+        } else if (sprite.nameKey === 'cleric') {
+            // Plus sign
+            ctx.fillStyle = sprite.color; // Inverse color
+            ctx.globalCompositeOperation = 'destination-out'; // Cut out
+            ctx.fillRect(-1, -s/4, 2, s/2);
+            ctx.fillRect(-s/4, -1, s/2, 2);
+            ctx.globalCompositeOperation = 'source-over';
         }
 
         ctx.restore();
-        if (sprite.level > 1) { ctx.font = '8px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); ctx.fillStyle = '#fff'; ctx.fillText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size); }
+        
+        // Level Indicator
+        if (sprite.level > 1) { 
+            ctx.font = '8px "Press Start 2P"'; 
+            ctx.textAlign = 'center'; 
+            ctx.strokeStyle = '#000'; 
+            ctx.lineWidth = 3; 
+            ctx.strokeText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size - 4); 
+            ctx.fillStyle = '#fff'; 
+            ctx.fillText('Lv' + sprite.level, sprite.x, sprite.y - sprite.size - 4); 
+        }
     });
 
     // Player - slightly enhanced visibility
@@ -494,14 +529,21 @@ function draw() {
     }
     // Autopilot indicator - top-left corner, white when ON, grey when OFF
     ctx.globalAlpha = autopilot ? 1 : 0.5;
-    ctx.font = currentLang === 'vi' ? '14px VT323, monospace' : '10px "Press Start 2P"'; ctx.textAlign = 'left';
-    const autopilotText = 'TAB ' + t('instructAutopilot');
+    ctx.font = 'bold 20px system-ui, sans-serif'; ctx.textAlign = 'left';
+    
+    // Determine input label
+    let inputLabel = 'TAB';
+    if (typeof currentInputMode !== 'undefined' && currentInputMode === 'gp') {
+        inputLabel = '[R1]';
+    }
+    
+    const autopilotText = inputLabel + ' ' + t('instructAutopilot');
     ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(autopilotText, 10, 25);
     ctx.fillStyle = autopilot ? '#fff' : '#888'; ctx.fillText(autopilotText, 10, 25);
     ctx.globalAlpha = 1;
 
     // Score display - top-right corner
-    ctx.font = currentLang === 'vi' ? '14px VT323, monospace' : '10px "Press Start 2P"'; ctx.textAlign = 'right';
+    ctx.font = 'bold 20px system-ui, sans-serif'; ctx.textAlign = 'right';
     const scoreText = t('score') + ': ' + displayScore;
     ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(scoreText, canvas.width - 10, 25);
     ctx.fillStyle = '#fff'; ctx.fillText(scoreText, canvas.width - 10, 25);
@@ -736,6 +778,14 @@ function draw() {
         if (boss.bossNum === 1 && boss.rageMode) {
             ctx.strokeStyle = '#f80'; ctx.lineWidth = 3; ctx.globalAlpha = 0.5 + Math.sin(Date.now() * 0.01) * 0.3;
             ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 10, 0, Math.PI * 2); ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+        // Frost slow effect
+        if (boss.slowed > 0) {
+            ctx.fillStyle = '#8ef4'; ctx.globalAlpha = 0.3 + Math.sin(Date.now() * 0.008) * 0.1;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 25, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#4ff'; ctx.lineWidth = 2; ctx.globalAlpha = 0.6;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 25, 0, Math.PI * 2); ctx.stroke();
             ctx.globalAlpha = 1;
         }
     }

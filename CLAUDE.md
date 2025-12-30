@@ -30,10 +30,30 @@ js/
 ├── render.js   - All canvas drawing, environment themes, debuff visuals
 ├── sound.js    - Procedural audio with Web Audio API
 ├── achievements.js - Achievement system with localStorage persistence
+├── gamepad.js  - Gamepad/controller input handling
 └── main.js     - Game loop, input handling, autopilot, startGame/restartGame
+
+generate-translations-csv.js  - Export i18n translations to CSV
+import-translations-csv.js    - Import CSV translations back to i18n.js
+translations.csv              - Editable translation spreadsheet
 ```
 
 **Load order matters** - scripts must load in the order listed in index.html.
+
+## Translation Workflow
+
+To edit translations in a spreadsheet:
+
+```bash
+# 1. Export current translations to CSV
+node generate-translations-csv.js
+
+# 2. Edit translations.csv in Excel/Google Sheets
+#    Columns: key, en, ja, ko, zh-TW, zh-CN, es, pt, ru, fr, vi
+
+# 3. Import updated translations back to i18n.js
+node import-translations-csv.js translations.csv
+```
 
 ## Game Mechanics
 

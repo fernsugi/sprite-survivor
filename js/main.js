@@ -1,5 +1,16 @@
 // Main Game Loop and Initialization
 
+// Gamepad optimization: track if a gamepad is connected
+let hasGamepad = false;
+
+window.addEventListener('gamepadconnected', function () {
+    hasGamepad = true;
+});
+
+window.addEventListener('gamepaddisconnected', function () {
+    hasGamepad = false;
+});
+
 function spawnOrb() {
     const margin = 50;
     orbs.push({
@@ -203,10 +214,11 @@ function updatePlayer() {
         }
     } else {
         // Manual control
-        if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
-        if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
-        if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
-        if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+        const gp = window.gamepadDirection || { up: false, down: false, left: false, right: false };
+        if (keys['w'] || keys['W'] || keys['ArrowUp'] || gp.up) dy -= 1;
+        if (keys['s'] || keys['S'] || keys['ArrowDown'] || gp.down) dy += 1;
+        if (keys['a'] || keys['A'] || keys['ArrowLeft'] || gp.left) dx -= 1;
+        if (keys['d'] || keys['D'] || keys['ArrowRight'] || gp.right) dx += 1;
     }
 
     if (dx !== 0 || dy !== 0) {
@@ -232,6 +244,7 @@ function togglePause() {
     if (!gameStarted || !gameRunning) return;
     gamePaused = !gamePaused;
     document.getElementById('pauseScreen').style.display = gamePaused ? 'flex' : 'none';
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
 }
 
 function update() {
@@ -303,7 +316,7 @@ function update() {
     if (player.hp <= 0) {
         gameRunning = false;
         SFX.playerDeath();
-        if (!cheatMode) saveHighScore(score);
+        if (!cheatMode && !storyMode) saveHighScore(score);
         document.getElementById('gameOver').style.display = 'flex';
         document.getElementById('finalScore').textContent = score;
         document.getElementById('finalWave').textContent = wave;
@@ -314,6 +327,7 @@ function update() {
 }
 
 function gameLoop() {
+    if (hasGamepad && typeof updateGamepad === 'function') updateGamepad();
     if (gameStarted) { update(); draw(); }
     // Update dialogue animation even when paused
     if (dialogueActive) { updateDialogue(); }
@@ -326,18 +340,49 @@ function startGame(cheat = false) {
     initAudio();
     loadSoundPreference();
     playSound('select');
+
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
+    // Reset all game state
+    player.x = 500; player.y = 375; player.hp = player.maxHp; player.overHeal = 0; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
+    enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
+    currentSkill = null; updateSkillDisplay();
+    score = 0; displayScore = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    // Reset debuffs
+    for (const key in debuffs) debuffs[key] = 0;
+    // Reset story mode state
+    storyMode = false; storyChapter = 0; storyWave = 0; storyWaveSpawning = false;
+    dialogueActive = false; dialogueQueue = []; dialogueIndex = 0; dialogueCharIndex = 0;
+    if (typeof spriteOrbs !== 'undefined') spriteOrbs = [];
+    if (typeof collectedSprites !== 'undefined') collectedSprites = new Set();
+    if (typeof pendingWaveSpawn !== 'undefined') pendingWaveSpawn = false;
+    if (typeof pendingBossSpawn !== 'undefined') pendingBossSpawn = false;
+    if (typeof pendingVictory !== 'undefined') pendingVictory = false;
+    if (typeof pendingRewardSprite !== 'undefined') pendingRewardSprite = false;
+    if (typeof pendingMidSprite !== 'undefined') pendingMidSprite = false;
+    if (typeof awaitingRewardCollection !== 'undefined') awaitingRewardCollection = false;
+
     cheatMode = cheat;
     if (cheatMode) points = Infinity;
     usedSpriteTypes = new Set(); gotHit = false; heroSummoned = false; // Reset achievement tracking
     autopilot = false;
+    gamePaused = false;
     document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('bossHealth').style.display = 'none';
+    document.getElementById('dialogueBox').style.display = 'none';
     gameStarted = true;
     gameRunning = true;
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
     for (let i = 0; i < 8; i++) spawnOrb();
+    updateUI();
     SFX.waveStart();
 }
 
 function restartGame() {
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
     // In story mode, restart the current chapter from the beginning
     if (storyMode) {
         const currentChapter = storyChapter;
@@ -361,6 +406,7 @@ function restartGame() {
     gameRunning = true;
     gamePaused = false;
     autopilot = false;
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
     document.getElementById('gameOver').style.display = 'none';
     document.getElementById('victory').style.display = 'none';
     document.getElementById('bossHealth').style.display = 'none';
@@ -371,6 +417,9 @@ function restartGame() {
 }
 
 function goToMainMenu() {
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.overHeal = 0; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
     currentSkill = null; updateSkillDisplay();
@@ -386,6 +435,8 @@ function goToMainMenu() {
     if (typeof pendingBossSpawn !== 'undefined') pendingBossSpawn = false;
     if (typeof pendingVictory !== 'undefined') pendingVictory = false;
     if (typeof pendingRewardSprite !== 'undefined') pendingRewardSprite = false;
+    if (typeof pendingMidSprite !== 'undefined') pendingMidSprite = false;
+    if (typeof awaitingRewardCollection !== 'undefined') awaitingRewardCollection = false;
     gameStarted = false;
     gameRunning = false;
     gamePaused = false;
@@ -401,11 +452,13 @@ function goToMainMenu() {
     document.getElementById('startScreen').style.display = 'flex';
     updateUI();
     updateHighScoreDisplay();
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
 }
 
 // Event Listeners
 const altSummonKeys = { 'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, ',': 7, '.': 8, '/': 9 };
 document.addEventListener('keydown', e => {
+    if (typeof setInputControlMode === 'function') setInputControlMode('kb');
     keys[e.key] = true;
     if (e.key === 'Escape' && !dialogueActive) { togglePause(); return; }
     // Handle dialogue advancement with SPACE
@@ -426,6 +479,85 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('keyup', e => { keys[e.key] = false; });
 
+// Splash Screen Logic
+let splashActive = true;
+let splashInterval = null;
+
+// Create named functions for event listeners so they can be removed
+function handleSplashClick() {
+    dismissSplash();
+}
+
+function handleSplashKeydown() {
+    dismissSplash();
+}
+
+function dismissSplash() {
+    if (!splashActive) return;
+    splashActive = false;
+    
+    // Stop the language cycle
+    if (splashInterval) clearInterval(splashInterval);
+    
+    // Remove event listeners to prevent unnecessary function calls
+    document.removeEventListener('click', handleSplashClick);
+    document.removeEventListener('keydown', handleSplashKeydown);
+    
+    // Attempt audio init
+    if (typeof initAudio === 'function') initAudio();
+    if (typeof playSound === 'function') playSound('select'); // Feedback
+    
+    const splash = document.getElementById('splashScreen');
+    if (splash) splash.style.display = 'none';
+}
+
+// Global listener for splash dismissal (click or key)
+document.addEventListener('click', handleSplashClick);
+document.addEventListener('keydown', handleSplashKeydown);
+
+function startSplashCycle() {
+    // Available languages
+    const langs = ['en', 'ja', 'ko', 'zh-TW', 'zh-CN', 'es', 'pt', 'ru', 'fr', 'vi'];
+    let langIndex = 0;
+    
+    // Helper to safe update
+    const updateSplashText = (lang) => {
+        if (typeof translations === 'undefined' || !translations[lang]) return;
+        
+        const titleEl = document.querySelector('#splashScreen h1');
+        const descEl = document.querySelector('#splashScreen .blink'); // Use class to be specific
+        const supportEl = document.querySelector('#splashScreen .input-support');
+        
+        if (titleEl) titleEl.textContent = translations[lang]['title'] || "SPRITE SURVIVOR";
+        if (descEl) descEl.textContent = translations[lang]['clickToStart'] || "CLICK TO START";
+        if (supportEl) supportEl.textContent = translations[lang]['inputSupport'] || "KEYBOARD / GAMEPAD SUPPORTED";
+        
+        // Update font style for CJK/Vietnamese if needed
+        const splash = document.getElementById('splashScreen');
+        if (splash) {
+             splash.className = ''; // Reset class
+             if (lang === 'vi') splash.classList.add('lang-vi');
+             if (['ja', 'ko', 'zh-TW', 'zh-CN'].includes(lang)) splash.classList.add('lang-cjk');
+        }
+    };
+
+    splashInterval = setInterval(() => {
+        // Check if splash is still active before updating
+        if (!splashActive) {
+            if (splashInterval) clearInterval(splashInterval);
+            return;
+        }
+        
+        try {
+            langIndex = (langIndex + 1) % langs.length;
+            updateSplashText(langs[langIndex]);
+        } catch (error) {
+            // Silently handle errors to prevent breaking the interval
+            console.error('Error updating splash text:', error);
+        }
+    }, 1000); // Switch every 1 second (matches blink)
+}
+
 // Initialize - translations are now inline, no async loading needed
 (function init() {
     // Apply saved language or detect from URL/localStorage
@@ -437,5 +569,13 @@ document.addEventListener('keyup', e => { keys[e.key] = false; });
     initSpriteButtons();
     updateUI();
     updateHighScoreDisplay();
+    
+    // Ensure splash is visible
+    const splash = document.getElementById('splashScreen');
+    if (splash) {
+        splash.style.display = 'flex';
+        startSplashCycle();
+    }
+    
     gameLoop();
 })();

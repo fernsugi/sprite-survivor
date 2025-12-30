@@ -124,8 +124,19 @@ function showNameInput() {
 // Confirm player name and start chapter
 function confirmPlayerName() {
     const input = document.getElementById('playerNameInput');
+    const errorEl = document.getElementById('nameInputError');
     let name = input.value.trim();
-    if (!name) name = 'Hero';
+    
+    // Strict validation: name required
+    if (!name) {
+        playSound('error');
+        input.classList.add('error-shake');
+        if (errorEl) errorEl.textContent = t('nameRequired') || 'Please enter a name';
+        // Remove class after animation completes so it can be triggered again
+        setTimeout(() => input.classList.remove('error-shake'), 500);
+        input.focus();
+        return;
+    }
 
     playerName = name;
     storyProgress.playerName = name;
@@ -165,6 +176,7 @@ function initStoryGame() {
     gameRunning = true;
     gamePaused = false;
     autopilot = false;
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
     score = 0;
     displayScore = 0;
     points = 0; // Start with 0 points - need to collect sprite first
@@ -181,6 +193,8 @@ function initStoryGame() {
     player.invincibleTime = 0;
     player.speedBoost = 0;
     player.speedBoostTimer = 0;
+    player.facingX = 0;
+    player.facingY = 1;
 
     enemies = [];
     projectiles = [];
@@ -191,6 +205,7 @@ function initStoryGame() {
     spriteProjectiles = [];
     heroes = [];
     heroBalls = [];
+    spriteOrbs = [];
 
     usedSpriteTypes = new Set();
     gotHit = false;
@@ -890,6 +905,7 @@ function spawnRemnantBoss() {
         shieldTimer: 0,
         enrageTimer: 0,
         enraged: false,
+        slowed: 0,
         // Chapter 3 (Milia's Remnant) has projectile immunity
         projectileImmune: storyChapter === 3
     };
