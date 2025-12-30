@@ -1089,22 +1089,21 @@ body.lang-vi .dialogue-speaker {
 
 /* Gamepad Navigation Focus */
 @keyframes gamepadFocusPulse {
-    0% { transform: scale(1.05); box-shadow: 0 0 15px #fd0, inset 0 0 10px #fd0; border-color: #fd0; }
-    100% { transform: scale(1.1); box-shadow: 0 0 25px #fff, inset 0 0 20px #fff; border-color: #fff; }
+    0% { transform: scale(1.05); box-shadow: 0 0 10px #fd0; }
+    100% { transform: scale(1.08); box-shadow: 0 0 15px #fff; }
 }
 
 .gamepad-focus {
-    outline: 4px solid #fff !important;
+    outline: 3px solid #fff !important;
     outline-offset: 2px;
-    box-shadow: 0 0 20px #fd0, inset 0 0 20px #fd0 !important;
+    box-shadow: 0 0 15px #fd0 !important;
     transform: scale(1.05);
     z-index: 1000;
     position: relative;
     animation: gamepadFocusPulse 0.4s infinite alternate !important;
-    background-blend-mode: hard-light !important;
-    filter: brightness(1.2) !important;
+    filter: brightness(1.15) !important;
     /* Ensure text is readable */
-    text-shadow: 0 0 5px #000 !important;
+    text-shadow: 0 0 3px #000 !important;
 }
 
 /* Ensure focused element is visible if it was hidden or low opacity */

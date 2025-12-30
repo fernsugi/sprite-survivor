@@ -107,6 +107,7 @@ const translations = {
     "back": "BACK",
     "enterName": "Enter Your Name",
     "namePrompt": "The heroes wish to know who answered their call.",
+    "nameRequired": "Please enter a name",
     "confirm": "CONFIRM",
     "dialogueHint": "[SPACE] to continue",
     "dialogueHintGamepad": "[X] to continue",
@@ -357,6 +358,7 @@ const translations = {
     "back": "戻る",
     "enterName": "名前を入力",
     "namePrompt": "英雄たちはあなたの名前を知りたがっています。",
+    "nameRequired": "名前を入力してください",
     "confirm": "確定",
     "dialogueHint": "[スペース] 続ける",
     "dialogueHintGamepad": "[X] 続ける",
@@ -607,6 +609,7 @@ const translations = {
     "back": "뒤로",
     "enterName": "이름 입력",
     "namePrompt": "영웅들이 당신의 이름을 알고 싶어합니다.",
+    "nameRequired": "이름을 입력해주세요",
     "confirm": "확인",
     "dialogueHint": "[스페이스] 계속",
     "dialogueHintGamepad": "[X] 계속",
@@ -857,6 +860,7 @@ const translations = {
     "back": "返回",
     "enterName": "輸入你的名字",
     "namePrompt": "英雄們想知道是誰回應了他們的呼喚。",
+    "nameRequired": "請輸入名字",
     "confirm": "確認",
     "dialogueHint": "[空白鍵] 繼續",
     "dialogueHintGamepad": "[X] 繼續",
@@ -1107,6 +1111,7 @@ const translations = {
     "back": "返回",
     "enterName": "输入你的名字",
     "namePrompt": "英雄们想知道是谁回应了他们的呼唤。",
+    "nameRequired": "请输入名字",
     "confirm": "确认",
     "dialogueHint": "[空格键] 继续",
     "dialogueHintGamepad": "[X] 继续",
@@ -1357,6 +1362,7 @@ const translations = {
     "back": "VOLVER",
     "enterName": "Ingresa tu Nombre",
     "namePrompt": "Los héroes desean saber quién respondió a su llamado.",
+    "nameRequired": "Por favor ingresa un nombre",
     "confirm": "CONFIRMAR",
     "dialogueHint": "[ESPACIO] continuar",
     "dialogueHintGamepad": "[X] continuar",
@@ -1607,6 +1613,7 @@ const translations = {
     "back": "VOLTAR",
     "enterName": "Digite Seu Nome",
     "namePrompt": "Os heróis desejam saber quem respondeu ao seu chamado.",
+    "nameRequired": "Por favor digite um nome",
     "confirm": "CONFIRMAR",
     "dialogueHint": "[ESPAÇO] continuar",
     "dialogueHintGamepad": "[X] continuar",
@@ -1857,6 +1864,7 @@ const translations = {
     "back": "НАЗАД",
     "enterName": "Введите Ваше Имя",
     "namePrompt": "Герои желают знать, кто откликнулся на их зов.",
+    "nameRequired": "Пожалуйста, введите имя",
     "confirm": "ПОДТВЕРДИТЬ",
     "dialogueHint": "[ПРОБЕЛ] продолжить",
     "dialogueHintGamepad": "[X] продолжить",
@@ -2107,6 +2115,7 @@ const translations = {
     "back": "RETOUR",
     "enterName": "Entrez Votre Nom",
     "namePrompt": "Les héros souhaitent savoir qui a répondu à leur appel.",
+    "nameRequired": "Veuillez entrer un nom",
     "confirm": "CONFIRMER",
     "dialogueHint": "[ESPACE] continuer",
     "dialogueHintGamepad": "[X] continuer",
@@ -2357,6 +2366,7 @@ const translations = {
     "back": "QUAY LẠI",
     "enterName": "Nhập Tên Của Bạn",
     "namePrompt": "Các anh hùng muốn biết ai đã đáp lời kêu gọi của họ.",
+    "nameRequired": "Vui lòng nhập tên",
     "confirm": "XÁC NHẬN",
     "dialogueHint": "[SPACE] tiếp tục",
     "dialogueHintGamepad": "[X] tiếp tục",
@@ -2578,7 +2588,7 @@ function setLanguage(lang, updateHistory = true) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const translation = translations[lang]?.[key] || translations['en']?.[key];
-    if (translation) el.innerHTML = translation;
+    if (translation) el.textContent = translation;
   });
   updateSEO(lang);
   if (updateHistory) updateURL(lang);
