@@ -30,7 +30,7 @@ function getVisibleScreen() {
         'storyModeScreen',
         'dialogueBox' // Special case, though dialogue handles its own input usually
     ];
-    
+
     for (const id of screens) {
         const el = document.getElementById(id);
         if (el && el.style.display !== 'none' && el.style.display !== '') {
@@ -38,11 +38,11 @@ function getVisibleScreen() {
             return id;
         }
     }
-    
+
     // Check startScreen separately as it might be the bottom layer
     const start = document.getElementById('startScreen');
     if (start && getComputedStyle(start).display !== 'none') return 'startScreen';
-    
+
     return null;
 }
 
@@ -50,11 +50,11 @@ function getFocusableElements(screenId) {
     if (!screenId) return [];
     const screen = document.getElementById(screenId);
     if (!screen) return [];
-    
+
     // Select interactive elements
     // standard buttons and inputs
     let selector = 'button:not([disabled]):not(.locked), input:not([disabled])';
-    
+
     // Special cases where buttons might not matches standard selector or need specific order
     if (screenId === 'startScreen') {
         // We want specific order usually: Main buttons, then secondary
@@ -65,16 +65,16 @@ function getFocusableElements(screenId) {
         // If we want to navigate to language from start screen, we might need to add them manually
         return [...main, ...secondary];
     }
-    
+
     if (screenId === 'storyModeScreen') {
         selector = '.chapter-btn:not(.locked), .menu-btn';
     }
-    
+
     const elements = Array.from(screen.querySelectorAll(selector));
-    
+
     // Filter out actually invisible elements (e.g. if parents are hidden)
     return elements.filter(el => {
-         return el.offsetParent !== null && getComputedStyle(el).pointerEvents !== 'none';
+        return el.offsetParent !== null && getComputedStyle(el).pointerEvents !== 'none';
     });
 }
 
@@ -88,30 +88,30 @@ function clearFocus() {
 
 function updateMenuNavigation(gp) {
     const screenId = getVisibleScreen();
-    
+
     // Skip if dialogue is active (handled by dialogue logic)
     if (screenId === 'dialogueBox') return;
-    
+
     // Detect screen change to reset focus
     if (screenId !== activeScreenId) {
         activeScreenId = screenId;
         uiFocusIndex = 0;
         clearFocus();
     }
-    
+
     if (!screenId) return; // No menu visible
-    
+
     let focusables = getFocusableElements(screenId);
-    
+
     // If Start Screen, maybe allow valid navigation to language panel?
     // For simplicity, let's stick to the main menu buttons first.
-    
+
     if (focusables.length === 0) return;
-    
+
     // Clamp index
     if (uiFocusIndex >= focusables.length) uiFocusIndex = focusables.length - 1;
     if (uiFocusIndex < 0) uiFocusIndex = 0;
-    
+
     // Apply focus style
     clearFocus();
     const target = focusables[uiFocusIndex];
@@ -119,34 +119,34 @@ function updateMenuNavigation(gp) {
         target.classList.add('gamepad-focus');
         target.focus(); // Native focus helps with inputs
     }
-    
+
     // --- Navigation Inputs ---
     const now = Date.now();
-    
+
     // Allow faster scrolling if held? For now fixed delay.
     if (now - lastUiMoveTime < UI_MOVE_DELAY) {
         // Check for Confirm even during debounce
         if (gp.buttons[0].pressed && !gpPrevButtons[0]) {
-             if (target) {
-                 target.click();
-                 // SFX handled by click usually, or we can add one
-             }
+            if (target) {
+                target.click();
+                // SFX handled by click usually, or we can add one
+            }
         }
-        return; 
+        return;
     }
-    
+
     // D-pad & Sticks
     const lx = gp.axes[0];
     const ly = gp.axes[1];
     const deadzone = 0.5;
-    
+
     const up = gp.buttons[12].pressed || ly < -deadzone;
     const down = gp.buttons[13].pressed || ly > deadzone;
     const left = gp.buttons[14].pressed || lx < -deadzone;
     const right = gp.buttons[15].pressed || lx > deadzone;
-    
+
     let moved = false;
-    
+
     if (down) {
         uiFocusIndex = (uiFocusIndex + 1) % focusables.length;
         moved = true;
@@ -154,23 +154,23 @@ function updateMenuNavigation(gp) {
         uiFocusIndex = (uiFocusIndex - 1 + focusables.length) % focusables.length;
         moved = true;
     } else if (right) {
-         // Optional: grid navigation if we wanted
-         // For now linear list is safer and simpler
-         // But for Start Screen (2x2 likely), Right might mean index + 1 if even?
-         // Let's stick to simple cycle for robustness unless user complains.
-         // Actually, let's try to be smart.
-         // If horizontal layout...
-         // But simple up/down cycle is always 'playable'.
+        // Optional: grid navigation if we wanted
+        // For now linear list is safer and simpler
+        // But for Start Screen (2x2 likely), Right might mean index + 1 if even?
+        // Let's stick to simple cycle for robustness unless user complains.
+        // Actually, let's try to be smart.
+        // If horizontal layout...
+        // But simple up/down cycle is always 'playable'.
     } else if (left) {
-         // same
+        // same
     }
-    
+
     if (moved) {
         lastUiMoveTime = now;
         // Use playSound to ensure audio context is initialized
         if (typeof playSound === 'function') playSound('move');
     }
-    
+
     // Confirm Action (A / Cross = button 0)
     if (gp.buttons[0].pressed && !gpPrevButtons[0]) {
         if (target) {
@@ -182,7 +182,7 @@ function updateMenuNavigation(gp) {
 function updateGamepad() {
     const gp = getGamepad();
     if (!gp) return;
-    
+
     // Check for any input to switch UI mode
     // We check axes and buttons. 
     // Optimization: only check if not already in GP mode
@@ -192,18 +192,18 @@ function updateGamepad() {
     // Splash Screen Dismissal (Gamepad)
     if (typeof splashActive !== 'undefined' && splashActive) {
         if (anyButton) { // only buttons are guaranteed gestures, axes might fail audio resume
-             if (typeof dismissSplash === 'function') dismissSplash();
-             // Prevent this press from triggering menu action on next frame
-             // We copy current buttons to prevButtons so they aren't 'justPressed' next time
-             gpPrevButtons = gp.buttons.map(b => b.pressed);
+            if (typeof dismissSplash === 'function') dismissSplash();
+            // Prevent this press from triggering menu action on next frame
+            // We copy current buttons to prevButtons so they aren't 'justPressed' next time
+            gpPrevButtons = gp.buttons.map(b => b.pressed);
         }
         return; // Don't process other input while splash is up
     }
 
     if (typeof setInputControlMode === 'function' && typeof currentInputMode !== 'undefined' && currentInputMode !== 'gp') {
-         if (anyButton || anyAxis) {
-             setInputControlMode('gp');
-         }
+        if (anyButton || anyAxis) {
+            setInputControlMode('gp');
+        }
     }
 
     const deadzone = 0.25;
@@ -244,7 +244,7 @@ function updateGamepad() {
             } else {
                 gpHoldTimers['dialogue'] = (gpHoldTimers['dialogue'] || 0) + 1;
                 if (gpHoldTimers['dialogue'] > HOLD_DELAY && (gpHoldTimers['dialogue'] - HOLD_DELAY) % HOLD_REPEAT === 0) {
-                     if (typeof advanceDialogue === 'function') advanceDialogue();
+                    if (typeof advanceDialogue === 'function') advanceDialogue();
                 }
             }
         } else {
@@ -263,9 +263,9 @@ function updateGamepad() {
     // Special handling: if paused, we definitely want menu mode
     // If not running, we definitely want menu mode
     // (except if just loading, but getGamepad implies we are running JS)
-    
+
     if (visibleScreen || (typeof gamePaused !== 'undefined' && gamePaused) || (typeof gameRunning !== 'undefined' && !gameRunning)) {
-        
+
         // Handle Options (9) to unpause if we are on pause screen
         // (Allows quick toggle without selecting Resume button)
         if (justPressed(9)) {
@@ -273,9 +273,22 @@ function updateGamepad() {
                 togglePause();
             }
         }
-        
+
+        // Button 11 (R3) - Toggle Language
+        if (justPressed(11)) {
+            const langs = ['en', 'ja', 'ko', 'zh-TW', 'zh-CN', 'es', 'pt', 'ru', 'fr', 'vi'];
+            let current = 'en';
+            if (typeof currentLang !== 'undefined') current = currentLang;
+
+            let idx = langs.indexOf(current);
+            if (idx === -1) idx = 0;
+
+            const nextLang = langs[(idx + 1) % langs.length];
+            if (typeof setLanguage === 'function') setLanguage(nextLang);
+        }
+
         updateMenuNavigation(gp);
-        
+
         gpPrevButtons = currButtons;
         gpPrevButtons['gpMoving'] = false; // Reset movement flag while in menu
         return;
@@ -312,16 +325,16 @@ function updateGamepad() {
     if (gpLeft || gpRight || gpUp || gpDown || gpPrevButtons['gpMoving']) {
         gpPrevButtons['gpMoving'] = gpLeft || gpRight || gpUp || gpDown;
     }
-    
+
     // Pause Game (Options / Start)
     if (justPressed(9)) {
-         if (typeof togglePause === 'function') togglePause();
+        if (typeof togglePause === 'function') togglePause();
     }
-    
+
     // Toggle Autopilot (L1)
     if (justPressed(4)) {
         if (typeof autopilot !== 'undefined') {
-            autopilot = !autopilot; 
+            autopilot = !autopilot;
         }
     }
 
@@ -356,7 +369,7 @@ function updateGamepad() {
         if (heldOrRepeat(1)) summonSprite(r1Held ? 5 : 2); // Circle: Mage / Wizard
         if (heldOrRepeat(2)) summonSprite(r1Held ? 6 : 1); // Square: Knight / Berserker
         if (heldOrRepeat(3)) summonSprite(r1Held ? 7 : 3); // Triangle: Cleric / Frost
-        
+
         // Triggers (hold to repeat)
         if (heldOrRepeat(6)) summonSprite(8); // L2: Vampire
         if (heldOrRepeat(7)) summonSprite(9); // R2: Bomber

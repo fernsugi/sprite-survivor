@@ -53,19 +53,36 @@ let currentInputMode = 'kb'; // 'kb' or 'gp'
 function setInputControlMode(mode) {
     if (currentInputMode === mode) return;
     currentInputMode = mode;
-    
+
+    // Update dialogue hint
+    const dialogueHint = document.querySelector('.dialogue-hint');
+    if (dialogueHint) {
+        const key = mode === 'gp' ? 'dialogueHintGamepad' : 'dialogueHint';
+        dialogueHint.setAttribute('data-i18n', key);
+        // Only update text if t() is available
+        if (typeof t === 'function') {
+            dialogueHint.textContent = t(key);
+        }
+    }
+
+    // Update language hint visibility
+    const langHint = document.getElementById('langHint');
+    if (langHint) {
+        langHint.style.display = (mode === 'gp') ? 'block' : 'none';
+    }
+
     // Only update if start screen or relevant UI is visible
     const startScreen = document.getElementById('startScreen');
     if (!startScreen || startScreen.style.display === 'none') {
         // We might want to update skill hint in game too [SPACE] vs [A]
         updateSkillHint(mode);
         updateSpriteKeyHints(mode); // Also update sprite buttons in game
-        return; 
+        return;
     }
-    
+
     // If start screen is visible, we still update sprite hints if they exist (though usually hidden on start)
     updateSpriteKeyHints(mode);
-    
+
     if (mode === 'gp') {
         document.getElementById('keyMove').textContent = t('instructMoveGP');
         document.getElementById('keySummon').textContent = t('instructSummonGP');
@@ -84,7 +101,7 @@ function setInputControlMode(mode) {
 function updateSkillHint(mode) {
     const hint = document.getElementById('skillHint');
     if (!hint) return;
-    
+
     if (mode === 'gp') {
         hint.textContent = t('instructSkillGP'); // reuse short key name
     } else {
@@ -93,12 +110,12 @@ function updateSkillHint(mode) {
 }
 
 function updateSpriteKeyHints(mode) {
-    const ids = ['sprite-key-0', 'sprite-key-1', 'sprite-key-2', 'sprite-key-3', 'sprite-key-4', 
-                 'sprite-key-5', 'sprite-key-6', 'sprite-key-7', 'sprite-key-8', 'sprite-key-9'];
-                 
+    const ids = ['sprite-key-0', 'sprite-key-1', 'sprite-key-2', 'sprite-key-3', 'sprite-key-4',
+        'sprite-key-5', 'sprite-key-6', 'sprite-key-7', 'sprite-key-8', 'sprite-key-9'];
+
     // Keyboard keys (Default)
     const altKeys = ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/'];
-    
+
     // Gamepad keys (Based on gamepad.js logic)
     // 0: Archer (RS), 1: Knight (Square), 2: Mage (Circle), 3: Cleric (Triangle)
     // 4: Ninja (R1+RS), 5: Wizard (R1+Circle), 6: Berserker (R1+Square), 7: Frost (R1+Triangle)
@@ -125,8 +142,8 @@ function updateSpriteKeyHints(mode) {
                 span.innerHTML = gpKeys[index]; // Use innerHTML for inline styles
                 // Make font slightly smaller for long combos to prevent break
                 if (gpKeys[index].length > 15) { // Adjusted length check for HTML string
-                     span.style.fontSize = '0.8em';
-                     span.style.letterSpacing = '-1px';
+                    span.style.fontSize = '0.8em';
+                    span.style.letterSpacing = '-1px';
                 } else {
                     span.style.fontSize = '';
                     span.style.letterSpacing = '';

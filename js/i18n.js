@@ -109,6 +109,7 @@ const translations = {
     "namePrompt": "The heroes wish to know who answered their call.",
     "confirm": "CONFIRM",
     "dialogueHint": "[SPACE] to continue",
+    "dialogueHintGamepad": "[X] to continue",
     "story_1_1": "Your consciousness drifts through an endless void... Until a voice calls out to you.",
     "story_1_2": "Can you hear me...? Please... if anyone can hear this...",
     "story_1_3": "Four faint lights flicker before you. One burns brighter than the rest - orange, like a dying flame.",
@@ -358,6 +359,7 @@ const translations = {
     "namePrompt": "英雄たちはあなたの名前を知りたがっています。",
     "confirm": "確定",
     "dialogueHint": "[スペース] 続ける",
+    "dialogueHintGamepad": "[X] 続ける",
     "story_1_1": "お前の意識は果てしない虚空を漂う... 声がお前を呼ぶまで。",
     "story_1_2": "聞こえるか...？ 誰か... この声が届く者はいないか...",
     "story_1_3": "四つの微かな光がお前の前で揺らめく。一つは特に明るく燃えている - オレンジ色、消えかけの炎のように。",
@@ -607,6 +609,7 @@ const translations = {
     "namePrompt": "영웅들이 당신의 이름을 알고 싶어합니다.",
     "confirm": "확인",
     "dialogueHint": "[스페이스] 계속",
+    "dialogueHintGamepad": "[X] 계속",
     "story_1_1": "네 의식이 끝없는 허공을 떠다닌다... 목소리가 너를 부를 때까지.",
     "story_1_2": "들리는가...? 제발... 누구든 이 목소리가 들린다면...",
     "story_1_3": "네 앞에 네 개의 희미한 빛이 깜박인다. 하나가 유독 밝게 타오른다 - 오렌지색, 꺼져가는 불꽃처럼.",
@@ -856,6 +859,7 @@ const translations = {
     "namePrompt": "英雄們想知道是誰回應了他們的呼喚。",
     "confirm": "確認",
     "dialogueHint": "[空白鍵] 繼續",
+    "dialogueHintGamepad": "[X] 繼續",
     "story_1_1": "你的意識漂浮在無盡的虛空中... 直到一個聲音呼喚你。",
     "story_1_2": "聽得到嗎...？ 求求你... 如果有人能聽到這個聲音...",
     "story_1_3": "四道微弱的光芒在你面前閃爍。其中一道燃燒得更亮 - 橘色的，像垂死的火焰。",
@@ -1105,6 +1109,7 @@ const translations = {
     "namePrompt": "英雄们想知道是谁回应了他们的呼唤。",
     "confirm": "确认",
     "dialogueHint": "[空格键] 继续",
+    "dialogueHintGamepad": "[X] 继续",
     "story_1_1": "你的意识漂浮在无尽的虚空中... 直到一个声音呼唤你。",
     "story_1_2": "听得到吗...？ 求求你... 如果有人能听到这个声音...",
     "story_1_3": "四道微弱的光芒在你面前闪烁。其中一道燃烧得更亮 - 橘色的，像垂死的火焰。",
@@ -1354,6 +1359,7 @@ const translations = {
     "namePrompt": "Los héroes desean saber quién respondió a su llamado.",
     "confirm": "CONFIRMAR",
     "dialogueHint": "[ESPACIO] continuar",
+    "dialogueHintGamepad": "[X] continuar",
     "story_1_1": "Tu conciencia flota en un vacío sin fin... Hasta que una voz te llama.",
     "story_1_2": "¿Puedes oírme...? Por favor... si alguien puede escuchar esto...",
     "story_1_3": "Cuatro luces tenues parpadean ante ti. Una brilla más que las demás - naranja, como una llama moribunda.",
@@ -1603,6 +1609,7 @@ const translations = {
     "namePrompt": "Os heróis desejam saber quem respondeu ao seu chamado.",
     "confirm": "CONFIRMAR",
     "dialogueHint": "[ESPAÇO] continuar",
+    "dialogueHintGamepad": "[X] continuar",
     "story_1_1": "Sua consciência flutua em um vazio sem fim... Até que uma voz te chama.",
     "story_1_2": "Você pode me ouvir...? Por favor... se alguém puder ouvir isso...",
     "story_1_3": "Quatro luzes fracas piscam diante de você. Uma brilha mais que as outras - laranja, como uma chama moribunda.",
@@ -1852,6 +1859,7 @@ const translations = {
     "namePrompt": "Герои желают знать, кто откликнулся на их зов.",
     "confirm": "ПОДТВЕРДИТЬ",
     "dialogueHint": "[ПРОБЕЛ] продолжить",
+    "dialogueHintGamepad": "[X] продолжить",
     "story_1_1": "Твоё сознание дрейфует в бесконечной пустоте... Пока голос не окликнет тебя.",
     "story_1_2": "Ты слышишь меня...? Пожалуйста... если кто-то может это услышать...",
     "story_1_3": "Четыре тусклых огня мерцают перед тобой. Один горит ярче остальных - оранжевый, как угасающее пламя.",
@@ -2101,6 +2109,7 @@ const translations = {
     "namePrompt": "Les héros souhaitent savoir qui a répondu à leur appel.",
     "confirm": "CONFIRMER",
     "dialogueHint": "[ESPACE] continuer",
+    "dialogueHintGamepad": "[X] continuer",
     "story_1_1": "Ta conscience dérive dans un vide sans fin... Jusqu'à ce qu'une voix t'appelle.",
     "story_1_2": "Tu m'entends...? S'il te plaît... si quelqu'un peut entendre ceci...",
     "story_1_3": "Quatre faibles lumières scintillent devant toi. L'une brille plus que les autres - orange, comme une flamme mourante.",
@@ -2350,6 +2359,7 @@ const translations = {
     "namePrompt": "Các anh hùng muốn biết ai đã đáp lời kêu gọi của họ.",
     "confirm": "XÁC NHẬN",
     "dialogueHint": "[SPACE] tiếp tục",
+    "dialogueHintGamepad": "[X] tiếp tục",
     "story_1_1": "Ý thức của ngươi trôi nổi trong khoảng không vô tận... Cho đến khi một giọng nói gọi ngươi.",
     "story_1_2": "Ngươi có nghe ta không...? Làm ơn... nếu ai đó có thể nghe thấy điều này...",
     "story_1_3": "Bốn ánh sáng mờ nhạt lập lòe trước mặt ngươi. Một trong số đó cháy sáng hơn cả - màu cam, như ngọn lửa sắp tắt.",
@@ -2578,10 +2588,10 @@ function setLanguage(lang, updateHistory = true) {
   if (typeof refreshAchievementsList === 'function') refreshAchievementsList();
   if (typeof refreshVictoryAchievements === 'function') refreshVictoryAchievements();
   if (typeof refreshBossName === 'function') refreshBossName();
-  
+
   // Re-apply adaptive control hints if in gamepad mode
   if (typeof updateSpriteKeyHints === 'function' && typeof currentInputMode !== 'undefined') {
-      updateSpriteKeyHints(currentInputMode);
+    updateSpriteKeyHints(currentInputMode);
   }
   if (typeof updateStoryUI === 'function') updateStoryUI();
 }
