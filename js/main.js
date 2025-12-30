@@ -351,6 +351,9 @@ function startGame(cheat = false) {
 }
 
 function restartGame() {
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
     // In story mode, restart the current chapter from the beginning
     if (storyMode) {
         const currentChapter = storyChapter;
@@ -384,6 +387,9 @@ function restartGame() {
 }
 
 function goToMainMenu() {
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.overHeal = 0; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
     currentSkill = null; updateSkillDisplay();

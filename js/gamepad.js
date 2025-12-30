@@ -198,12 +198,7 @@ function updateGamepad() {
     }
 
     if (typeof setInputControlMode === 'function') {
-        const hasCurrentInputMode =
-            typeof globalThis !== 'undefined' &&
-            Object.prototype.hasOwnProperty.call(globalThis, 'currentInputMode');
-        const isGpMode =
-            hasCurrentInputMode && globalThis.currentInputMode === 'gp';
-
+        const isGpMode = typeof currentInputMode !== 'undefined' && currentInputMode === 'gp';
         if (!isGpMode && (anyButton || anyAxis)) {
             setInputControlMode('gp');
         }

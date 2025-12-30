@@ -3,6 +3,11 @@
 // Gradient cache for sprite rendering performance
 const spriteGradientCache = new Map();
 
+// Clear gradient cache (call on game restart to free memory)
+function clearSpriteGradientCache() {
+    spriteGradientCache.clear();
+}
+
 // Debuff visual colors
 const debuffColors = {
     noHeal: '#f44',    // Red - can't recover
@@ -316,8 +321,8 @@ function draw() {
         ctx.rotate(sprite.angle);
 
         // 2. Base Shape with Gradient (Volume)
-        // Cache gradients per sprite type and size for performance
-        const cacheKey = `${sprite.nameKey}_${s}`;
+        // Cache gradients per sprite type, size, and color for performance
+        const cacheKey = `${sprite.nameKey}_${s}_${sprite.color}`;
         let grad = spriteGradientCache.get(cacheKey);
         if (!grad) {
             grad = ctx.createRadialGradient(0, 0, s/4, 0, 0, s);
