@@ -179,12 +179,12 @@ body.lang-vi input {
 
 body.lang-vi #startScreen .subtitle,
 body.lang-cjk #startScreen .subtitle {
-  font-size: 12px;
+  font-size: 18px;
 }
 
 body.lang-vi #startScreen .instructions,
 body.lang-cjk #startScreen .instructions {
-  font-size: 10px;
+  font-size: 15px;
 }
 
 body.lang-vi .sprite-btn .desc,
@@ -254,11 +254,9 @@ body.lang-cjk .menu-btn-secondary {
 }
 
 #languagePanel h3 {
-  margin-bottom: 10px;
-  font-size: 8px !important;
   color: #aaa;
-  font-family: "Press Start 2P", cursive !important;
-  line-height: 1.2;
+  font: bold 13px Arial, sans-serif !important;
+  line-height: 1.5 !important;
 }
 
 .lang-btn {
@@ -547,7 +545,7 @@ body.lang-cjk .menu-btn-secondary {
 }
 
 #startScreen .subtitle {
-  font-size: 10px;
+  font-size: 15px;
   color: #888;
   margin-bottom: 40px;
 }
@@ -638,7 +636,7 @@ body.lang-cjk .menu-btn-secondary {
 }
 
 #startScreen .instructions {
-  font-size: 8px;
+  font-size: 12px;
   color: #666;
   line-height: 2;
   max-width: 600px;
@@ -1159,7 +1157,6 @@ body.lang-vi .dialogue-speaker {
     animation: blinker 1s linear infinite;
 }
 
-
 @keyframes blinker {
     50% { opacity: 0; }
 }
@@ -1205,5 +1202,5 @@ body.lang-vi .dialogue-speaker {
   display: none;
   color: #aaa;
   margin-bottom: 5px;
-  font: bold 10px Arial, sans-serif !important;
+  font: bold 13px Arial, sans-serif !important;
 }
