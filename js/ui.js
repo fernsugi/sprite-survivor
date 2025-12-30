@@ -122,35 +122,53 @@ function updateSpriteKeyHints(mode) {
     // 8: Vampire (L2), 9: Bomber (R2)
     // Using Unicode shapes for buttons: □ (Square), ○ (Circle), △ (Triangle), ✕ (Cross - used for skill)
     // RS = Right Stick
-    const gpKeys = [
-        '[RS]',         // Archer
-        '[<span class="gp-icon square"></span>]',          // Knight
-        '[<span class="gp-icon circle"></span>]',          // Mage
-        '[<span class="gp-icon triangle"></span>]',          // Cleric
-        '[R1+RS]',      // Ninja
-        '[R1+<span class="gp-icon circle"></span>]',       // Wizard
-        '[R1+<span class="gp-icon square"></span>]',       // Berserker
-        '[R1+<span class="gp-icon triangle"></span>]',       // Frost
-        '[L2]',         // Vampire
-        '[R2]'          // Bomber
+    const gpKeyConfigs = [
+        { parts: ['[RS]'] },                                         // Archer
+        { parts: ['[', { iconClass: 'square' }, ']'] },              // Knight
+        { parts: ['[', { iconClass: 'circle' }, ']'] },              // Mage
+        { parts: ['[', { iconClass: 'triangle' }, ']'] },            // Cleric
+        { parts: ['[R1+RS]'] },                                      // Ninja
+        { parts: ['[R1+', { iconClass: 'circle' }, ']'] },           // Wizard
+        { parts: ['[R1+', { iconClass: 'square' }, ']'] },           // Berserker
+        { parts: ['[R1+', { iconClass: 'triangle' }, ']'] },         // Frost
+        { parts: ['[L2]'] },                                         // Vampire
+        { parts: ['[R2]'] }                                          // Bomber
     ];
 
     ids.forEach((id, index) => {
         const span = document.getElementById(id);
         if (span) {
             if (mode === 'gp') {
-                span.innerHTML = gpKeys[index]; // Use innerHTML for inline styles
-                // Make font slightly smaller for long combos to prevent break
-                if (gpKeys[index].length > 15) { // Adjusted length check for HTML string
-                    span.style.fontSize = '0.8em';
-                    span.style.letterSpacing = '-1px';
-                } else {
-                    span.style.fontSize = '';
-                    span.style.letterSpacing = '';
+                const config = gpKeyConfigs[index];
+                if (config) {
+                    // Clear existing content safely
+                    span.replaceChildren();
+                    // Build content from config parts
+                    let textLength = 0;
+                    config.parts.forEach(part => {
+                        if (typeof part === 'string') {
+                            span.appendChild(document.createTextNode(part));
+                            textLength += part.length;
+                        } else if (part && part.iconClass) {
+                            const iconSpan = document.createElement('span');
+                            iconSpan.className = 'gp-icon ' + part.iconClass;
+                            span.appendChild(iconSpan);
+                            // Count icon as approximately 2 characters for sizing logic
+                            textLength += 2;
+                        }
+                    });
+                    // Make font slightly smaller for long combos to prevent break
+                    if (textLength > 6) {
+                        span.style.fontSize = '0.8em';
+                        span.style.letterSpacing = '-1px';
+                    } else {
+                        span.style.fontSize = '';
+                        span.style.letterSpacing = '';
+                    }
                 }
             } else {
                 const numKey = index === 9 ? '0' : (index + 1).toString();
-                span.innerHTML = `[${numKey}/${altKeys[index]}]`; // Use innerHTML
+                span.textContent = `[${numKey}/${altKeys[index]}]`;
                 span.style.fontSize = '';
                 span.style.letterSpacing = '';
             }

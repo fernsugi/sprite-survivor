@@ -28,8 +28,33 @@ function initSpriteButtons() {
         btn.style.fontSize = spriteFontSize;
         const numKey = index === 9 ? '0' : (index + 1).toString();
         const altKey = altKeys[index];
-        // Wrap key hint in span for dynamic updating
-        btn.innerHTML = `<span class="key-hint" id="sprite-key-${index}">[${numKey}/${altKey}]</span> ${t(type.nameKey)} <span class="cost" style="font-size:${costFontSize}">${type.cost}pts</span><br><span class="desc" style="font-size:${descFontSize}">${t(type.descKey)}</span>`;
+        
+        // Build button content using DOM methods to avoid XSS
+        const keyHintSpan = document.createElement('span');
+        keyHintSpan.className = 'key-hint';
+        keyHintSpan.id = `sprite-key-${index}`;
+        keyHintSpan.textContent = `[${numKey}/${altKey}]`;
+
+        const nameText = document.createTextNode(` ${t(type.nameKey)} `);
+
+        const costSpan = document.createElement('span');
+        costSpan.className = 'cost';
+        costSpan.style.fontSize = costFontSize;
+        costSpan.textContent = `${type.cost}pts`;
+
+        const lineBreak = document.createElement('br');
+
+        const descSpan = document.createElement('span');
+        descSpan.className = 'desc';
+        descSpan.style.fontSize = descFontSize;
+        descSpan.textContent = t(type.descKey);
+
+        btn.appendChild(keyHintSpan);
+        btn.appendChild(nameText);
+        btn.appendChild(costSpan);
+        btn.appendChild(lineBreak);
+        btn.appendChild(descSpan);
+        
         btn.onclick = () => summonSprite(index);
         container.appendChild(btn);
     });

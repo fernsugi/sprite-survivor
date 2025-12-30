@@ -1,5 +1,13 @@
 // Rendering System
 
+// Gradient cache for sprite rendering performance
+const spriteGradientCache = new Map();
+
+// Clear gradient cache (call on game restart to free memory)
+function clearSpriteGradientCache() {
+    spriteGradientCache.clear();
+}
+
 // Debuff visual colors
 const debuffColors = {
     noHeal: '#f44',    // Red - can't recover
@@ -312,21 +320,19 @@ function draw() {
         ctx.translate(sprite.x, sprite.y);
         ctx.rotate(sprite.angle);
 
-        // Helper for darker outline color
-        const getDarkColor = (c) => {
-            // Simple darken heuristic not perfect but works for hex
-            return '#000'; // Keep dark outline for contrast but thin it? 
-            // Actually, let's use a semi-transparent black overlay for "darker"
-        };
-
         // 2. Base Shape with Gradient (Volume)
-        // Create radial gradient for 3D look
-        const grad = ctx.createRadialGradient(0, 0, s/4, 0, 0, s);
-        grad.addColorStop(0, '#fff'); // Highlight center
-        grad.addColorStop(0.3, sprite.color); // Main body
-        grad.addColorStop(1, '#000'); // Dark edge (simulating shading)
+        // Cache gradients per sprite type, size, and color for performance
+        const cacheKey = `${sprite.nameKey}_${s}_${sprite.color}`;
+        let grad = spriteGradientCache.get(cacheKey);
+        if (!grad) {
+            grad = ctx.createRadialGradient(0, 0, s/4, 0, 0, s);
+            grad.addColorStop(0, '#fff'); // Highlight center
+            grad.addColorStop(0.3, sprite.color); // Main body
+            grad.addColorStop(1, '#000'); // Dark edge (simulating shading)
+            spriteGradientCache.set(cacheKey, grad);
+        }
         
-        // Actually, let's define the path first, then fill with gradient
+        // Define the path first, then fill with gradient
         ctx.beginPath();
         
         // Define shape path based on type
@@ -433,8 +439,7 @@ function draw() {
         // 5. Specific Details (Symbols inside)
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         
-        // Reuse path logic or drawing logic for internal symbols?
-        // Let's add simple iconic details on top
+        // Add iconic details for each sprite type
         if (sprite.nameKey === 'knight') {
              // Cross on shield
              ctx.fillRect(-1, -s/3, 2, s/1.5);

@@ -33,7 +33,7 @@ function getVisibleScreen() {
 
     for (const id of screens) {
         const el = document.getElementById(id);
-        if (el && el.style.display !== 'none' && el.style.display !== '') {
+        if (el && getComputedStyle(el).display !== 'none') {
             // Dialogue box is handled separately in logic, but good to know
             return id;
         }
@@ -129,7 +129,7 @@ function updateMenuNavigation(gp) {
         if (gp.buttons[0].pressed && !gpPrevButtons[0]) {
             if (target) {
                 target.click();
-                // SFX handled by click usually, or we can add one
+                // Any SFX should be triggered by the target's click handler.
             }
         }
         return;
@@ -154,15 +154,12 @@ function updateMenuNavigation(gp) {
         uiFocusIndex = (uiFocusIndex - 1 + focusables.length) % focusables.length;
         moved = true;
     } else if (right) {
-        // Optional: grid navigation if we wanted
-        // For now linear list is safer and simpler
-        // But for Start Screen (2x2 likely), Right might mean index + 1 if even?
-        // Let's stick to simple cycle for robustness unless user complains.
-        // Actually, let's try to be smart.
-        // If horizontal layout...
-        // But simple up/down cycle is always 'playable'.
+        // Horizontal (left/right) d-pad movement is intentionally ignored here.
+        // Our menus are treated as linear vertical lists navigated with up/down only.
+        // This avoids making layout-specific assumptions; extend this block if/when
+        // true grid-based UI navigation is implemented.
     } else if (left) {
-        // same
+        // See note above: left/right are no-ops for the current vertical list menus.
     }
 
     if (moved) {
@@ -200,8 +197,9 @@ function updateGamepad() {
         return; // Don't process other input while splash is up
     }
 
-    if (typeof setInputControlMode === 'function' && typeof currentInputMode !== 'undefined' && currentInputMode !== 'gp') {
-        if (anyButton || anyAxis) {
+    if (typeof setInputControlMode === 'function') {
+        const isGpMode = typeof currentInputMode !== 'undefined' && currentInputMode === 'gp';
+        if (!isGpMode && (anyButton || anyAxis)) {
             setInputControlMode('gp');
         }
     }

@@ -1,5 +1,16 @@
 // Main Game Loop and Initialization
 
+// Gamepad optimization: track if a gamepad is connected
+let hasGamepad = false;
+
+window.addEventListener('gamepadconnected', function () {
+    hasGamepad = true;
+});
+
+window.addEventListener('gamepaddisconnected', function () {
+    hasGamepad = false;
+});
+
 function spawnOrb() {
     const margin = 50;
     orbs.push({
@@ -315,7 +326,7 @@ function update() {
 }
 
 function gameLoop() {
-    if (typeof updateGamepad === 'function') updateGamepad();
+    if (hasGamepad && typeof updateGamepad === 'function') updateGamepad();
     if (gameStarted) { update(); draw(); }
     // Update dialogue animation even when paused
     if (dialogueActive) { updateDialogue(); }
@@ -340,6 +351,9 @@ function startGame(cheat = false) {
 }
 
 function restartGame() {
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
     // In story mode, restart the current chapter from the beginning
     if (storyMode) {
         const currentChapter = storyChapter;
@@ -373,6 +387,9 @@ function restartGame() {
 }
 
 function goToMainMenu() {
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.overHeal = 0; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
     currentSkill = null; updateSkillDisplay();
@@ -433,12 +450,25 @@ document.addEventListener('keyup', e => { keys[e.key] = false; });
 let splashActive = true;
 let splashInterval = null;
 
+// Create named functions for event listeners so they can be removed
+function handleSplashClick() {
+    dismissSplash();
+}
+
+function handleSplashKeydown() {
+    dismissSplash();
+}
+
 function dismissSplash() {
     if (!splashActive) return;
     splashActive = false;
     
     // Stop the language cycle
     if (splashInterval) clearInterval(splashInterval);
+    
+    // Remove event listeners to prevent unnecessary function calls
+    document.removeEventListener('click', handleSplashClick);
+    document.removeEventListener('keydown', handleSplashKeydown);
     
     // Attempt audio init
     if (typeof initAudio === 'function') initAudio();
@@ -449,8 +479,8 @@ function dismissSplash() {
 }
 
 // Global listener for splash dismissal (click or key)
-document.addEventListener('click', () => dismissSplash());
-document.addEventListener('keydown', () => dismissSplash());
+document.addEventListener('click', handleSplashClick);
+document.addEventListener('keydown', handleSplashKeydown);
 
 function startSplashCycle() {
     // Available languages
@@ -467,7 +497,7 @@ function startSplashCycle() {
         
         if (titleEl) titleEl.textContent = translations[lang]['title'] || "SPRITE SURVIVOR";
         if (descEl) descEl.textContent = translations[lang]['clickToStart'] || "CLICK TO START";
-        if (supportEl) supportEl.innerHTML = translations[lang]['inputSupport'] || "KEYBOARD / GAMEPAD SUPPORTED";
+        if (supportEl) supportEl.textContent = translations[lang]['inputSupport'] || "KEYBOARD / GAMEPAD SUPPORTED";
         
         // Update font style for CJK/Vietnamese if needed
         const splash = document.getElementById('splashScreen');
@@ -479,8 +509,19 @@ function startSplashCycle() {
     };
 
     splashInterval = setInterval(() => {
-        langIndex = (langIndex + 1) % langs.length;
-        updateSplashText(langs[langIndex]);
+        // Check if splash is still active before updating
+        if (!splashActive) {
+            if (splashInterval) clearInterval(splashInterval);
+            return;
+        }
+        
+        try {
+            langIndex = (langIndex + 1) % langs.length;
+            updateSplashText(langs[langIndex]);
+        } catch (error) {
+            // Silently handle errors to prevent breaking the interval
+            console.error('Error updating splash text:', error);
+        }
     }, 1000); // Switch every 1 second (matches blink)
 }
 

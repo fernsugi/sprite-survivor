@@ -124,12 +124,14 @@ function showNameInput() {
 // Confirm player name and start chapter
 function confirmPlayerName() {
     const input = document.getElementById('playerNameInput');
+    const errorEl = document.getElementById('nameInputError');
     let name = input.value.trim();
     
     // Strict validation: name required
     if (!name) {
         playSound('error');
         input.classList.add('error-shake');
+        if (errorEl) errorEl.textContent = t('nameRequired') || 'Please enter a name';
         // Remove class after animation completes so it can be triggered again
         setTimeout(() => input.classList.remove('error-shake'), 500);
         input.focus();
