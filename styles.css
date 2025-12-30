@@ -209,6 +209,17 @@ body.lang-cjk .chapter-btn {
 body.lang-vi .chapter-hero {
   font-family: "Press Start 2P", cursive; /* Keep hero name in pixel font */
 }
+
+body.lang-vi #waveInfo,
+body.lang-cjk #waveInfo {
+  font-size: 12px;
+}
+
+body.lang-vi #waveTimer,
+body.lang-cjk #waveTimer {
+  font-size: 10px;
+  margin-top: 2px;
+}
 /* End Vietnamese and lang-cjk font override */
 
 /* Responsive scaling for different screen sizes */
@@ -529,7 +540,7 @@ body.lang-vi .chapter-hero {
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
   text-shadow: 2px 2px 0 #000;
   text-align: center;
 }
@@ -1229,7 +1240,7 @@ body.lang-vi .dialogue-speaker {
 
 /* Refactored inline styles */
 #waveTimer {
-  font-size: 10px;
+  font-size: 8px;
   margin-top: 4px;
 }
 
