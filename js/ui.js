@@ -142,9 +142,7 @@ function updateSpriteKeyHints(mode) {
                 const config = gpKeyConfigs[index];
                 if (config) {
                     // Clear existing content safely
-                    while (span.firstChild) {
-                        span.removeChild(span.firstChild);
-                    }
+                    span.replaceChildren();
                     // Build content from config parts
                     let textLength = 0;
                     config.parts.forEach(part => {
