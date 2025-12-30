@@ -529,7 +529,7 @@ function draw() {
     }
     // Autopilot indicator - top-left corner, white when ON, grey when OFF
     ctx.globalAlpha = autopilot ? 1 : 0.5;
-    ctx.font = currentLang === 'vi' ? '14px VT323, monospace' : '10px "Press Start 2P"'; ctx.textAlign = 'left';
+    ctx.font = 'bold 20px system-ui, sans-serif'; ctx.textAlign = 'left';
     
     // Determine input label
     let inputLabel = 'TAB';
@@ -543,7 +543,7 @@ function draw() {
     ctx.globalAlpha = 1;
 
     // Score display - top-right corner
-    ctx.font = currentLang === 'vi' ? '14px VT323, monospace' : '10px "Press Start 2P"'; ctx.textAlign = 'right';
+    ctx.font = 'bold 20px system-ui, sans-serif'; ctx.textAlign = 'right';
     const scoreText = t('score') + ': ' + displayScore;
     ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeText(scoreText, canvas.width - 10, 25);
     ctx.fillStyle = '#fff'; ctx.fillText(scoreText, canvas.width - 10, 25);
