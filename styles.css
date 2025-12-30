@@ -214,35 +214,35 @@ body.lang-vi .chapter-hero {
 /* Responsive scaling for different screen sizes */
 @media (max-width: 1400px), (max-height: 850px) {
   #gameWrapper {
-    transform: scale(0.95);
+    transform: scale(0.966);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 1280px), (max-height: 780px) {
   #gameWrapper {
-    transform: scale(0.85);
+    transform: scale(0.866);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 1150px), (max-height: 700px) {
   #gameWrapper {
-    transform: scale(0.75);
+    transform: scale(0.766);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 1000px), (max-height: 620px) {
   #gameWrapper {
-    transform: scale(0.65);
+    transform: scale(0.666);
     transform-origin: center center;
   }
 }
 
 @media (max-width: 850px), (max-height: 540px) {
   #gameWrapper {
-    transform: scale(0.55);
+    transform: scale(0.566);
     transform-origin: center center;
   }
 }
@@ -529,7 +529,7 @@ body.lang-vi .chapter-hero {
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   text-shadow: 2px 2px 0 #000;
   text-align: center;
 }
@@ -1229,7 +1229,7 @@ body.lang-vi .dialogue-speaker {
 
 /* Refactored inline styles */
 #waveTimer {
-  font-size: 8px;
+  font-size: 10px;
   margin-top: 4px;
 }
 
