@@ -192,6 +192,8 @@ function initStoryGame() {
     player.invincibleTime = 0;
     player.speedBoost = 0;
     player.speedBoostTimer = 0;
+    player.facingX = 0;
+    player.facingY = 1;
 
     enemies = [];
     projectiles = [];
@@ -202,6 +204,7 @@ function initStoryGame() {
     spriteProjectiles = [];
     heroes = [];
     heroBalls = [];
+    spriteOrbs = [];
 
     usedSpriteTypes = new Set();
     gotHit = false;
@@ -901,6 +904,7 @@ function spawnRemnantBoss() {
         shieldTimer: 0,
         enrageTimer: 0,
         enraged: false,
+        slowed: 0,
         // Chapter 3 (Milia's Remnant) has projectile immunity
         projectileImmune: storyChapter === 3
     };

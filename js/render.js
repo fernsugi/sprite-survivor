@@ -780,6 +780,14 @@ function draw() {
             ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 10, 0, Math.PI * 2); ctx.stroke();
             ctx.globalAlpha = 1;
         }
+        // Frost slow effect
+        if (boss.slowed > 0) {
+            ctx.fillStyle = '#8ef4'; ctx.globalAlpha = 0.3 + Math.sin(Date.now() * 0.008) * 0.1;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 25, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#4ff'; ctx.lineWidth = 2; ctx.globalAlpha = 0.6;
+            ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.size + 25, 0, Math.PI * 2); ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
     }
 
     // Debuff screen edge vignette

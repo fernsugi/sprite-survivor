@@ -252,13 +252,14 @@ function remnantBossAttack() {
         case 1: // Rex's Remnant - Warrior style (melee focused)
             SFX.heroWarrior && SFX.heroWarrior();
             switch (boss.attackPattern) {
-                case 0: // Charge - rushes at player (fast and far)
+                case 0: // Charge - rushes at player (fast and far, reduced when slowed)
                     const chargeAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
+                    const chargeSpeed = 25 * bossSpeedMult;
                     for (let i = 0; i < 12; i++) {
                         setTimeout(() => {
                             if (!boss) return;
-                            boss.x += Math.cos(chargeAngle) * 25;
-                            boss.y += Math.sin(chargeAngle) * 25;
+                            boss.x += Math.cos(chargeAngle) * chargeSpeed;
+                            boss.y += Math.sin(chargeAngle) * chargeSpeed;
                             effects.push({ x: boss.x, y: boss.y, life: 10, type: 'particle', color: '#f80', vx: -Math.cos(chargeAngle) * 5, vy: -Math.sin(chargeAngle) * 5 });
                             if (player.invincibleTime <= 0) {
                                 const dist = Math.hypot(player.x - boss.x, player.y - boss.y);

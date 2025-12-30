@@ -339,14 +339,41 @@ function startGame(cheat = false) {
     initAudio();
     loadSoundPreference();
     playSound('select');
+
+    // Clear rendering caches to free memory
+    if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
+
+    // Reset all game state
+    player.x = 500; player.y = 375; player.hp = player.maxHp; player.overHeal = 0; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
+    enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
+    currentSkill = null; updateSkillDisplay();
+    score = 0; displayScore = 0; points = 0; wave = 1; waveTimer = 0; gameTime = 0; bossActive = false; boss = null;
+    // Reset debuffs
+    for (const key in debuffs) debuffs[key] = 0;
+    // Reset story mode state
+    storyMode = false; storyChapter = 0; storyWave = 0; storyWaveSpawning = false;
+    dialogueActive = false; dialogueQueue = []; dialogueIndex = 0; dialogueCharIndex = 0;
+    if (typeof spriteOrbs !== 'undefined') spriteOrbs = [];
+    if (typeof collectedSprites !== 'undefined') collectedSprites = new Set();
+    if (typeof pendingWaveSpawn !== 'undefined') pendingWaveSpawn = false;
+    if (typeof pendingBossSpawn !== 'undefined') pendingBossSpawn = false;
+    if (typeof pendingVictory !== 'undefined') pendingVictory = false;
+    if (typeof pendingRewardSprite !== 'undefined') pendingRewardSprite = false;
+    if (typeof pendingMidSprite !== 'undefined') pendingMidSprite = false;
+    if (typeof awaitingRewardCollection !== 'undefined') awaitingRewardCollection = false;
+
     cheatMode = cheat;
     if (cheatMode) points = Infinity;
     usedSpriteTypes = new Set(); gotHit = false; heroSummoned = false; // Reset achievement tracking
     autopilot = false;
+    gamePaused = false;
     document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('bossHealth').style.display = 'none';
+    document.getElementById('dialogueBox').style.display = 'none';
     gameStarted = true;
     gameRunning = true;
     for (let i = 0; i < 8; i++) spawnOrb();
+    updateUI();
     SFX.waveStart();
 }
 
@@ -405,6 +432,8 @@ function goToMainMenu() {
     if (typeof pendingBossSpawn !== 'undefined') pendingBossSpawn = false;
     if (typeof pendingVictory !== 'undefined') pendingVictory = false;
     if (typeof pendingRewardSprite !== 'undefined') pendingRewardSprite = false;
+    if (typeof pendingMidSprite !== 'undefined') pendingMidSprite = false;
+    if (typeof awaitingRewardCollection !== 'undefined') awaitingRewardCollection = false;
     gameStarted = false;
     gameRunning = false;
     gamePaused = false;
