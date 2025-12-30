@@ -244,6 +244,7 @@ function togglePause() {
     if (!gameStarted || !gameRunning) return;
     gamePaused = !gamePaused;
     document.getElementById('pauseScreen').style.display = gamePaused ? 'flex' : 'none';
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
 }
 
 function update() {
@@ -372,6 +373,7 @@ function startGame(cheat = false) {
     document.getElementById('dialogueBox').style.display = 'none';
     gameStarted = true;
     gameRunning = true;
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
     for (let i = 0; i < 8; i++) spawnOrb();
     updateUI();
     SFX.waveStart();
@@ -404,6 +406,7 @@ function restartGame() {
     gameRunning = true;
     gamePaused = false;
     autopilot = false;
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
     document.getElementById('gameOver').style.display = 'none';
     document.getElementById('victory').style.display = 'none';
     document.getElementById('bossHealth').style.display = 'none';
@@ -449,6 +452,7 @@ function goToMainMenu() {
     document.getElementById('startScreen').style.display = 'flex';
     updateUI();
     updateHighScoreDisplay();
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
 }
 
 // Event Listeners

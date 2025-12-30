@@ -50,6 +50,15 @@ function updateHighScoreDisplay() {
 // Adaptive Control Guide
 let currentInputMode = 'kb'; // 'kb' or 'gp'
 
+// Update language hint visibility based on game state
+function updateLangHintVisibility() {
+    const langHint = document.getElementById('langHint');
+    if (langHint) {
+        const inGame = typeof gameRunning !== 'undefined' && gameRunning && !gamePaused;
+        langHint.style.display = (currentInputMode === 'gp' && !inGame) ? 'block' : 'none';
+    }
+}
+
 function setInputControlMode(mode) {
     if (currentInputMode === mode) return;
     currentInputMode = mode;
@@ -66,10 +75,7 @@ function setInputControlMode(mode) {
     }
 
     // Update language hint visibility
-    const langHint = document.getElementById('langHint');
-    if (langHint) {
-        langHint.style.display = (mode === 'gp') ? 'block' : 'none';
-    }
+    updateLangHintVisibility();
 
     // Only update if start screen or relevant UI is visible
     const startScreen = document.getElementById('startScreen');

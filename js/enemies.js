@@ -228,7 +228,7 @@ function remnantBossAttack() {
 
     // Handle slow effect
     if (boss.slowed > 0) boss.slowed--;
-    const bossSpeedMult = boss.slowed > 0 ? 0.75 : 1;
+    const bossSpeedMult = boss.slowed > 0 ? 0.5 : 1;
 
     boss.attackTimer++;
     boss.moveTimer++;
@@ -517,7 +517,7 @@ function bossAttack() {
     }
     // Handle slow effect
     if (boss.slowed > 0) boss.slowed--;
-    const speedMult = boss.slowed > 0 ? 0.75 : 1;
+    const speedMult = boss.slowed > 0 ? 0.5 : 1;
 
     boss.moveTimer++;
     if (boss.moveTimer >= 120) { boss.moveTimer = 0; boss.targetX = 100 + Math.random() * (canvas.width - 200); }

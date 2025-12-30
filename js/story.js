@@ -176,6 +176,7 @@ function initStoryGame() {
     gameRunning = true;
     gamePaused = false;
     autopilot = false;
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
     score = 0;
     displayScore = 0;
     points = 0; // Start with 0 points - need to collect sprite first
