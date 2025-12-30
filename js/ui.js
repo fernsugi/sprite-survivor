@@ -84,11 +84,11 @@ function setInputControlMode(mode) {
     updateSpriteKeyHints(mode);
 
     if (mode === 'gp') {
-        document.getElementById('keyMove').textContent = t('instructMoveGP');
+        document.getElementById('keyMove').textContent = "L-Stick";
         document.getElementById('keySummon').textContent = t('instructSummonGP');
-        document.getElementById('keySkill').textContent = t('instructSkillGP');
-        document.getElementById('keyAuto').textContent = t('instructAutopilotGP');
-        document.getElementById('keyPause').textContent = t('instructPauseGP');
+        document.getElementById('keySkill').textContent = "X / A ";
+        document.getElementById('keyAuto').textContent = "L1 / LB";
+        document.getElementById('keyPause').textContent = "Options / Start";
     } else {
         document.getElementById('keyMove').textContent = "WASD / Arrow Keys";
         document.getElementById('keySummon').textContent = "1-0 / ZXCVBNM,./";
@@ -103,7 +103,7 @@ function updateSkillHint(mode) {
     if (!hint) return;
 
     if (mode === 'gp') {
-        hint.textContent = t('instructSkillGP'); // reuse short key name
+        hint.textContent = "X / A "
     } else {
         hint.textContent = "[SPACE]";
     }
