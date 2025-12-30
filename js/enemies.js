@@ -55,7 +55,8 @@ function spawnBoss() {
         shield: 0,                    // Boss 3: Void Emperor
         shieldTimer: 0,               // Boss 3: Void Emperor
         enrageTimer: 0,               // Boss 4: Death Titan
-        enraged: false                // Boss 4: Death Titan
+        enraged: false,               // Boss 4: Death Titan
+        slowed: 0                     // Frost slow effect
     };
     document.getElementById('bossHealth').style.display = 'block';
     document.getElementById('bossName').textContent = t(boss.nameKey);
@@ -225,14 +226,18 @@ function createBossBall(x, y, angle, speed, damage, opts = {}) {
 function remnantBossAttack() {
     if (!boss) return;
 
+    // Handle slow effect
+    if (boss.slowed > 0) boss.slowed--;
+    const bossSpeedMult = boss.slowed > 0 ? 0.75 : 1;
+
     boss.attackTimer++;
     boss.moveTimer++;
     if (boss.moveTimer >= REMNANT.MOVE_INTERVAL) {
         boss.moveTimer = 0;
         boss.targetX = 100 + Math.random() * (canvas.width - 200);
     }
-    boss.x += (boss.targetX - boss.x) * 0.02;
-    if (boss.y < boss.targetY) boss.y += 2;
+    boss.x += (boss.targetX - boss.x) * 0.02 * bossSpeedMult;
+    if (boss.y < boss.targetY) boss.y += 2 * bossSpeedMult;
     boss.phase += 0.05;
 
     // Chapter-specific attack patterns
@@ -509,10 +514,14 @@ function bossAttack() {
                 break;
         }
     }
+    // Handle slow effect
+    if (boss.slowed > 0) boss.slowed--;
+    const speedMult = boss.slowed > 0 ? 0.75 : 1;
+
     boss.moveTimer++;
     if (boss.moveTimer >= 120) { boss.moveTimer = 0; boss.targetX = 100 + Math.random() * (canvas.width - 200); }
-    boss.x += (boss.targetX - boss.x) * 0.02;
-    if (boss.y < boss.targetY) boss.y += 2;
+    boss.x += (boss.targetX - boss.x) * 0.02 * speedMult;
+    if (boss.y < boss.targetY) boss.y += 2 * speedMult;
     boss.phase += 0.05;
 }
 
