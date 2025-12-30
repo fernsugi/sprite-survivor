@@ -146,7 +146,256 @@ const environments = {
     }
 };
 
+// Story mode environment themes (one per chapter)
+const storyEnvironments = {
+    // Chapter 1 - Rex: Training Grounds - warm earthy tones
+    training: {
+        bg: '#2a2015', tile: '#332818', accent: '#3d301c',
+        drawDetails: () => {
+            ctx.save();
+            ctx.fillStyle = '#1a1510';
+            // Wooden fence posts at bottom
+            for (let i = 0; i < 8; i++) {
+                const x = i * 140 + 30;
+                ctx.fillRect(x, canvas.height - 60, 8, 60);
+                ctx.fillRect(x - 15, canvas.height - 45, 38, 6);
+            }
+            // Training dummies silhouettes
+            ctx.globalAlpha = 0.3;
+            const dummies = [[80, canvas.height - 100], [canvas.width - 100, canvas.height - 110], [canvas.width / 2 + 150, canvas.height - 95]];
+            dummies.forEach(([dx, dy]) => {
+                ctx.fillRect(dx - 4, dy, 8, 40); // Post
+                ctx.beginPath();
+                ctx.arc(dx, dy - 10, 12, 0, Math.PI * 2); // Head
+                ctx.fill();
+                ctx.fillRect(dx - 20, dy + 5, 40, 6); // Arms
+            });
+            // Torch glows
+            ctx.globalAlpha = 0.15;
+            ctx.fillStyle = '#f80';
+            [[60, 80], [canvas.width - 60, 100], [canvas.width / 2, 60]].forEach(([tx, ty]) => {
+                const flicker = Math.sin(gameTime * 3 + tx) * 5;
+                ctx.beginPath();
+                ctx.arc(tx, ty, 30 + flicker, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.restore();
+        }
+    },
+    // Chapter 2 - Beth: Crystal Cavern - blues, cyans, teals
+    cavern: {
+        bg: '#0d1820', tile: '#10202a', accent: '#142830',
+        drawDetails: () => {
+            ctx.save();
+            // Stalactites from ceiling
+            ctx.fillStyle = '#1a3040';
+            const stalactites = [[50, 0, 25], [180, 0, 40], [350, 0, 30], [500, 0, 50], [680, 0, 35], [850, 0, 45], [950, 0, 28]];
+            stalactites.forEach(([sx, sy, sh]) => {
+                ctx.beginPath();
+                ctx.moveTo(sx - 8, sy);
+                ctx.lineTo(sx + 8, sy);
+                ctx.lineTo(sx, sy + sh);
+                ctx.fill();
+            });
+            // Crystal formations
+            ctx.globalAlpha = 0.4;
+            ctx.fillStyle = '#4af';
+            const crystals = [[100, canvas.height - 50], [300, canvas.height - 40], [600, canvas.height - 55], [800, canvas.height - 45], [950, canvas.height - 35]];
+            crystals.forEach(([cx, cy]) => {
+                // Crystal cluster
+                ctx.beginPath();
+                ctx.moveTo(cx, cy); ctx.lineTo(cx - 6, cy + 30); ctx.lineTo(cx + 6, cy + 30);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(cx + 12, cy + 10); ctx.lineTo(cx + 8, cy + 30); ctx.lineTo(cx + 16, cy + 30);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(cx - 10, cy + 15); ctx.lineTo(cx - 14, cy + 30); ctx.lineTo(cx - 6, cy + 30);
+                ctx.fill();
+            });
+            // Water reflection at bottom
+            ctx.globalAlpha = 0.1;
+            ctx.fillStyle = '#0af';
+            ctx.fillRect(0, canvas.height - 25, canvas.width, 25);
+            // Sparkle reflections
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#8ef';
+            for (let i = 0; i < 10; i++) {
+                const rx = (i * 107 + Math.sin(gameTime + i) * 20) % canvas.width;
+                const ry = canvas.height - 20 + Math.sin(gameTime * 2 + i) * 5;
+                ctx.fillRect(rx, ry, 2, 2);
+            }
+            ctx.restore();
+        }
+    },
+    // Chapter 3 - Milia: Sky Temple - whites, golds, soft blues
+    temple: {
+        bg: '#1a2030', tile: '#202838', accent: '#283040',
+        drawDetails: () => {
+            ctx.save();
+            // Cloud wisps
+            ctx.globalAlpha = 0.15;
+            ctx.fillStyle = '#fff';
+            const clouds = [[100, 650], [300, 680], [550, 640], [750, 690], [900, 660], [150, 50], [450, 30], [700, 60]];
+            clouds.forEach(([cx, cy]) => {
+                ctx.beginPath();
+                ctx.arc(cx, cy, 25, 0, Math.PI * 2);
+                ctx.arc(cx + 20, cy - 5, 20, 0, Math.PI * 2);
+                ctx.arc(cx + 35, cy + 3, 18, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            // Marble pillars at edges
+            ctx.globalAlpha = 0.25;
+            ctx.fillStyle = '#ddd';
+            [[30, canvas.height - 120], [canvas.width - 50, canvas.height - 100]].forEach(([px, py]) => {
+                ctx.fillRect(px, py, 20, 120);
+                ctx.fillRect(px - 5, py, 30, 10);
+                ctx.fillRect(px - 5, py + 110, 30, 10);
+            });
+            // Divine light rays from top
+            ctx.globalAlpha = 0.08;
+            const gradient = ctx.createLinearGradient(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+            gradient.addColorStop(0, '#ffd700');
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            // Light beams
+            for (let i = 0; i < 5; i++) {
+                const bx = canvas.width * 0.2 + i * (canvas.width * 0.15);
+                ctx.beginPath();
+                ctx.moveTo(bx - 20, 0);
+                ctx.lineTo(bx + 20, 0);
+                ctx.lineTo(bx + 60, canvas.height);
+                ctx.lineTo(bx - 60, canvas.height);
+                ctx.fill();
+            }
+            // Floating golden particles
+            ctx.globalAlpha = 0.4;
+            ctx.fillStyle = '#fd0';
+            for (let i = 0; i < 12; i++) {
+                const px = (i * 89 + gameTime * 10) % canvas.width;
+                const py = (i * 67 + Math.sin(gameTime + i) * 30) % canvas.height;
+                ctx.fillRect(px, py, 2, 2);
+            }
+            ctx.restore();
+        }
+    },
+    // Chapter 4 - Troy: Shadow Citadel - deep purples, magentas, blacks
+    citadel: {
+        bg: '#0a0510', tile: '#100818', accent: '#150a20',
+        drawDetails: () => {
+            ctx.save();
+            // Ominous architecture silhouettes
+            ctx.fillStyle = '#050208';
+            // Towers
+            ctx.fillRect(20, canvas.height - 150, 40, 150);
+            ctx.beginPath();
+            ctx.moveTo(40, canvas.height - 150);
+            ctx.lineTo(20, canvas.height - 180);
+            ctx.lineTo(60, canvas.height - 180);
+            ctx.fill();
+            ctx.fillRect(canvas.width - 70, canvas.height - 180, 50, 180);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 45, canvas.height - 180);
+            ctx.lineTo(canvas.width - 70, canvas.height - 220);
+            ctx.lineTo(canvas.width - 20, canvas.height - 220);
+            ctx.fill();
+            // Dark energy cracks
+            ctx.strokeStyle = '#f0f';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.3;
+            const cracks = [[200, 700, 250, 650, 220, 600], [500, 720, 480, 680, 520, 640], [800, 690, 820, 650, 790, 610]];
+            cracks.forEach(c => {
+                ctx.beginPath();
+                ctx.moveTo(c[0], c[1]);
+                ctx.lineTo(c[2], c[3]);
+                ctx.lineTo(c[4], c[5]);
+                ctx.stroke();
+            });
+            // Floating debris
+            ctx.globalAlpha = 0.2;
+            ctx.fillStyle = '#a0f';
+            for (let i = 0; i < 8; i++) {
+                const dx = (i * 130 + 50) % canvas.width;
+                const dy = 100 + Math.sin(gameTime + i * 2) * 40;
+                ctx.fillRect(dx, dy, 8 + i % 3 * 4, 8 + i % 2 * 4);
+            }
+            // Ominous vignette
+            const vignette = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 50,
+                canvas.width / 2, canvas.height / 2, 500
+            );
+            vignette.addColorStop(0, 'transparent');
+            vignette.addColorStop(1, 'rgba(10, 0, 20, 0.5)');
+            ctx.fillStyle = vignette;
+            ctx.globalAlpha = 1;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
+    },
+    // Chapter 5 - Ending: Dawn Sanctuary - golden sunrise, warm whites
+    dawn: {
+        bg: '#1a1510', tile: '#201a15', accent: '#28201a',
+        drawDetails: () => {
+            ctx.save();
+            // Sunrise gradient from bottom
+            const sunrise = ctx.createLinearGradient(0, canvas.height, 0, 0);
+            sunrise.addColorStop(0, 'rgba(255, 150, 50, 0.2)');
+            sunrise.addColorStop(0.3, 'rgba(255, 200, 100, 0.1)');
+            sunrise.addColorStop(1, 'transparent');
+            ctx.fillStyle = sunrise;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Horizon glow
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#fd8';
+            ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
+            // Peaceful light rays
+            ctx.globalAlpha = 0.1;
+            const rayGradient = ctx.createLinearGradient(canvas.width / 2, canvas.height, canvas.width / 2, 0);
+            rayGradient.addColorStop(0, '#ffa');
+            rayGradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = rayGradient;
+            for (let i = 0; i < 7; i++) {
+                const rx = canvas.width * 0.1 + i * (canvas.width * 0.13);
+                ctx.beginPath();
+                ctx.moveTo(rx - 10, canvas.height);
+                ctx.lineTo(rx + 10, canvas.height);
+                ctx.lineTo(rx + 40, 0);
+                ctx.lineTo(rx - 40, 0);
+                ctx.fill();
+            }
+            // Floating celebration particles (golden)
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = '#fd0';
+            for (let i = 0; i < 20; i++) {
+                const px = (i * 53 + gameTime * 15) % canvas.width;
+                const py = (i * 41 + Math.sin(gameTime * 1.5 + i) * 50) % canvas.height;
+                const size = 1 + Math.sin(gameTime * 2 + i) * 1;
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            // Soft warm overlay
+            ctx.globalAlpha = 0.05;
+            ctx.fillStyle = '#fda';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
+    }
+};
+
 function getEnvironment() {
+    // Story mode uses chapter-specific environments
+    if (typeof storyMode !== 'undefined' && storyMode) {
+        switch (storyChapter) {
+            case 1: return storyEnvironments.training;
+            case 2: return storyEnvironments.cavern;
+            case 3: return storyEnvironments.temple;
+            case 4: return storyEnvironments.citadel;
+            case 5: return storyEnvironments.dawn;
+            default: return storyEnvironments.training;
+        }
+    }
+    // Survival mode uses wave-based environments
     if (wave <= 5) return environments.forest;
     if (wave <= 10) return environments.volcanic;
     if (wave <= 15) return environments.ice;
