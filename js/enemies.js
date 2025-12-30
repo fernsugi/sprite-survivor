@@ -651,7 +651,7 @@ function updateBoss() {
 
             if (wave >= 20) {
                 gameRunning = false; SFX.victory();
-                if (!cheatMode) saveHighScore(score);
+                if (!cheatMode && !storyMode) saveHighScore(score);
                 const newAchievements = checkAchievements();
                 displayVictoryAchievements(newAchievements);
                 document.getElementById('victory').style.display = 'flex';

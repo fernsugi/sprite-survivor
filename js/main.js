@@ -315,7 +315,7 @@ function update() {
     if (player.hp <= 0) {
         gameRunning = false;
         SFX.playerDeath();
-        if (!cheatMode) saveHighScore(score);
+        if (!cheatMode && !storyMode) saveHighScore(score);
         document.getElementById('gameOver').style.display = 'flex';
         document.getElementById('finalScore').textContent = score;
         document.getElementById('finalWave').textContent = wave;

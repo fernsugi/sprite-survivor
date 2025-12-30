@@ -762,7 +762,7 @@ body.lang-cjk .menu-btn-secondary {
 
 #highScoreDisplay {
   color: #fff;
-  font-size: 6px;
+  font-size: 12px;
   margin-top: 4px;
   text-shadow: 1px 1px 0 #000;
 }
@@ -1068,7 +1068,7 @@ body.lang-cjk .menu-btn-secondary {
 
 .dialogue-hint {
   color: #666;
-  font-size: 8px;
+  font: bold 15px Arial, sans-serif !important;
   text-align: right;
   margin-top: 10px;
 }
