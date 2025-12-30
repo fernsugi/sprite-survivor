@@ -3,6 +3,12 @@
 // Gamepad optimization: track if a gamepad is connected
 let hasGamepad = false;
 
+// Keyboard hold-to-repeat for sprite summoning (like gamepad)
+const KB_HOLD_DELAY = 30; // Frames before repeat starts
+const KB_HOLD_REPEAT = 8; // Frames between repeats
+const kbHoldTimers = {}; // Hold timers for each sprite index
+const kbPrevKeys = {}; // Previous frame key states for summon keys
+
 window.addEventListener('gamepadconnected', function () {
     hasGamepad = true;
 });
@@ -247,8 +253,58 @@ function togglePause() {
     if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
 }
 
+// Keyboard hold-to-repeat sprite summoning (mirrors gamepad behavior)
+const kbSummonKeys = {
+    '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, '0': 9,
+    'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, ',': 7, '.': 8, '/': 9
+};
+
+function updateKeyboardSummon() {
+    if (!gameStarted || !gameRunning || gamePaused || dialogueActive) return;
+
+    // Check each sprite index (0-9)
+    for (let i = 0; i < 10; i++) {
+        if (i >= spriteTypes.length) continue;
+
+        // Check if any key for this sprite index is held
+        let isHeld = false;
+        for (const [key, idx] of Object.entries(kbSummonKeys)) {
+            if (idx === i) {
+                // Check both lowercase and uppercase for letter keys
+                if (keys[key] || keys[key.toUpperCase()]) {
+                    isHeld = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isHeld) {
+            kbHoldTimers[i] = 0;
+            kbPrevKeys[i] = false;
+            continue;
+        }
+
+        // Key is held - check for first press or repeat
+        if (!kbPrevKeys[i]) {
+            // First frame of press
+            kbHoldTimers[i] = 1;
+            summonSprite(i);
+        } else {
+            // Held - check for repeat
+            kbHoldTimers[i] = (kbHoldTimers[i] || 0) + 1;
+            if (kbHoldTimers[i] > KB_HOLD_DELAY && (kbHoldTimers[i] - KB_HOLD_DELAY) % KB_HOLD_REPEAT === 0) {
+                summonSprite(i);
+            }
+        }
+        kbPrevKeys[i] = true;
+    }
+}
+
 function update() {
     if (!gameRunning || gamePaused) return;
+
+    // Handle keyboard hold-to-repeat sprite summoning
+    updateKeyboardSummon();
 
     // Animate display score towards actual score
     if (displayScore < score) {
@@ -456,7 +512,6 @@ function goToMainMenu() {
 }
 
 // Event Listeners
-const altSummonKeys = { 'z': 0, 'x': 1, 'c': 2, 'v': 3, 'b': 4, 'n': 5, 'm': 6, ',': 7, '.': 8, '/': 9 };
 document.addEventListener('keydown', e => {
     if (typeof setInputControlMode === 'function') setInputControlMode('kb');
     keys[e.key] = true;
@@ -469,12 +524,7 @@ document.addEventListener('keydown', e => {
     }
     if (!gameStarted || !gameRunning || gamePaused) return;
     if (e.key === 'Tab') { e.preventDefault(); autopilot = !autopilot; return; }
-    if (e.key >= '1' && e.key <= '9') { const index = parseInt(e.key) - 1; if (index < spriteTypes.length) summonSprite(index); }
-    else if (e.key === '0') { if (spriteTypes.length >= 10) summonSprite(9); }
-    else if (altSummonKeys.hasOwnProperty(e.key.toLowerCase())) {
-        const index = altSummonKeys[e.key.toLowerCase()];
-        if (index < spriteTypes.length) summonSprite(index);
-    }
+    // Sprite summoning is now handled by updateKeyboardSummon() with hold-to-repeat
     if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); useSkill(); }
 });
 document.addEventListener('keyup', e => { keys[e.key] = false; });
