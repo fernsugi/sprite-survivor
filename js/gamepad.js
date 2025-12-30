@@ -5,6 +5,39 @@ let gpHoldTimers = {}; // Hold timers for repeat (object for mixed numeric/strin
 const HOLD_DELAY = 30; // Frames before repeat starts
 const HOLD_REPEAT = 8; // Frames between repeats
 
+// Calibration: buttons stuck at startup will be ignored until released
+let gpStuckButtons = []; // Buttons that were pressed on first detection
+let gpStuckAxes = []; // Axes that were active on first detection
+let gpCalibrated = false;
+
+// Mark active buttons/axes as stuck
+function markGamepadButtonsAsStuck() {
+    const gp = getGamepad();
+    if (!gp) return;
+
+    // Mark currently active buttons as stuck
+    gp.buttons.forEach((b, i) => {
+        if (b.pressed) gpStuckButtons[i] = true;
+    });
+
+    // Mark currently active axes as stuck
+    gp.axes.forEach((a, i) => {
+        if (Math.abs(a) > 0.4) gpStuckAxes[i] = true;
+    });
+
+    // Clear hold timers and direction
+    gpHoldTimers = {};
+    window.gamepadDirection = { left: false, right: false, up: false, down: false };
+}
+
+// Keyboard listener: mark gamepad buttons as stuck when modifier keys pressed
+// Cmd/Ctrl/Windows Key/Esc
+document.addEventListener('keydown', function(e) {
+    if (e.metaKey || e.ctrlKey || e.key === 'Escape') {
+        markGamepadButtonsAsStuck();
+    }
+});
+
 // UI Navigation State
 let uiFocusIndex = 0;
 let lastUiMoveTime = 0;
@@ -86,7 +119,7 @@ function clearFocus() {
     }
 }
 
-function updateMenuNavigation(gp) {
+function updateMenuNavigation(gp, currButtons, currAxes) {
     const screenId = getVisibleScreen();
 
     // Skip if dialogue is active (handled by dialogue logic)
@@ -126,7 +159,7 @@ function updateMenuNavigation(gp) {
     // Allow faster scrolling if held? For now fixed delay.
     if (now - lastUiMoveTime < UI_MOVE_DELAY) {
         // Check for Confirm even during debounce
-        if (gp.buttons[0].pressed && !gpPrevButtons[0]) {
+        if (currButtons[0] && !gpPrevButtons[0]) {
             if (target) {
                 target.click();
                 // Any SFX should be triggered by the target's click handler.
@@ -136,14 +169,14 @@ function updateMenuNavigation(gp) {
     }
 
     // D-pad & Sticks
-    const lx = gp.axes[0];
-    const ly = gp.axes[1];
+    const lx = currAxes[0];
+    const ly = currAxes[1];
     const deadzone = 0.5;
 
-    const up = gp.buttons[12].pressed || ly < -deadzone;
-    const down = gp.buttons[13].pressed || ly > deadzone;
-    const left = gp.buttons[14].pressed || lx < -deadzone;
-    const right = gp.buttons[15].pressed || lx > deadzone;
+    const up = currButtons[12] || ly < -deadzone;
+    const down = currButtons[13] || ly > deadzone;
+    const left = currButtons[14] || lx < -deadzone;
+    const right = currButtons[15] || lx > deadzone;
 
     let moved = false;
 
@@ -169,7 +202,7 @@ function updateMenuNavigation(gp) {
     }
 
     // Confirm Action (A / Cross = button 0)
-    if (gp.buttons[0].pressed && !gpPrevButtons[0]) {
+    if (currButtons[0] && !gpPrevButtons[0]) {
         if (target) {
             target.click();
         }
@@ -206,8 +239,43 @@ function updateGamepad() {
 
     const deadzone = 0.25;
 
-    // Get current button states
-    const currButtons = gp.buttons.map(b => b.pressed);
+    // Get raw button states
+    const rawButtons = gp.buttons.map(b => b.pressed);
+
+    // Calibrate on first detection
+    if (!gpCalibrated) {
+        gpStuckButtons = [...rawButtons];
+        gp.axes.forEach((a, i) => {
+            if (Math.abs(a) > 0.4) gpStuckAxes[i] = true;
+        });
+        gpCalibrated = true;
+    }
+
+    // Update stuck buttons: unstick when released
+    for (let i = 0; i < gpStuckButtons.length; i++) {
+        if (gpStuckButtons[i] && !rawButtons[i]) {
+            gpStuckButtons[i] = false; // Released, unstick it
+        }
+    }
+
+    // Update stuck axes: unstick when returned to center
+    for (let i = 0; i < gpStuckAxes.length; i++) {
+        if (gpStuckAxes[i] && Math.abs(gp.axes[i]) <= 0.4) {
+            gpStuckAxes[i] = false; // Returned to center, unstick it
+        }
+    }
+
+    // Filter out stuck buttons
+    const currButtons = rawButtons.map((pressed, i) => {
+        if (gpStuckButtons[i]) return false; // Ignore stuck button
+        return pressed;
+    });
+
+    // Filter out stuck axes
+    const currAxes = gp.axes.map((value, i) => {
+        if (gpStuckAxes[i]) return 0; // Ignore stuck axis
+        return value;
+    });
 
     // Helper: true on first frame of press
     const justPressed = (i) => currButtons[i] && !gpPrevButtons[i];
@@ -228,6 +296,11 @@ function updateGamepad() {
         }
         return false;
     };
+
+    // Start button (9) marks active buttons/axes as stuck (takes priority - checked first)
+    if (justPressed(9)) {
+        markGamepadButtonsAsStuck();
+    }
 
     // R1 modifier state
     const r1Held = currButtons[5] || false;
@@ -285,7 +358,7 @@ function updateGamepad() {
             if (typeof setLanguage === 'function') setLanguage(nextLang);
         }
 
-        updateMenuNavigation(gp);
+        updateMenuNavigation(gp, currButtons, currAxes);
 
         gpPrevButtons = currButtons;
         gpPrevButtons['gpMoving'] = false; // Reset movement flag while in menu
@@ -301,8 +374,8 @@ function updateGamepad() {
     // If we are here, we are in-game.
 
     // Left stick - Movement (set based on current stick position)
-    const lx = gp.axes[0];
-    const ly = gp.axes[1];
+    const lx = currAxes[0];
+    const ly = currAxes[1];
 
     // Only override keys if gamepad is being used for movement
     // INCREASED DEADZONE to prevent drift
@@ -342,8 +415,8 @@ function updateGamepad() {
     }
 
     // Right stick - Archer / Ninja (hold to repeat)
-    const rx = gp.axes[2];
-    const ry = gp.axes[3];
+    const rx = currAxes[2];
+    const ry = currAxes[3];
     const rightStickActive = Math.abs(rx) > deadzone || Math.abs(ry) > deadzone;
     if (rightStickActive) {
         if (typeof summonSprite === 'function') {

@@ -1144,6 +1144,7 @@ function showStoryEnding() {
     points = 0;
     updateUI(); // Update sprite buttons (disabled when not running)
     document.getElementById('startScreen').style.display = 'flex';
+    if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
 }
 
 // Draw sprite orbs

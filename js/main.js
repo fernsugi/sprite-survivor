@@ -529,6 +529,15 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('keyup', e => { keys[e.key] = false; });
 
+// Clear all keys when tab loses focus (prevents stuck keys on tab switch)
+function clearAllKeys() {
+    for (const key in keys) keys[key] = false;
+    for (const key in kbHoldTimers) kbHoldTimers[key] = 0;
+    for (const key in kbPrevKeys) kbPrevKeys[key] = false;
+}
+document.addEventListener('visibilitychange', clearAllKeys); // Clear on any tab switch
+window.addEventListener('blur', clearAllKeys);
+
 // Splash Screen Logic
 let splashActive = true;
 let splashInterval = null;
@@ -545,18 +554,18 @@ function handleSplashKeydown() {
 function dismissSplash() {
     if (!splashActive) return;
     splashActive = false;
-    
+
     // Stop the language cycle
     if (splashInterval) clearInterval(splashInterval);
-    
+
     // Remove event listeners to prevent unnecessary function calls
     document.removeEventListener('click', handleSplashClick);
     document.removeEventListener('keydown', handleSplashKeydown);
-    
+
     // Attempt audio init
     if (typeof initAudio === 'function') initAudio();
     if (typeof playSound === 'function') playSound('select'); // Feedback
-    
+
     const splash = document.getElementById('splashScreen');
     if (splash) splash.style.display = 'none';
 }
@@ -569,25 +578,25 @@ function startSplashCycle() {
     // Available languages
     const langs = ['en', 'ja', 'ko', 'zh-TW', 'zh-CN', 'es', 'pt', 'ru', 'fr', 'vi'];
     let langIndex = 0;
-    
+
     // Helper to safe update
     const updateSplashText = (lang) => {
         if (typeof translations === 'undefined' || !translations[lang]) return;
-        
+
         const titleEl = document.querySelector('#splashScreen h1');
         const descEl = document.querySelector('#splashScreen .blink'); // Use class to be specific
         const supportEl = document.querySelector('#splashScreen .input-support');
-        
+
         if (titleEl) titleEl.textContent = translations[lang]['title'] || "SPRITE SURVIVOR";
         if (descEl) descEl.textContent = translations[lang]['clickToStart'] || "CLICK TO START";
         if (supportEl) supportEl.textContent = translations[lang]['inputSupport'] || "KEYBOARD / GAMEPAD SUPPORTED";
-        
+
         // Update font style for CJK/Vietnamese if needed
         const splash = document.getElementById('splashScreen');
         if (splash) {
-             splash.className = ''; // Reset class
-             if (lang === 'vi') splash.classList.add('lang-vi');
-             if (['ja', 'ko', 'zh-TW', 'zh-CN'].includes(lang)) splash.classList.add('lang-cjk');
+            splash.className = ''; // Reset class
+            if (lang === 'vi') splash.classList.add('lang-vi');
+            if (['ja', 'ko', 'zh-TW', 'zh-CN'].includes(lang)) splash.classList.add('lang-cjk');
         }
     };
 
@@ -597,7 +606,7 @@ function startSplashCycle() {
             if (splashInterval) clearInterval(splashInterval);
             return;
         }
-        
+
         try {
             langIndex = (langIndex + 1) % langs.length;
             updateSplashText(langs[langIndex]);
@@ -619,13 +628,13 @@ function startSplashCycle() {
     initSpriteButtons();
     updateUI();
     updateHighScoreDisplay();
-    
+
     // Ensure splash is visible
     const splash = document.getElementById('splashScreen');
     if (splash) {
         splash.style.display = 'flex';
         startSplashCycle();
     }
-    
+
     gameLoop();
 })();
