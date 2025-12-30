@@ -8,11 +8,26 @@ A browser-based survival game where you summon and merge sprites to fight waves 
 
 ## How to Play
 
-- **Move:** WASD or Arrow Keys
-- **Summon Sprites:** 1-0 keys (or Z-/ row)
-- **Use Skill:** Spacebar
-- **Autopilot:** TAB
-- **Pause:** ESC
+### Keyboard
+| Action | Keys |
+|--------|------|
+| Move | WASD / Arrow Keys |
+| Summon Sprites | 1-0 (or Z-/ row) |
+| Use Skill | Spacebar |
+| Autopilot | TAB |
+| Pause | ESC |
+
+### Gamepad 🎮
+| Action | Buttons |
+|--------|---------|
+| Move | Left Stick |
+| Summon Sprites | Face Buttons / Right Stick |
+| Use Skill | X / A |
+| Autopilot | L1 / LB |
+| Pause | Options / Start |
+| Change Language | R3 |
+
+*Controller support auto-detected. UI hints adapt to your input method.*
 
 ## Core Mechanics
 
@@ -88,6 +103,10 @@ Just open `index.html` in a browser, or:
 python3 -m http.server 8000
 ```
 
+## Languages
+
+Supported in 10 languages: English, 日本語, 한국어, 繁體中文, 简体中文, Español, Português, Русский, Français, Tiếng Việt
+
 ## Tech
 
-Vanilla HTML/CSS/JavaScript. No dependencies.
+Vanilla HTML/CSS/JavaScript. No build tools, no dependencies. Just open in browser.
