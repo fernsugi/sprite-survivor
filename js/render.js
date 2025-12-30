@@ -236,7 +236,7 @@ function draw() {
     enemies.forEach(enemy => {
         if (enemy.slowed > 0) { ctx.fillStyle = '#8ef4'; ctx.beginPath(); ctx.arc(enemy.x, enemy.y, enemy.size + 5, 0, Math.PI * 2); ctx.fill(); }
         drawPixelChar(enemy.x, enemy.y, enemy.size, enemy.color);
-        if (enemy.hp < enemy.maxHp) { const barWidth = enemy.size * 1.5; ctx.fillStyle = '#000'; ctx.fillRect(enemy.x - barWidth/2, enemy.y - enemy.size - 6, barWidth, 4); ctx.fillStyle = '#f44'; ctx.fillRect(enemy.x - barWidth/2, enemy.y - enemy.size - 6, barWidth * (enemy.hp / enemy.maxHp), 4); }
+        if (enemy.hp < enemy.maxHp) { const barWidth = enemy.size * 1.5; ctx.fillStyle = '#000'; ctx.fillRect(enemy.x - barWidth/2, enemy.y - enemy.size - 6, barWidth, 4); ctx.fillStyle = '#f44'; ctx.fillRect(enemy.x - barWidth/2, enemy.y - enemy.size - 6, barWidth * Math.max(0, enemy.hp / enemy.maxHp), 4); }
     });
 
     // Boss

@@ -1,7 +1,7 @@
 // UI System
 
 function updateUI() {
-    const hpPercent = player.hp / player.maxHp * 100;
+    const hpPercent = Math.max(0, player.hp / player.maxHp * 100);
     document.getElementById('healthFill').style.width = hpPercent + '%';
     // Overheal bar overlays on top of HP bar (grey shield in front of green HP)
     const overhealPercent = player.overHeal / player.maxHp * 100;
@@ -18,7 +18,7 @@ function updateUI() {
         document.getElementById('waveTimer').textContent = bossActive ? t('bossBattle') : `${t('nextWave')}: ${Math.ceil(WAVE_DURATION - waveTimer)}s`;
     }
     document.getElementById('gameTimer').textContent = formatTime(gameTime);
-    if (boss) document.getElementById('bossHealthFill').style.width = (boss.hp / boss.maxHp * 100) + '%';
+    if (boss) document.getElementById('bossHealthFill').style.width = Math.max(0, boss.hp / boss.maxHp * 100) + '%';
     updateSpriteButtons();
 }
 
