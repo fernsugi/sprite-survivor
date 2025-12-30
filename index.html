@@ -6,7 +6,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZHCW7PDD0"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-EZHCW7PDD0');
     </script>
@@ -17,8 +17,10 @@
 
     <!-- Primary Meta Tags -->
     <meta name="title" content="Sprite Survivor - Free Browser Survival Game | Play Online">
-    <meta name="description" content="Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. No download required. Available in 10 languages.">
-    <meta name="keywords" content="sprite survivor, browser game, survival game, free online game, indie game, pixel game, tower defense, summoner game, boss battle, web game, HTML5 game">
+    <meta name="description"
+        content="Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. No download required. Available in 10 languages.">
+    <meta name="keywords"
+        content="sprite survivor, browser game, survival game, free online game, indie game, pixel game, tower defense, summoner game, boss battle, web game, HTML5 game">
     <meta name="author" content="Sprite Survivor">
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
@@ -45,7 +47,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://spritesurvivor.com/">
     <meta property="og:title" content="Sprite Survivor - Free Browser Survival Game">
-    <meta property="og:description" content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser - no download required! Available in 10 languages.">
+    <meta property="og:description"
+        content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser - no download required! Available in 10 languages.">
     <meta property="og:image" content="https://spritesurvivor.com/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -65,7 +68,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://spritesurvivor.com/">
     <meta name="twitter:title" content="Sprite Survivor - Free Browser Survival Game">
-    <meta name="twitter:description" content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser! Available in 10 languages.">
+    <meta name="twitter:description"
+        content="Summon powerful sprites, defeat epic bosses, and survive endless waves. Play free in your browser! Available in 10 languages.">
     <meta name="twitter:image" content="https://spritesurvivor.com/og-image.png">
 
     <!-- Additional SEO -->
@@ -177,11 +181,21 @@
     <!-- TODO: Remove snow effect after winter (around March 2025) -->
     <!-- Seasonal snow effect (remove this div to disable) -->
     <div class="snowfall">
-        <div class="snow"></div><div class="snow"></div><div class="snow"></div>
-        <div class="snow"></div><div class="snow"></div><div class="snow"></div>
-        <div class="snow"></div><div class="snow"></div><div class="snow"></div>
-        <div class="snow"></div><div class="snow"></div><div class="snow"></div>
-        <div class="snow"></div><div class="snow"></div><div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
+        <div class="snow"></div>
     </div>
 
     <div id="gameWrapper">
@@ -221,12 +235,16 @@
                 <div class="subtitle" data-i18n="subtitle">Summon sprites, survive the horde</div>
                 <div class="menu-buttons">
                     <div class="main-buttons">
-                        <button class="menu-btn-main story" onclick="showStoryMode()" data-i18n="storyMode">STORY MODE</button>
-                        <button class="menu-btn-main survival" onclick="startGame()" data-i18n="survival">SURVIVAL</button>
+                        <button class="menu-btn-main story" onclick="showStoryMode()" data-i18n="storyMode">STORY
+                            MODE</button>
+                        <button class="menu-btn-main survival" onclick="startGame()"
+                            data-i18n="survival">SURVIVAL</button>
                     </div>
                     <div class="secondary-buttons">
-                        <button class="menu-btn-secondary" onclick="startGame(true)" data-i18n="cheatMode" style="background: rgba(180, 60, 60, 0.3); border-color: #a44;">CHEAT MODE</button>
-                        <button class="menu-btn-secondary" onclick="showAchievements()" data-i18n="achievements">ACHIEVEMENTS</button>
+                        <button class="menu-btn-secondary" onclick="startGame(true)" data-i18n="cheatMode"
+                            style="background: rgba(180, 60, 60, 0.3); border-color: #a44;">CHEAT MODE</button>
+                        <button class="menu-btn-secondary" onclick="showAchievements()"
+                            data-i18n="achievements">ACHIEVEMENTS</button>
                     </div>
                 </div>
                 <div class="instructions">
