@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 // Generate CSV from i18n translations
-// Usage: node generate-translations-csv.js > translations.csv
+// Usage: node generate-translations-csv.js
 
 const fs = require('fs');
 const path = require('path');
 
-// Read and evaluate i18n.js to extract translations
+const csvPath = process.argv[2] || path.join(__dirname, 'translations.csv');
 const i18nPath = path.join(__dirname, 'js', 'i18n.js');
+
+// Read and evaluate i18n.js to extract translations
 const i18nContent = fs.readFileSync(i18nPath, 'utf8');
 
 // Extract the translations object using regex
@@ -38,10 +40,14 @@ function escapeCSV(value) {
 }
 
 // Generate CSV
-const header = ['key', ...languages].map(escapeCSV).join(',');
-console.log(header);
+const lines = [];
+lines.push(['key', ...languages].map(escapeCSV).join(','));
 
 keys.forEach(key => {
     const row = [key, ...languages.map(lang => translations[lang]?.[key] || '')];
-    console.log(row.map(escapeCSV).join(','));
+    lines.push(row.map(escapeCSV).join(','));
 });
+
+// Write to file
+fs.writeFileSync(csvPath, lines.join('\n'), 'utf8');
+console.log(`Saved ${keys.length} keys to ${csvPath}`);

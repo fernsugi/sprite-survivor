@@ -59,12 +59,15 @@ highScore,HIGH SCORE,ハイスコア,최고 점수,最高分,最高分,RÉCORD,R
 hp,HP,HP,HP,HP,HP,HP,HP,HP,PV,HP
 inputSupport,⌨️ KEYBOARD / GAMEPAD 🎮 SUPPORTED,⌨️ キーボード / コントローラー 🎮 対応,⌨️ 키보드 / 게임패드 🎮 지원,⌨️ 支援鍵盤 / 手把 🎮,⌨️ 支持键盘 / 手柄 🎮,⌨️ TECLADO / MANDO 🎮 COMPATIBLE,⌨️ TECLADO / CONTROLE 🎮 SUPORTADO,⌨️ КЛАВИАТУРА / ГЕЙМПАД 🎮,⌨️ CLAVIER / MANETTE 🎮 SUPPORTÉS,⌨️ HỖ TRỢ BÀN PHÍM / TAY CẦM 🎮
 instructAutopilot,- Toggle autopilot,- オート切替,- 자동 전환,- 自動模式,- 自动模式,- Auto piloto,- Auto piloto,- Автопилот,- Auto pilote,- Tự động
+instructAutopilotGP,L1 / LB,L1 / LB,L1 / LB,L1 / LB,L1 / LB,L1 / LB,L1 / LB,L1 / LB,L1 / LB,L1 / LB
 instructMove,- Move,- 移動,- 이동,- 移動,- 移动,- Mover,- Mover,- Движение,- Déplacer,- Di chuyển
-instructMoveGP,L-Stick,,,,,,,,,
+instructMoveGP,L-Stick,Lスティック,L스틱,L搖桿,L摇杆,L-Stick,L-Stick,L-Stick,L-Stick,L-Stick
 instructPause,- Pause,- 一時停止,- 일시정지,- 暫停,- 暂停,- Pausar,- Pausar,- Пауза,- Pause,- Tạm dừng
+instructPauseGP,Options / Start,Options / Start,Options / Start,Options / Start,Options / Start,Options / Start,Options / Start,Options / Start,Options / Start,Options / Start
 instructSkill,- Use skill (when available),- スキル発動（所持時）,- 스킬 사용 (보유 시),- 使用技能（持有時）,- 使用技能（持有时）,- Usar habilidad (cuando esté disponible),- Usar habilidade (quando disponível),- Использовать умение (когда доступно),- Utiliser compétence (si disponible),- Dùng kỹ năng (khi có)
+instructSkillGP,X / A Button,X / Aボタン,X / A 버튼,X / A 鍵,X / A 键,Botón X / A,Botão X / A,Кнопка X / A,Bouton X / A,Nút X / A
 instructSummon,- Summon sprites (Press/Hold),- スプライト召喚 (押す/長押し),- 스프라이트 소환 (누르기/길게),- 召喚精靈 (按/長按),- 召唤精灵 (按/长按),- Invocar sprites (Pulsar/Mantener),- Invocar sprites (Pressionar/Segurar),- Призыв спрайтов (Нажать/Удерж.),- Invoquer des sprites (Appuyer/Maintenir),- Triệu hồi sprite (Nhấn/Giữ)
-instructSummonGP,Face Buttons / R-Stick,,,,,,,,,
+instructSummonGP,Face Buttons / R-Stick,フェイスボタン / Rスティック,페이스 버튼 / R스틱,功能鍵 / R搖桿,功能键 / R摇杆,Botones / R-Stick,Botões / R-Stick,Кнопки / R-Stick,Boutons / R-Stick,Nút Bấm / R-Stick
 instructTip,"Collect orbs, summon sprites, survive!",オーブを集め、スプライトを召喚し、生き残れ！,"오브를 모으고, 스프라이트를 소환하고, 살아남아라!",收集寶珠，召喚精靈，活下去！,收集宝珠，召唤精灵，活下去！,"¡Recoge orbes, invoca sprites, sobrevive!","Colete orbes, invoque sprites, sobreviva!","Собирай сферы, призывай спрайтов, выживай!","Collecte des orbes, invoque des sprites, survis !","Thu thập cầu, triệu hồi sprite, sinh tồn!"
 knight,Knight,ナイト,기사,騎士,骑士,Caballero,Cavaleiro,Рыцарь,Chevalier,Hiệp sĩ
 language,LANGUAGE,言語,언어,語言,语言,IDIOMA,IDIOMA,ЯЗЫК,LANGUE,T.Noi
