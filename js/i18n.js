@@ -2522,16 +2522,16 @@ const translations = {
 
 // SEO metadata for each language
 const seoData = {
-  en: { title: "Sprite Survivor - Free Browser Survival Game | Play Online", description: "Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. No download required." },
-  ja: { title: "スプライトサバイバー - 無料ブラウザゲーム | オンラインでプレイ", description: "スプライトサバイバーを無料でプレイ！強力なスプライトを召喚し、ボスを倒し、無限のウェーブを生き延びよう。ダウンロード不要。" },
-  ko: { title: "스프라이트 서바이버 - 무료 브라우저 생존 게임 | 온라인 플레이", description: "스프라이트 서바이버를 무료로 플레이하세요! 강력한 스프라이트를 소환하고, 보스를 물리치고, 끝없는 웨이브에서 살아남으세요." },
-  "zh-TW": { title: "精靈生存者 - 免費瀏覽器生存遊戲 | 線上遊玩", description: "免費遊玩精靈生存者！召喚強大的精靈，擊敗史詩級Boss，在無盡的波次中生存。無需下載。" },
-  "zh-CN": { title: "精灵生存者 - 免费浏览器生存游戏 | 在线游玩", description: "免费游玩精灵生存者！召唤强大的精灵，击败史诗级Boss，在无尽的波次中生存。无需下载。" },
-  es: { title: "Sprite Survivor - Juego de Supervivencia Gratis | Jugar Online", description: "¡Juega Sprite Survivor gratis en tu navegador! Invoca sprites poderosos, derrota jefes épicos y sobrevive oleadas infinitas." },
-  pt: { title: "Sprite Survivor - Jogo de Sobrevivência Grátis | Jogar Online", description: "Jogue Sprite Survivor grátis no seu navegador! Invoque sprites poderosos, derrote chefes épicos e sobreviva a ondas infinitas." },
-  ru: { title: "Sprite Survivor - Бесплатная Браузерная Игра | Играть Онлайн", description: "Играйте в Sprite Survivor бесплатно! Призывайте мощных спрайтов, побеждайте эпических боссов и выживайте в бесконечных волнах." },
-  fr: { title: "Sprite Survivor - Jeu de Survie Gratuit | Jouer en Ligne", description: "Jouez à Sprite Survivor gratuitement! Invoquez des sprites puissants, battez des boss épiques et survivez aux vagues infinies." },
-  vi: { title: "Sprite Survivor - Game Sinh Tồn Miễn Phí | Chơi Online", description: "Chơi Sprite Survivor miễn phí! Triệu hồi sprite mạnh mẽ, đánh bại boss và sinh tồn qua các đợt quái vô tận." }
+  en: { title: "Sprite Survivor - Free Browser Survival Game | Play Online", description: "Play Sprite Survivor free in your browser! Summon powerful sprites, defeat epic bosses, and survive endless waves. Supports keyboard and gamepad/controller. No download required." },
+  ja: { title: "スプライトサバイバー - 無料ブラウザゲーム | オンラインでプレイ", description: "スプライトサバイバーを無料でプレイ！強力なスプライトを召喚し、ボスを倒し、無限のウェーブを生き延びよう。キーボード・ゲームパッド対応。ダウンロード不要。" },
+  ko: { title: "스프라이트 서바이버 - 무료 브라우저 생존 게임 | 온라인 플레이", description: "스프라이트 서바이버를 무료로 플레이하세요! 강력한 스프라이트를 소환하고, 보스를 물리치고, 끝없는 웨이브에서 살아남으세요. 키보드 및 게임패드 지원." },
+  "zh-TW": { title: "精靈生存者 - 免費瀏覽器生存遊戲 | 線上遊玩", description: "免費遊玩精靈生存者！召喚強大的精靈，擊敗史詩級Boss，在無盡的波次中生存。支援鍵盤和手把。無需下載。" },
+  "zh-CN": { title: "精灵生存者 - 免费浏览器生存游戏 | 在线游玩", description: "免费游玩精灵生存者！召唤强大的精灵，击败史诗级Boss，在无尽的波次中生存。支持键盘和手柄。无需下载。" },
+  es: { title: "Sprite Survivor - Juego de Supervivencia Gratis | Jugar Online", description: "¡Juega Sprite Survivor gratis en tu navegador! Invoca sprites poderosos, derrota jefes épicos y sobrevive oleadas infinitas. Compatible con teclado y mando." },
+  pt: { title: "Sprite Survivor - Jogo de Sobrevivência Grátis | Jogar Online", description: "Jogue Sprite Survivor grátis no seu navegador! Invoque sprites poderosos, derrote chefes épicos e sobreviva a ondas infinitas. Suporta teclado e controle." },
+  ru: { title: "Sprite Survivor - Бесплатная Браузерная Игра | Играть Онлайн", description: "Играйте в Sprite Survivor бесплатно! Призывайте мощных спрайтов, побеждайте эпических боссов и выживайте в бесконечных волнах. Поддержка клавиатуры и геймпада." },
+  fr: { title: "Sprite Survivor - Jeu de Survie Gratuit | Jouer en Ligne", description: "Jouez à Sprite Survivor gratuitement! Invoquez des sprites puissants, battez des boss épiques et survivez aux vagues infinies. Clavier et manette supportés." },
+  vi: { title: "Sprite Survivor - Game Sinh Tồn Miễn Phí | Chơi Online", description: "Chơi Sprite Survivor miễn phí! Triệu hồi sprite mạnh mẽ, đánh bại boss và sinh tồn qua các đợt quái vô tận. Hỗ trợ bàn phím và tay cầm." }
 };
 
 const langLabels = { 'en': 'English', 'ja': '日本語', 'ko': '한국어', 'zh-TW': '繁體中文', 'zh-CN': '简体中文', 'es': 'Español', 'pt': 'Portug.', 'ru': 'Русский', 'fr': 'Français', 'vi': 'T.Viet' };
