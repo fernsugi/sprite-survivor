@@ -1195,3 +1195,16 @@ body.lang-vi .dialogue-speaker {
     border-bottom: 12px solid currentColor;
     top: -2px;
 }
+
+/* Refactored inline styles */
+#waveTimer {
+  font-size: 8px;
+  margin-top: 4px;
+}
+
+#langHint {
+  display: none;
+  color: #aaa;
+  margin-bottom: 5px;
+  font: bold 10px Arial, sans-serif !important;
+}
