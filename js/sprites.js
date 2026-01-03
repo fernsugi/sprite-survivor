@@ -125,8 +125,10 @@ function checkAllMerges() {
     }
 }
 
-function summonSprite(typeIndex) {
+function summonSprite(typeIndex, isStreamerAI = false) {
     if (gamePaused || !gameRunning) return;
+    // Block manual summoning in streamer mode (only AI can summon)
+    if (streamerMode && !isStreamerAI) return;
     const type = spriteTypes[typeIndex];
     // Check story mode sprite availability
     if (storyMode && typeof isSpriteAvailable === 'function' && !isSpriteAvailable(type.nameKey)) {

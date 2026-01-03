@@ -37,6 +37,8 @@ function spawnEnemy() {
 function spawnBoss() {
     bossActive = true;
     const bossNum = Math.floor(wave / BOSS_WAVE_INTERVAL);
+    // Track boss encounter for AI learning
+    if (typeof onStreamerBossEncounter === 'function') onStreamerBossEncounter(bossNum);
     const bossMultiplier = 1 + bossNum * 0.5;
     const bossNames = ['boss1', 'boss2', 'boss3', 'boss4'];
     boss = {
@@ -645,6 +647,8 @@ function updateBoss() {
         if (boss.hp <= 0) {
             score += 1000;
             SFX.bossDeath();
+            // Track boss defeat for AI learning
+            if (typeof onStreamerBossDefeated === 'function') onStreamerBossDefeated(boss.bossNum);
             for (let i = 0; i < 50; i++) effects.push({ x: boss.x, y: boss.y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 60, color: boss.color, type: 'particle' });
 
             // Story mode: let checkStoryWaveComplete handle the boss death

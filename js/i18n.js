@@ -100,6 +100,8 @@ const translations = {
     "sprites": "SPRITES",
     "startGame": "START GAME",
     "storyMode": "STORY MODE",
+    "streamerMode": "STREAMER MODE",
+    "streamerModeActive": "STREAMING",
     "story_1_1": "Your consciousness drifts through an endless void... Until a voice calls out to you.",
     "story_1_2": "Can you hear me...? Please... if anyone can hear this...",
     "story_1_3": "Four faint lights flicker before you. One burns brighter than the rest - orange, like a dying flame.",
@@ -356,6 +358,8 @@ const translations = {
     "sprites": "スプライト",
     "startGame": "ゲームスタート",
     "storyMode": "ストーリーモード",
+    "streamerMode": "ストリーマーモード",
+    "streamerModeActive": "配信中",
     "story_1_1": "お前の意識は果てしない虚空を漂う... 声がお前を呼ぶまで。",
     "story_1_2": "聞こえるか...？ 誰か... この声が届く者はいないか...",
     "story_1_3": "四つの微かな光がお前の前で揺らめく。一つは特に明るく燃えている - オレンジ色、消えかけの炎のように。",
@@ -612,6 +616,8 @@ const translations = {
     "sprites": "스프라이트",
     "startGame": "게임 시작",
     "storyMode": "스토리 모드",
+    "streamerMode": "스트리머 모드",
+    "streamerModeActive": "방송 중",
     "story_1_1": "네 의식이 끝없는 허공을 떠다닌다... 목소리가 너를 부를 때까지.",
     "story_1_2": "들리는가...? 제발... 누구든 이 목소리가 들린다면...",
     "story_1_3": "네 앞에 네 개의 희미한 빛이 깜박인다. 하나가 유독 밝게 타오른다 - 오렌지색, 꺼져가는 불꽃처럼.",
@@ -868,6 +874,8 @@ const translations = {
     "sprites": "精靈",
     "startGame": "開始遊戲",
     "storyMode": "故事模式",
+    "streamerMode": "直播模式",
+    "streamerModeActive": "直播中",
     "story_1_1": "你的意識漂浮在無盡的虛空中... 直到一個聲音呼喚你。",
     "story_1_2": "聽得到嗎...？ 求求你... 如果有人能聽到這個聲音...",
     "story_1_3": "四道微弱的光芒在你面前閃爍。其中一道燃燒得更亮 - 橘色的，像垂死的火焰。",
@@ -1124,6 +1132,8 @@ const translations = {
     "sprites": "精灵",
     "startGame": "开始游戏",
     "storyMode": "故事模式",
+    "streamerMode": "直播模式",
+    "streamerModeActive": "直播中",
     "story_1_1": "你的意识漂浮在无尽的虚空中... 直到一个声音呼唤你。",
     "story_1_2": "听得到吗...？ 求求你... 如果有人能听到这个声音...",
     "story_1_3": "四道微弱的光芒在你面前闪烁。其中一道燃烧得更亮 - 橘色的，像垂死的火焰。",
@@ -1380,6 +1390,8 @@ const translations = {
     "sprites": "SPRITES",
     "startGame": "INICIAR JUEGO",
     "storyMode": "MODO HISTORIA",
+    "streamerMode": "MODO STREAMER",
+    "streamerModeActive": "EN VIVO",
     "story_1_1": "Tu conciencia flota en un vacío sin fin... Hasta que una voz te llama.",
     "story_1_2": "¿Puedes oírme...? Por favor... si alguien puede escuchar esto...",
     "story_1_3": "Cuatro luces tenues parpadean ante ti. Una brilla más que las demás - naranja, como una llama moribunda.",
@@ -1636,6 +1648,8 @@ const translations = {
     "sprites": "SPRITES",
     "startGame": "INICIAR JOGO",
     "storyMode": "MODO HISTÓRIA",
+    "streamerMode": "MODO STREAMER",
+    "streamerModeActive": "AO VIVO",
     "story_1_1": "Sua consciência flutua em um vazio sem fim... Até que uma voz te chama.",
     "story_1_2": "Você pode me ouvir...? Por favor... se alguém puder ouvir isso...",
     "story_1_3": "Quatro luzes fracas piscam diante de você. Uma brilha mais que as outras - laranja, como uma chama moribunda.",
@@ -1892,6 +1906,8 @@ const translations = {
     "sprites": "СПРАЙТЫ",
     "startGame": "НАЧАТЬ ИГРУ",
     "storyMode": "РЕЖИМ ИСТОРИИ",
+    "streamerMode": "РЕЖИМ СТРИМЕРА",
+    "streamerModeActive": "В ЭФИРЕ",
     "story_1_1": "Твоё сознание дрейфует в бесконечной пустоте... Пока голос не окликнет тебя.",
     "story_1_2": "Ты слышишь меня...? Пожалуйста... если кто-то может это услышать...",
     "story_1_3": "Четыре тусклых огня мерцают перед тобой. Один горит ярче остальных - оранжевый, как угасающее пламя.",
@@ -2148,6 +2164,8 @@ const translations = {
     "sprites": "SPRITES",
     "startGame": "JOUER",
     "storyMode": "MODE HISTOIRE",
+    "streamerMode": "MODE STREAMER",
+    "streamerModeActive": "EN DIRECT",
     "story_1_1": "Ta conscience dérive dans un vide sans fin... Jusqu'à ce qu'une voix t'appelle.",
     "story_1_2": "Tu m'entends...? S'il te plaît... si quelqu'un peut entendre ceci...",
     "story_1_3": "Quatre faibles lumières scintillent devant toi. L'une brille plus que les autres - orange, comme une flamme mourante.",
@@ -2404,6 +2422,8 @@ const translations = {
     "sprites": "SPRITE",
     "startGame": "BẮT ĐẦU",
     "storyMode": "CHẾ ĐỘ CỐT TRUYỆN",
+    "streamerMode": "CHẾ ĐỘ STREAMER",
+    "streamerModeActive": "ĐANG PHÁT",
     "story_1_1": "Ý thức của ngươi trôi nổi trong khoảng không vô tận... Cho đến khi một giọng nói gọi ngươi.",
     "story_1_2": "Ngươi có nghe ta không...? Làm ơn... nếu ai đó có thể nghe thấy điều này...",
     "story_1_3": "Bốn ánh sáng mờ nhạt lập lòe trước mặt ngươi. Một trong số đó cháy sáng hơn cả - màu cam, như ngọn lửa sắp tắt.",
@@ -2649,6 +2669,8 @@ function setLanguage(lang, updateHistory = true) {
     updateSpriteKeyHints(currentInputMode);
   }
   if (typeof updateStoryUI === 'function') updateStoryUI();
+  // Update streamer mode button text
+  if (typeof updateStreamerButtonVisibility === 'function') updateStreamerButtonVisibility();
 }
 
 function t(key) {

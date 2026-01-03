@@ -261,6 +261,8 @@ const kbSummonKeys = {
 
 function updateKeyboardSummon() {
     if (!gameStarted || !gameRunning || gamePaused || dialogueActive) return;
+    // Disable manual summoning in streamer mode
+    if (streamerMode) return;
 
     // Check each sprite index (0-9)
     for (let i = 0; i < 10; i++) {
@@ -389,6 +391,11 @@ function gameLoop() {
     if (dialogueActive) { updateDialogue(); }
     // Check story wave completion
     if (storyMode && gameRunning) { checkStoryWaveComplete(); }
+    // Streamer mode: AI summoning and auto-restart
+    if (streamerMode) {
+        updateStreamerMode();
+        handleStreamerAutoRestart();
+    }
     requestAnimationFrame(gameLoop);
 }
 
@@ -430,6 +437,7 @@ function startGame(cheat = false) {
     gameStarted = true;
     gameRunning = true;
     if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
+    updateStreamerButtonVisibility();
     for (let i = 0; i < 8; i++) spawnOrb();
     updateUI();
     SFX.waveStart();
@@ -476,6 +484,11 @@ function goToMainMenu() {
     // Clear rendering caches to free memory
     if (typeof clearSpriteGradientCache === 'function') clearSpriteGradientCache();
 
+    // Disable streamer mode when going to main menu
+    streamerMode = false;
+    streamerAutoRestartTimer = 0;
+    streamerSummonTimer = 0;
+
     player.x = 500; player.y = 375; player.hp = player.maxHp; player.overHeal = 0; player.invincibleTime = 0; player.speedBoost = 0; player.speedBoostTimer = 0; player.facingX = 0; player.facingY = 1;
     enemies = []; projectiles = []; sprites = []; orbs = []; skillOrbs = []; effects = []; spriteProjectiles = []; heroes = []; heroBalls = [];
     currentSkill = null; updateSkillDisplay();
@@ -509,13 +522,26 @@ function goToMainMenu() {
     updateUI();
     updateHighScoreDisplay();
     if (typeof updateLangHintVisibility === 'function') updateLangHintVisibility();
+    updateStreamerButtonVisibility();
 }
 
 // Event Listeners
 document.addEventListener('keydown', e => {
     if (typeof setInputControlMode === 'function') setInputControlMode('kb');
     keys[e.key] = true;
-    if (e.key === 'Escape' && !dialogueActive) { togglePause(); return; }
+    if (e.key === 'Escape' && !dialogueActive) {
+        // In streamer mode, ESC exits streamer mode instead of just pausing
+        if (streamerMode) {
+            streamerMode = false;
+            streamerAutoRestartTimer = 0;
+            streamerSummonTimer = 0;
+            const btn = document.getElementById('streamerModeBtn');
+            btn.classList.remove('active');
+            btn.textContent = t('streamerMode');
+        }
+        togglePause();
+        return;
+    }
     // Handle dialogue advancement with SPACE
     if ((e.key === ' ' || e.code === 'Space') && dialogueActive) {
         e.preventDefault();
@@ -523,7 +549,14 @@ document.addEventListener('keydown', e => {
         return;
     }
     if (!gameStarted || !gameRunning || gamePaused) return;
-    if (e.key === 'Tab') { e.preventDefault(); autopilot = !autopilot; return; }
+    // Tab toggles autopilot - but NOT in streamer mode (autopilot is forced on)
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        if (!streamerMode) {
+            autopilot = !autopilot;
+        }
+        return;
+    }
     // Sprite summoning is now handled by updateKeyboardSummon() with hold-to-repeat
     if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); useSkill(); }
 });
@@ -568,6 +601,9 @@ function dismissSplash() {
 
     const splash = document.getElementById('splashScreen');
     if (splash) splash.style.display = 'none';
+
+    // Show streamer button after splash is dismissed
+    updateStreamerButtonVisibility();
 }
 
 // Global listener for splash dismissal (click or key)
@@ -628,6 +664,9 @@ function startSplashCycle() {
     initSpriteButtons();
     updateUI();
     updateHighScoreDisplay();
+
+    // Initialize streamer mode button
+    updateStreamerButtonVisibility();
 
     // Ensure splash is visible
     const splash = document.getElementById('splashScreen');
