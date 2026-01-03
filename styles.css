@@ -830,8 +830,7 @@ body.lang-cjk .victory-achv-item {
   color: #fff;
   background: rgba(100, 50, 150, 0.6);
   border: 2px solid #a6f;
-  padding: 8px 12px;
-  margin-bottom: 10px;
+  padding: 4px 12px;
   cursor: pointer;
   text-shadow: 1px 1px 0 #000;
   transition: all 0.2s;
